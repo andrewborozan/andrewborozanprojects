@@ -1,0 +1,18 @@
+---
+title: "project1"
+author: "Andrew Borozan"
+date: "2/14/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Just trying this out as a test. 
+
+```{r}
+View(mtcars)
+```
+
+Did this work?

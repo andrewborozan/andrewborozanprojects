@@ -1,0 +1,10 @@
+---
+title: "About Me"
+author: "Andrew Borozan"
+date: "2/14/2022"
+output: html_document
+---
+
+# ME Baby, ME
+
+I used to be a teacher, and now I am trying to learn everything there is to know about data analytics...and I am drowning. Just having a day.
