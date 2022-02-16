@@ -3,9 +3,10 @@ title: "Andrew Borozan's Projects"
 type: inverse
 left:
   - text: "About"
-    # menu:
-    #   - text: "I don't want anything"
-    #     href: ./aboutme.html
+    href: ./aboutme.html
+    #menu:
+       # - text: ""
+       #   href: ./aboutme.html
   - text: "Projects"
     menu:
        - text: "Google Data Analytics Certification Project"
