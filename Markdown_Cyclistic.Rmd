@@ -1,0 +1,430 @@
+---
+title: "Cyclistic Project"
+author: "Andrew Borozan"
+date: "2/10/2022"
+output: html_document
+---
+
+# Cyclistic Exploration
+
+The following is an exploration project completed at the end of my Google Data Analytics Certification. Here was the scenario:
+
+You are a junior data analyst working in the marketing analyst team at Cyclistic, a bike-share company in Chicago. The director of marketing believes the company's future success depends on maximizing the number of annual memberships. Therefore, your team wants to understand how casual riders and annual members use Cyclistic bikes differently. From these insights, your team will design a new marketing strategy to convert casual riders into annual members. But first, Cyclistic executives must approve your recommendations, so they must be backed up with compelling data insights and professional data visualizations.
+
+The central business task of the project is to increase membership rates.
+
+For the task to be completed, analysis must address the central question: How do annual members and casual riders use Cyclistic bikes differently?
+
+# Setup R Environment
+
+First, we will load the packages that will aid our data exploration. First, load the packman package, as there is a helpful function in this package that will load other packages needed in the environment.
+
+```{r Load packages, warning=FALSE}
+library(pacman)
+p_load(tidyverse, skimr, scales, rmarkdown, magrittr, lubridate, 
+       janitor, htmltab, ggrepel, viridis, ggthemes, readxl, knitr, showtext,
+       showtextdb, reactable, patchwork)
+```
+
+# Loading Data
+
+Next, we will load the data into R. The data comes from "Cyclistic" in the form of .csv files for each month. The data is anonymized so to protect individual user's identities. Despite this anonymization, there is much to learned from behavioral patterns of casual riders and members. A majority of observations included values for each variable. Incomplete values were removed (detailed below). The .csv files were cleaned, in part, in Excel after creating a macro to be used for each month. The macro accomplished the following:
+
+-   Removed duplicates.
+-   Trimmed and cleaned values in columns (removes extra characters and white space).
+-   Created "ride_length" and "ride_length_hours" columns which provides the length of each ride in a time format and the length of the ride in hours.
+-   Created a column for each the hour, minute, and seconds for each ride.
+-   Created a column for the day number and day name for the start of each ride.
+
+We will put these Excel files into R and then combine them into one data frame. The resulting data frame can be seen below, including the different variables to be used in the analysis:
+
+```{r Load Excel Workbooks, include=FALSE}
+Cyclistic_January <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_January1.xlsm")
+Cyclistic_February <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_February.xlsm")
+Cyclistic_March <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_March.xlsm")
+Cyclistic_April <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_April.xlsm")
+Cyclistic_May <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_May.xlsm")
+Cyclistic_June <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_June.xlsm")
+Cyclistic_July <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_July.xlsm")
+Cyclistic_August <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_August.xlsm")
+Cyclistic_September <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_September.xlsm")
+Cyclistic_October <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_October.xlsm")
+Cyclistic_November <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_November.xlsm")
+Cyclistic_December <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_December.xlsm")
+```
+
+```{r Complete Data Set}
+Cyclistic <- bind_rows(Cyclistic_January, Cyclistic_February, Cyclistic_March, Cyclistic_April, Cyclistic_May, Cyclistic_June, Cyclistic_July, Cyclistic_August, Cyclistic_September, Cyclistic_October, Cyclistic_November, Cyclistic_December)
+head(Cyclistic)
+```
+
+We clean up the column names to make it easier to work with...
+
+```{r Clean Column Names}
+Cyclistic <- Cyclistic %>% clean_names() %>% select(-ride_length_time)
+```
+
+And now, we start looking for some of the behavioral patterns of both members and casual riders.
+
+# Total rides and average length of ride
+
+First, we look at both the total number of rides by members and casual riders, and the average length of ride for each type of rider. We have to filter out any incomplete information on members and causal riders and length of ride.
+
+```{r Total Rides and Average Length of Ride by Type of Rider, echo=TRUE}
+  member_casual_count <- Cyclistic %>% drop_na(member_casual, ride_length) %>% 
+  group_by(member_casual) %>% 
+  summarize(count = n(), ride_time_avg = mean(ride_length, na.rm = TRUE)) %>% 
+  mutate(ride_time_avg, ride_time_avg = format(ride_time_avg, '%H:%M:%S'))
+  
+reactable(head(member_casual_count))
+```
+
+Something is wrong because some rides apparently went backwards through time:
+
+```{r Backwards Through Time?}
+MinCyclistic <- Cyclistic %>% drop_na(member_casual, ride_length)
+min(Cyclistic$ride_length)
+```
+
+So we need to filter out rides that are a little unrealistic and get a data set full of rides that went from one station to another. This removes all records where the start and end station are the same (which shouldn't be counted in the data set), and removes rides that claim they started after they ended.
+
+```{r Rides from one station to another and forwards through time}
+Cyclistic_Drop_NA_Station_Ids <- Cyclistic %>% drop_na(start_station_id, end_station_id) %>% 
+  filter(start_station_id != end_station_id, started_at < ended_at)
+glimpse(Cyclistic_Drop_NA_Station_Ids[which.min(Cyclistic_Drop_NA_Station_Ids$ride_length), ])
+```
+
+Something still seems a little fishy. This says there was a ride between two stations that was only one second long. Either it is the fastest ride in history (that also breaks the laws of physics) or this is an error in the data. We need to filter again for reasonable ride lengths. While short, setting the minimum ride length to 30 seconds might filter out erroneous data.
+
+```{r Reasonable Ride Lengths}
+Cyclistic_Drop_Ids_30 <- Cyclistic %>% drop_na(start_station_id, end_station_id) %>% 
+  filter(start_station_id != end_station_id, started_at < ended_at, ride_length_hours >= (30/3600)) %>% arrange(ride_length)
+
+reactable(head(Cyclistic_Drop_Ids_30), bordered = TRUE,
+  highlight = TRUE)
+
+```
+
+That looks a little better. We can see a few 30 seconds rides that at least went from one station to another. 
+
+To see the maximum ride length...
+
+```{r Maximum Ride}
+maxride <- Cyclistic[which.max(Cyclistic$ride_length), ]
+glimpse(maxride)
+```
+
+We get the start time and the end time, subtract the two to return the maximum "ride":
+
+```{r Maximum Ride Length}
+startmax <- maxride$started_at
+endmax <- maxride$ended_at
+endmax - startmax
+```
+
+That's a really long "ride." The ride type though is "docked bike" meaning this was a bike that was just sitting around for 38 days. If we take a look, docked bikes are only attributed to casual riders, possibly suggesting docked bikes don't get tracked for members.
+
+```{r Number of Docked Bikes by Rider Type, echo=TRUE, message=FALSE, warning=FALSE}
+Docked_Bike_Count <- Cyclistic %>% group_by(member_casual, rideable_type) %>% 
+  filter(rideable_type == "docked_bike") %>% summarize(count = n())
+reactable(Docked_Bike_Count, bordered = TRUE,
+  highlight = TRUE)
+```
+
+We are going to filter out docked bikes as it seems it will not tell us much about the differences in behavior between members and causal riders, and therefore, gain us little achieving our primary objective.
+
+```{r}
+Cyclistic <- Cyclistic  %>% 
+  filter(rideable_type != "docked_bike")
+```
+
+Though we are filtering out docked bikes, this might be a note for marketing strategy. Highlighting the benefit of membership to casual riders who dock frequently and/or for long periods of time might increase rates of membership. All docked ride types are from casual riders (after excluding the one member, which is presumed to be a faulty data point).
+
+Now that we have a data set that has removed incomplete information from members_casual, end_station and start_station ids, and ride_lengths, and we have removed docked bikes, we have a collection of data that can tell us something about the behavior of both members and casual riders. We have already seen that casual riders have much longer ride times on average than members. But that had included docked bikes in the data. What happens when we exclude docked bikes from the data?
+
+```{r}
+Cyclistic <- Cyclistic %>% drop_na(member_casual, end_station_id, start_station_id, ride_length) %>% 
+  filter(start_station_id != end_station_id, started_at < ended_at, ride_length_hours >= (30/3600))
+         
+new_count <- Cyclistic %>% 
+  group_by(member_casual) %>% 
+  summarize(number_of_rides = n(), ride_time_avg = mean(ride_length, na.rm = TRUE)) %>% 
+  mutate(ride_time_avg, ride_time_avg = format(ride_time_avg, '%H:%M:%S'))
+reactable(new_count, bordered = TRUE,
+  highlight = TRUE)
+```
+
+We can see a decrease in the amount of rides and average ride time (especially for casual riders), but this data is more robust and includes information we need for analysis.
+
+Visually, the data looks like this:
+
+```{r Total rides by rider type, message=FALSE, warning=FALSE}
+font_add_google("Exo", "exo")
+showtext_auto()
+number <- ggplot(new_count, 
+       aes(x = member_casual, 
+           y = number_of_rides, fill = member_casual)) + 
+  geom_bar(stat = "identity") +
+# Make sure scales package enabled so the label = comma(count) works.
+   geom_text(aes(label = comma(number_of_rides)), 
+            vjust= .5,
+            hjust = -.15, 
+            family = "exo", 
+            size = 4.5) + 
+  labs(x = "Rider Status", 
+       y = "Number of Rides", 
+       title  = "Cyclistic Rides by Rider Status") + 
+  # the following puts labels in thousands on y-axis (label = scales::comma)
+  # and makes sure the graph starts on the axis. "limits =" sets the limit of the axis.
+  scale_y_continuous(label = scales::comma, expand = c(0, 0), limits = c(0, 3500000))+  
+  scale_fill_manual(values = c("indianred1", "goldenrod1"))+
+  coord_flip() +
+  theme_classic()+
+  theme(text = element_text(family = "exo", size = 20),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(), 
+        legend.position = "none")
+
+length <- ggplot(new_count, 
+       aes(x = member_casual, 
+           y = ride_time_avg, 
+           fill = member_casual)) + 
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = ride_time_avg), 
+            vjust= .5,
+            hjust = -.15,
+            family = "exo",
+            size = 4.5) +
+  labs(x = "Rider Status", 
+       y = "Average Length of Ride in Minutes", 
+       title  = "Average Length of Ride by Rider Status") + 
+  scale_y_discrete(labels = NULL, breaks = NULL)+
+  scale_fill_manual(values = c("indianred1", "goldenrod1"))+
+  coord_flip() +
+  theme_classic()+
+  theme(legend.position = "none")+
+  theme(text = element_text(family = "exo", size = 20))
+
+number / length
+```
+
+# Most Popular Stations
+
+Which stations are the most popular launching points for each type of rider?
+
+```{r Most Popular Station by Rider Type, message=FALSE, warning=FALSE}
+Pop_Station_Name <- Cyclistic %>% group_by(start_station_name, start_station_id, member_casual) %>% 
+   summarize(count = n()) %>% select(start_station_name, start_station_id, member_casual, count) 
+  
+reactable(head(Pop_Station_Name, 10), bordered = TRUE,
+  highlight = TRUE)
+```
+
+This table provides information that gives the starting station name, starting station id, whether the user was a member or a casual rider, and the number of rides started from that station based on whether the user was a member or casual rider. This is a very useful data frame from which we can draw important information.
+
+For instance, we can identify the top ten starting stations for casual riders:
+
+```{r Top 10 Starting Stations for Casual Riders}
+casual_10 <- Pop_Station_Name %>% arrange(member_casual, desc(count))
+casual_top_10 <- head(casual_10, 10)
+table_casual_top_10 <- reactable(casual_top_10, bordered = TRUE,
+  highlight = TRUE)
+
+chart_casual_top_10 <- ggplot(casual_top_10, aes(x = reorder(start_station_name, count), y = count, fill = count)) + 
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = count), color = "black", size = 6,
+            vjust= .5,
+            hjust = -.1, 
+            family = "exo") +
+  labs(y = "Number of Rides", fill = "Start Station Name",
+       title  = "Most Popular Start Stations for Casual Riders") +
+  scale_y_continuous(label = scales::comma, expand = c(0, 0), limits = c(0, 50000)) +
+  coord_flip() +
+  theme_classic()+
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_text(size = 15),
+        axis.title.y = element_blank(),
+        legend.position = "none", 
+        text = element_text(family = "exo", size = 17)) +
+  scale_fill_viridis(option = "plasma")
+
+table_casual_top_10
+chart_casual_top_10
+
+```
+
+And the top 10 starting stations for members:
+
+```{r Top 10 Starting Station for Members}
+member_10 <- Pop_Station_Name %>% arrange(desc(member_casual), desc(count))
+member_top_10 <- head(member_10, 10)
+table_member_top_10 <- reactable(member_top_10, bordered = TRUE,
+  highlight = TRUE)
+
+chart_member_top_10 <- ggplot(member_top_10, aes(x = reorder(start_station_name, count), y = count, fill = count)) + 
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = count), color = "black", size = 6,
+            vjust= .5,
+            hjust = -.1, 
+            family = "exo") +
+  labs(y = "Number of Rides", fill = "Start Station Name",
+            title  = "Most Popular Start Stations for Members") +
+  # the following puts labels in thousands on y-axis (label = scales::comma)
+  # and makes sure the graph starts on the axis. "limits =" sets the limit of the axis.
+  scale_y_continuous(label = scales::comma, expand = c(0, 0), limits = c(0, 28000)) +
+  coord_flip() +
+  theme_classic()+
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_text(size = 15),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.title.y = element_blank(),
+        legend.position = "none", 
+        text = element_text(family = "exo", size = 17))  +
+  scale_fill_viridis(option = "plasma")
+
+table_member_top_10
+chart_member_top_10
+```
+
+If Cyclistic's goal is to increase membership, an advertising blitz in the areas in these top 10 lists would be advised. Of particular note is the number one spot for casual riders, Streeter Dr. & Grand Ave. It has twice as many trips as the next most popular spot, Millennium Park. Despite these eye-popping, and maybe suspicious, numbers, the data fits the context: the Streeter Dr. & Grand Ave. station is the station at Navy Pier, one of the most popular tourist destinations in Chicago.
+
+The start station areas with high volumes of users might be areas ripe for marketing. So might the areas around start stations with high volumes of casual riders that also have long ride times. For casual riders, let's see what high volume start stations (over 500 rides) have the longest ride times.
+
+```{r Casual Top 10 Start Stations by Ride Length, message=FALSE, warning=FALSE}
+casual_avg_ride_length <- Cyclistic %>% drop_na(start_station_name, end_station_name, member_casual, ride_length) %>%  group_by(start_station_name, member_casual) %>% 
+  filter(member_casual == "casual") %>% 
+  summarise(count = n(), avg_ride_length = mean(ride_length)) %>% 
+  filter(count >= 500) %>% 
+  mutate(avg_ride_length, avg_ride_length = format(avg_ride_length, '%H:%M:%S')) %>% 
+  select(start_station_name, count, member_casual, avg_ride_length) %>% 
+  ungroup() %>% 
+  arrange(desc(avg_ride_length))
+casual_avg_ride_length_top10 <- head(casual_avg_ride_length, 10)
+reactable(casual_avg_ride_length_top10, bordered = TRUE,
+  highlight = TRUE)
+```
+
+Are there any stations that make an appearance in both the top 10 number of a casual rides and the top 10 average length of ride?
+
+```{r Overlapping Top 10s?}
+casual_top_10s <- inner_join(casual_top_10, casual_avg_ride_length_top10, "start_station_name")
+casual_top_10s
+```
+
+There is one overlaping start station between the top 10 start stations for casual riders by volume and the top 10 start stations for causal riders by average ride time: Millennium Park. A unique marketing strategy for Millennium Park might be beneficial, while Cyclistic might want to take different marketing angles towards the different stations on the respective lists above.
+
+# Days of the Week
+
+Let's now take a look at days of the week. Should Cyclistic focus advertising efforts on certain days of the week for casual riders? Are members more inclined to ride on weekdays or weekends?
+
+```{r Rides by Day of Week, message=FALSE, warning=FALSE}
+days_of_week <- Cyclistic %>% group_by(member_casual, start_day, start_day_name) %>% 
+  summarise(count = n())
+reactable(head(days_of_week, 14), bordered = TRUE,
+  highlight = TRUE)
+```
+
+We can take a look at this and see...
+
+```{r Rides by Day of Week Visualized, message=FALSE, warning=FALSE}
+days_of_week %>% arrange(days_of_week) %>%  ggplot(aes(x=start_day_name, y = count, fill = member_casual)) +
+  geom_histogram(stat = "identity") + 
+  geom_text(aes(label = comma(count)), color = "white", size = 4, fontface = "bold",
+                                                vjust= .5,
+                                                hjust = 1.15, 
+                                                family = "exo") +
+  labs(y = "Number of Rides",
+       title  = "Number of Rides by Day of Week") +
+  # expand_limits(y=c(0, 50000)) +
+  # put the discrete variables in the order you want them. 
+  scale_x_discrete(limits = c("Saturday", "Friday", "Thursday", "Wednesday", "Tuesday", "Monday", "Sunday")) +
+  coord_flip() +
+  scale_fill_manual(values = c("indianred1", "goldenrod1")) +
+  theme_classic()+
+  theme(axis.text.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.x = element_blank(),
+        legend.position = "none", 
+        text = element_text(family = "exo", size = 20)) +
+  facet_grid(. ~ member_casual)
+```
+
+...that casual riders are more likely to ride on the weekends. If targeting casual riders, advertising on the weekends is recommended.
+
+# Time of Day by Day of Week
+
+Another avenue to explore is time of day to target casual riders. We can accomplish this by taking a look at the time of day both members and casual riders are typically beginning their rides.
+
+```{r Time of Day for Casual Riders and Members}
+Cyclistic_hour_start <- Cyclistic %>% mutate(start_hour = as.numeric(format(started_at, "%H"))) %>% 
+transform (start_day_name = factor(start_day_name,levels=c("Sunday", "Monday", "Tuesday", "Wednesday",
+                                                            "Thursday", "Friday", "Saturday")))
+
+Cyclistic_hour_start %>% ggplot(aes(x = start_hour, fill = member_casual)) +
+  geom_bar()+
+  labs(x = "Start Hour", y = "Number of Rides", title = "Number of Rides by Hour", 
+       subtitle = "By Day") +
+  scale_y_continuous(label = scales::comma, expand = c(0, 0), breaks = c(0, 30000, 60000), limits = c(0, 75000))+
+  theme_classic() +
+  scale_fill_manual(values = c("indianred1", "goldenrod1")) +
+  theme(axis.ticks.y = element_blank(), 
+        text = element_text(family = "exo"), 
+        panel.spacing.y = unit(2, "lines")) +
+  facet_wrap(~ start_day_name, scales = "free")
+```
+
+We see from these visualizations that people tend to sleep in on the weekends, but also causal rider traffic is most heavy in the middle of the day on Saturday and Sunday. On weekdays, casual riders traffic increases throughout the day, peaking in late afternoon or early evening. Advertising efforts should focus their efforts on these high traffic hour windows.
+
+
+
+# Interactive Map on Tableau
+
+Finally, [here is a link to an interactive dashboard on Tableau.](https://public.tableau.com/views/Top20StationswithMap/Top20withMap?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link) The top 20 start stations by total number of rides are given, along with the total hours ridden from each station. One can filter by rider type at the top. An interactive map is also included which shows number of rides by station (minimum of 100 rides). The rider type filter at the top also applies to the data presented in the map.
+
+Useful information to be gleaned from the dashboard:
+
+-   Not surprisingly, casual riders are practically non-existent in the months of January and February. Advertising directed at casual riders during this time is ill-advised.
+
+-   There is a swell of casual riders during the summer months, particular around popular tourist destinations.
+
+-   There is increased activity among members along Ellis Ave, south of the city center, during the fall months. The area of increased activity is in the vicinity of the University of Chicago medical complex. The increased rate could be tied to Covid cases and/or testing, but this information could be used to target casual riders as well, highlighting easy accessibility to health care facilities.
+
+\*Because of imprecision in latitude and longitude data in the original data set, some ride totals may be slightly different than what is presented above. Some station names did not match the latitude and longitude coordinates, therefore there is some information missing, such as the Shedd Aquarium station from the top 20 stations for casual riders. Most of the same information from above was captured however, and the general conclusions remain the same.
+
+# Moving Forward
+
+The primary objective of the analysis was to determine behavioral differences between casual riders and members. After completing this analysis, the following behavioral differences were identified:
+
+-   Casual riders have longer ride times on average than members
+
+-   Many top 10 start stations by number of rides for casual riders are popular tourist destinations throughout city. Only two stations from the casual top 10 stations overlap with the top 10 stations for members.
+
+-   There is a disproportionate number of rides for casual riders on the weekend  -  41.5% of rides for casual riders came on Saturday and Sunday  -  compared to members  -  only 26.1% of rides for members came on Saturday and Sunday.
+
+-   Most weekday rides for casual riders begin late afternoon to early evening. Most weekend rides begin midday through afternoon. This is in contrast to riders who are members who have higher number of rides during weekday mornings.
+
+-   There is a higher volume of casual riders in the summer months.
+
+## Deductions and Recommendations
+
+It seems as if many casual riders are tourists, as gleaned from the volume of rides by time of year and popular start stations. It will be difficult to convince one-off weekend riders to sign up for a Cyclistic membership. Strategies to combat this challenge include:
+
+-   Partnering with other business or services and presenting membership as part of a packaged deal.
+
+-   Offering short-term membership options. If the only membership option is yearly, 3 month membership options might be more appealing to casual riders.
+
+Marketing strategies have been suggested throughout the project, but one further strategy is dependent on how casual riders are currently charged.
+
+-   If casual riders are charged by ride, adverstising efforts should be directed toward high volume stations for casual riders - Streeter Dr. & Grand Ave., Millennium Park, Michigan Ave. & Oak St., etc. Highlight the benefit of membership for number of rides.
+
+-   If casual riders are charged by length of ride, advertising efforts should be directed toward stations with long ride times - Museum of Science and Industry, 63rd St. Beach, etc. Highlight the benefit of membership for long ride times. If Cyclistic has an app, push notifications could be used to inform the rider how much money they would have saved on their long ride with a membership.
+
+One possible avenue of further exploration is presence of other bike sharing ventures in other urban areas. A packaged deal for membership with other bike share ventures (similar to a previous suggestion) could entice casual riders to pursue membership. More data on bike share ventures in other urban areas would be needed for this analysis.
+
+
+
+

@@ -1,9 +1,11 @@
-name: "My new website"
+name: "Andrew Borozan's Projects"
 output_dir: 'docs'
 output:
   html_document:
-    theme: spacelab
+    theme: journal
     highlight: zenburn
+    # This worked
+    #css: bootstrap.min.css
     toc: true
     toc_depth: 2
     toc_float:

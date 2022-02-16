@@ -1,17 +1,17 @@
-name: "Mywebsite"
-title: "My new website"
+name: "Andrew Borozan's Projects"
+title: "Andrew Borozan's Projects"
 type: inverse
 left:
-  - text: "About me"
+  - text: "About"
+    # menu:
+    #   - text: "I don't want anything"
+    #     href: ./aboutme.html
+  - text: "Projects"
     menu:
-      - text: "Learn more about me"
-        href: ./aboutme.html
-  - text: "Project"
-    menu:
-       - text: "Project part 1"
-         href: ./project1.html
-       - text: "Project part 2"
-         href: ./project2.html
+       - text: "Google Data Analytics Certification Project"
+         href: ./Markdown_Cyclistic.html
+       # - text: "Project part 2"
+       #   href: ./project2.html
   - text: "Contact"
     href: ./contact.html
 right:
