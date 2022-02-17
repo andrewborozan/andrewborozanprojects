@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap');
+
+ /*------------- Whole Document---------------- */
+body {
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+/*----------------- links ---------------------*/
+
+a { 
+  color: "royalblue1";
+}
+
+ a:hover {
+    color: "royalblue3"; 
+  }
+  
+  

@@ -34,6 +34,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <script src="site_libs/core-js-2.5.3/shim.min.js"></script>
 <script src="site_libs/react-17.0.0/react.min.js"></script>
 <script src="site_libs/react-17.0.0/react-dom.min.js"></script>
@@ -88,43 +89,52 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
+    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  { color: #cccccc; background-color: #303030; }
+  {  background-color: #f8f8f8; }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ffcfaf; } /* Alert */
-code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
-code span.at { } /* Attribute */
-code span.bn { color: #dca3a3; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #f0dfaf; } /* ControlFlow */
-code span.ch { color: #dca3a3; } /* Char */
-code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
-code span.co { color: #7f9f7f; } /* Comment */
-code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
-code span.do { color: #7f9f7f; } /* Documentation */
-code span.dt { color: #dfdfbf; } /* DataType */
-code span.dv { color: #dcdccc; } /* DecVal */
-code span.er { color: #c3bf9f; } /* Error */
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
-code span.fl { color: #c0bed1; } /* Float */
-code span.fu { color: #efef8f; } /* Function */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
 code span.im { } /* Import */
-code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
-code span.kw { color: #f0dfaf; } /* Keyword */
-code span.op { color: #f0efd0; } /* Operator */
-code span.ot { color: #efef8f; } /* Other */
-code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
-code span.sc { color: #dca3a3; } /* SpecialChar */
-code span.ss { color: #cc9393; } /* SpecialString */
-code span.st { color: #cc9393; } /* String */
-code span.va { } /* Variable */
-code span.vs { color: #cc9393; } /* VerbatimString */
-code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
 
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -309,6 +319,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -410,12 +423,11 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Andrew Borozan's Projects</a>
+      <a class="navbar-brand" href="index.html">The Unlikely Analyst</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li class="dropdown-header">About</li>
-<li class="dropdown">
+        <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Projects
      
@@ -427,8 +439,25 @@ div.tocify {
     </li>
   </ul>
 </li>
-<li>
-  <a href="./contact.html">Contact</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">How to Web Scrape in R: Part 1</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Blog
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">"I am crazy" and other thoughts that flitter through my head.</li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -444,6 +473,14 @@ div.tocify {
 </div><!--/.navbar -->
 
 <div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
 
 
 
@@ -510,8 +547,8 @@ div.tocify {
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(ride_time_avg, <span class="at">ride_time_avg =</span> <span class="fu">format</span>(ride_time_avg, <span class="st">&#39;%H:%M:%S&#39;</span>))</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(<span class="fu">head</span>(member_casual_count))</span></code></pre></div>
-<div id="htmlwidget-a1b8777b187d2dafad00" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-a1b8777b187d2dafad00">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"member_casual":["casual","member"],"count":[2529005,3066058],"ride_time_avg":["00:32:01","00:13:38"]},"columns":[{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"count","name":"count","type":"numeric"},{"accessor":"ride_time_avg","name":"ride_time_avg","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"9994d531f8c8f7b90c652c2c4514b56e","key":"9994d531f8c8f7b90c652c2c4514b56e"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-b3ad48ea8bb150ff63e3" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-b3ad48ea8bb150ff63e3">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"member_casual":["casual","member"],"count":[2529005,3066058],"ride_time_avg":["00:32:01","00:13:38"]},"columns":[{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"count","name":"count","type":"numeric"},{"accessor":"ride_time_avg","name":"ride_time_avg","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"9994d531f8c8f7b90c652c2c4514b56e","key":"9994d531f8c8f7b90c652c2c4514b56e"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 <p>Something is wrong because some rides apparently went backwards through time:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>MinCyclistic <span class="ot">&lt;-</span> Cyclistic <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>(member_casual, ride_length)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(Cyclistic<span class="sc">$</span>ride_length)</span></code></pre></div>
@@ -548,8 +585,8 @@ div.tocify {
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(<span class="fu">head</span>(Cyclistic_Drop_Ids_30), <span class="at">bordered =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">highlight =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div id="htmlwidget-98a98e072046d56a372b" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-98a98e072046d56a372b">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"ride_id":["F0C1CC33209D584B","6A22C8A6BF0BD959","AD8A6AD0715EE0DF","48BBC4C8E0C5123E","D2413B51AE25965D","2B9F5C4B053A75CB"],"rideable_type":["classic_bike","classic_bike","classic_bike","classic_bike","classic_bike","classic_bike"],"started_at":["2021-06-28T19:08:19","2021-07-21T17:39:32","2021-07-15T16:50:25","2021-08-25T16:08:11","2021-09-23T14:00:54","2021-11-02T14:27:12"],"ended_at":["2021-06-28T19:08:49","2021-07-21T17:40:02","2021-07-15T16:50:55","2021-08-25T16:08:41","2021-09-23T14:01:24","2021-11-02T14:27:42"],"ride_length":["1899-12-31T00:00:30","1899-12-31T00:00:30","1899-12-31T00:00:30","1899-12-31T00:00:30","1899-12-31T00:00:30","1899-12-31T00:00:30"],"ride_hour":[0,0,0,0,0,0],"minute_length":[0,0,0,0,0,0],"seconds_length":[30,30,30,30,30,30],"ride_length_hours":[0.00833333333333333,0.00833333333333333,0.00833333333333333,0.00833333333333333,0.00833333333333333,0.00833333333333333],"start_day":[2,4,5,4,5,3],"start_day_name":["Monday","Wednesday","Thursday","Wednesday","Thursday","Tuesday"],"start_station_name":["Franklin St & Monroe St","Dayton St & North Ave","Halsted St & Clybourn Ave","Halsted St & Clybourn Ave","Franklin St & Adams St (Temp)","Franklin St & Adams St (Temp)"],"start_station_id":["TA1309000007","13058","331","331","TA1309000008","TA1309000008"],"end_station_name":["Franklin St & Adams St (Temp)","Halsted St & Clybourn Ave","Dayton St & North Ave","Dayton St & North Ave","Franklin St & Monroe St","Franklin St & Monroe St"],"end_station_id":["TA1309000008","331","13058","13058","TA1309000007","TA1309000007"],"start_lat":[41.880317,41.9105780349,41.909668,41.909668,41.8794340914001,41.8794340914001],"start_lng":[-87.635185,-87.6494219288,-87.648128,-87.648128,-87.6355040073394,-87.6355040073394],"end_lat":[41.8794340914001,41.909668,41.9105780349,41.9105780349,41.880317,41.880317],"end_lng":[-87.6355040073394,-87.648128,-87.6494219288,-87.6494219288,-87.635185,-87.635185],"member_casual":["member","member","member","member","casual","member"]},"columns":[{"accessor":"ride_id","name":"ride_id","type":"character"},{"accessor":"rideable_type","name":"rideable_type","type":"character"},{"accessor":"started_at","name":"started_at","type":"Date"},{"accessor":"ended_at","name":"ended_at","type":"Date"},{"accessor":"ride_length","name":"ride_length","type":"Date"},{"accessor":"ride_hour","name":"ride_hour","type":"numeric"},{"accessor":"minute_length","name":"minute_length","type":"numeric"},{"accessor":"seconds_length","name":"seconds_length","type":"numeric"},{"accessor":"ride_length_hours","name":"ride_length_hours","type":"numeric"},{"accessor":"start_day","name":"start_day","type":"numeric"},{"accessor":"start_day_name","name":"start_day_name","type":"character"},{"accessor":"start_station_name","name":"start_station_name","type":"character"},{"accessor":"start_station_id","name":"start_station_id","type":"character"},{"accessor":"end_station_name","name":"end_station_name","type":"character"},{"accessor":"end_station_id","name":"end_station_id","type":"character"},{"accessor":"start_lat","name":"start_lat","type":"numeric"},{"accessor":"start_lng","name":"start_lng","type":"numeric"},{"accessor":"end_lat","name":"end_lat","type":"numeric"},{"accessor":"end_lng","name":"end_lng","type":"numeric"},{"accessor":"member_casual","name":"member_casual","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"7304aadf17f767a0e0acbfb7a4d5da03","key":"7304aadf17f767a0e0acbfb7a4d5da03"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-945f95efdef09ac1e8c4" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-945f95efdef09ac1e8c4">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"ride_id":["F0C1CC33209D584B","6A22C8A6BF0BD959","AD8A6AD0715EE0DF","48BBC4C8E0C5123E","D2413B51AE25965D","2B9F5C4B053A75CB"],"rideable_type":["classic_bike","classic_bike","classic_bike","classic_bike","classic_bike","classic_bike"],"started_at":["2021-06-28T19:08:19","2021-07-21T17:39:32","2021-07-15T16:50:25","2021-08-25T16:08:11","2021-09-23T14:00:54","2021-11-02T14:27:12"],"ended_at":["2021-06-28T19:08:49","2021-07-21T17:40:02","2021-07-15T16:50:55","2021-08-25T16:08:41","2021-09-23T14:01:24","2021-11-02T14:27:42"],"ride_length":["1899-12-31T00:00:30","1899-12-31T00:00:30","1899-12-31T00:00:30","1899-12-31T00:00:30","1899-12-31T00:00:30","1899-12-31T00:00:30"],"ride_hour":[0,0,0,0,0,0],"minute_length":[0,0,0,0,0,0],"seconds_length":[30,30,30,30,30,30],"ride_length_hours":[0.00833333333333333,0.00833333333333333,0.00833333333333333,0.00833333333333333,0.00833333333333333,0.00833333333333333],"start_day":[2,4,5,4,5,3],"start_day_name":["Monday","Wednesday","Thursday","Wednesday","Thursday","Tuesday"],"start_station_name":["Franklin St & Monroe St","Dayton St & North Ave","Halsted St & Clybourn Ave","Halsted St & Clybourn Ave","Franklin St & Adams St (Temp)","Franklin St & Adams St (Temp)"],"start_station_id":["TA1309000007","13058","331","331","TA1309000008","TA1309000008"],"end_station_name":["Franklin St & Adams St (Temp)","Halsted St & Clybourn Ave","Dayton St & North Ave","Dayton St & North Ave","Franklin St & Monroe St","Franklin St & Monroe St"],"end_station_id":["TA1309000008","331","13058","13058","TA1309000007","TA1309000007"],"start_lat":[41.880317,41.9105780349,41.909668,41.909668,41.8794340914001,41.8794340914001],"start_lng":[-87.635185,-87.6494219288,-87.648128,-87.648128,-87.6355040073394,-87.6355040073394],"end_lat":[41.8794340914001,41.909668,41.9105780349,41.9105780349,41.880317,41.880317],"end_lng":[-87.6355040073394,-87.648128,-87.6494219288,-87.6494219288,-87.635185,-87.635185],"member_casual":["member","member","member","member","casual","member"]},"columns":[{"accessor":"ride_id","name":"ride_id","type":"character"},{"accessor":"rideable_type","name":"rideable_type","type":"character"},{"accessor":"started_at","name":"started_at","type":"Date"},{"accessor":"ended_at","name":"ended_at","type":"Date"},{"accessor":"ride_length","name":"ride_length","type":"Date"},{"accessor":"ride_hour","name":"ride_hour","type":"numeric"},{"accessor":"minute_length","name":"minute_length","type":"numeric"},{"accessor":"seconds_length","name":"seconds_length","type":"numeric"},{"accessor":"ride_length_hours","name":"ride_length_hours","type":"numeric"},{"accessor":"start_day","name":"start_day","type":"numeric"},{"accessor":"start_day_name","name":"start_day_name","type":"character"},{"accessor":"start_station_name","name":"start_station_name","type":"character"},{"accessor":"start_station_id","name":"start_station_id","type":"character"},{"accessor":"end_station_name","name":"end_station_name","type":"character"},{"accessor":"end_station_id","name":"end_station_id","type":"character"},{"accessor":"start_lat","name":"start_lat","type":"numeric"},{"accessor":"start_lng","name":"start_lng","type":"numeric"},{"accessor":"end_lat","name":"end_lat","type":"numeric"},{"accessor":"end_lng","name":"end_lng","type":"numeric"},{"accessor":"member_casual","name":"member_casual","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"7304aadf17f767a0e0acbfb7a4d5da03","key":"7304aadf17f767a0e0acbfb7a4d5da03"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 <p>That looks a little better. We can see a few 30 seconds rides that at least went from one station to another.</p>
 <p>To see the maximum ride length…</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>maxride <span class="ot">&lt;-</span> Cyclistic[<span class="fu">which.max</span>(Cyclistic<span class="sc">$</span>ride_length), ]</span>
@@ -586,8 +623,8 @@ div.tocify {
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rideable_type <span class="sc">==</span> <span class="st">&quot;docked_bike&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(Docked_Bike_Count, <span class="at">bordered =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">highlight =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div id="htmlwidget-99713e0d12b28fcc3c49" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-99713e0d12b28fcc3c49">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"member_casual":["casual","member"],"rideable_type":["docked_bike","docked_bike"],"count":[312342,1]},"columns":[{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"rideable_type","name":"rideable_type","type":"character"},{"accessor":"count","name":"count","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"f7799411e4ea350ed64f87848be9f44a","key":"f7799411e4ea350ed64f87848be9f44a"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ddfbd09fa92c231a692e" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-ddfbd09fa92c231a692e">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"member_casual":["casual","member"],"rideable_type":["docked_bike","docked_bike"],"count":[312342,1]},"columns":[{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"rideable_type","name":"rideable_type","type":"character"},{"accessor":"count","name":"count","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"f7799411e4ea350ed64f87848be9f44a","key":"f7799411e4ea350ed64f87848be9f44a"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 <p>We are going to filter out docked bikes as it seems it will not tell us much about the differences in behavior between members and causal riders, and therefore, gain us little achieving our primary objective.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Cyclistic <span class="ot">&lt;-</span> Cyclistic  <span class="sc">%&gt;%</span> </span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rideable_type <span class="sc">!=</span> <span class="st">&quot;docked_bike&quot;</span>)</span></code></pre></div>
@@ -602,8 +639,8 @@ div.tocify {
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(ride_time_avg, <span class="at">ride_time_avg =</span> <span class="fu">format</span>(ride_time_avg, <span class="st">&#39;%H:%M:%S&#39;</span>))</span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(new_count, <span class="at">bordered =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">highlight =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div id="htmlwidget-292c6c760b2b7fab5479" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-292c6c760b2b7fab5479">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"member_casual":["casual","member"],"number_of_rides":[1574629,2428629],"ride_time_avg":["00:22:51","00:13:05"]},"columns":[{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"number_of_rides","name":"number_of_rides","type":"numeric"},{"accessor":"ride_time_avg","name":"ride_time_avg","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"4f8e16abffc680f7fc986cb3183fdfdf","key":"4f8e16abffc680f7fc986cb3183fdfdf"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-69608f6f3c0d3efc91bb" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-69608f6f3c0d3efc91bb">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"member_casual":["casual","member"],"number_of_rides":[1574629,2428629],"ride_time_avg":["00:22:51","00:13:05"]},"columns":[{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"number_of_rides","name":"number_of_rides","type":"numeric"},{"accessor":"ride_time_avg","name":"ride_time_avg","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"4f8e16abffc680f7fc986cb3183fdfdf","key":"4f8e16abffc680f7fc986cb3183fdfdf"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 <p>We can see a decrease in the amount of rides and average ride time (especially for casual riders), but this data is more robust and includes information we need for analysis.</p>
 <p>Visually, the data looks like this:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">font_add_google</span>(<span class="st">&quot;Exo&quot;</span>, <span class="st">&quot;exo&quot;</span>)</span>
@@ -663,8 +700,8 @@ div.tocify {
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(<span class="fu">head</span>(Pop_Station_Name, <span class="dv">10</span>), <span class="at">bordered =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">highlight =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div id="htmlwidget-91e7446a5eaf354f7984" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-91e7446a5eaf354f7984">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"start_station_name":["2112 W Peterson Ave","2112 W Peterson Ave","63rd St Beach","63rd St Beach","900 W Harrison St","900 W Harrison St","Aberdeen St & Jackson Blvd","Aberdeen St & Jackson Blvd","Aberdeen St & Monroe St","Aberdeen St & Monroe St"],"start_station_id":["KA1504000155","KA1504000155","15491","15491","13028","13028","13157","13157","13156","13156"],"member_casual":["casual","member","casual","member","casual","member","casual","member","casual","member"],"count":[292,475,501,509,1889,5398,2892,7669,2853,6765]},"columns":[{"accessor":"start_station_name","name":"start_station_name","type":"character"},{"accessor":"start_station_id","name":"start_station_id","type":"character"},{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"count","name":"count","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"f5035c61b193912d69553272191d49d0","key":"f5035c61b193912d69553272191d49d0"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-84c2289af3b7483358b9" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-84c2289af3b7483358b9">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"start_station_name":["2112 W Peterson Ave","2112 W Peterson Ave","63rd St Beach","63rd St Beach","900 W Harrison St","900 W Harrison St","Aberdeen St & Jackson Blvd","Aberdeen St & Jackson Blvd","Aberdeen St & Monroe St","Aberdeen St & Monroe St"],"start_station_id":["KA1504000155","KA1504000155","15491","15491","13028","13028","13157","13157","13156","13156"],"member_casual":["casual","member","casual","member","casual","member","casual","member","casual","member"],"count":[292,475,501,509,1889,5398,2892,7669,2853,6765]},"columns":[{"accessor":"start_station_name","name":"start_station_name","type":"character"},{"accessor":"start_station_id","name":"start_station_id","type":"character"},{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"count","name":"count","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"f5035c61b193912d69553272191d49d0","key":"f5035c61b193912d69553272191d49d0"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 <p>This table provides information that gives the starting station name, starting station id, whether the user was a member or a casual rider, and the number of rides started from that station based on whether the user was a member or casual rider. This is a very useful data frame from which we can draw important information.</p>
 <p>For instance, we can identify the top ten starting stations for casual riders:</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>casual_10 <span class="ot">&lt;-</span> Pop_Station_Name <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(member_casual, <span class="fu">desc</span>(count))</span>
@@ -693,8 +730,8 @@ div.tocify {
 <span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis</span>(<span class="at">option =</span> <span class="st">&quot;plasma&quot;</span>)</span>
 <span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>table_casual_top_10</span></code></pre></div>
-<div id="htmlwidget-58ef2b4a8d87aea260bf" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-58ef2b4a8d87aea260bf">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"start_station_name":["Streeter Dr & Grand Ave","Millennium Park","Michigan Ave & Oak St","Wells St & Concord Ln","Theater on the Lake","Wells St & Elm St","Clark St & Elm St","Shedd Aquarium","Clark St & Lincoln Ave","Clark St & Armitage Ave"],"start_station_id":["13022","13008","13042","TA1308000050","TA1308000001","KA1504000135","TA1307000039","15544","13179","13146"],"member_casual":["casual","casual","casual","casual","casual","casual","casual","casual","casual","casual"],"count":[38508,18721,17997,16620,14052,14046,13577,13571,13356,12348]},"columns":[{"accessor":"start_station_name","name":"start_station_name","type":"character"},{"accessor":"start_station_id","name":"start_station_id","type":"character"},{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"count","name":"count","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"7c7b66acc5b2b3fde5893bcb1552484f","key":"7c7b66acc5b2b3fde5893bcb1552484f"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-706c7f6f00a49e6ea5bc" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-706c7f6f00a49e6ea5bc">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"start_station_name":["Streeter Dr & Grand Ave","Millennium Park","Michigan Ave & Oak St","Wells St & Concord Ln","Theater on the Lake","Wells St & Elm St","Clark St & Elm St","Shedd Aquarium","Clark St & Lincoln Ave","Clark St & Armitage Ave"],"start_station_id":["13022","13008","13042","TA1308000050","TA1308000001","KA1504000135","TA1307000039","15544","13179","13146"],"member_casual":["casual","casual","casual","casual","casual","casual","casual","casual","casual","casual"],"count":[38508,18721,17997,16620,14052,14046,13577,13571,13356,12348]},"columns":[{"accessor":"start_station_name","name":"start_station_name","type":"character"},{"accessor":"start_station_id","name":"start_station_id","type":"character"},{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"count","name":"count","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"7c7b66acc5b2b3fde5893bcb1552484f","key":"7c7b66acc5b2b3fde5893bcb1552484f"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>chart_casual_top_10</span></code></pre></div>
 <p><img src="Markdown_Cyclistic_files/figure-html/Top%2010%20Starting%20Stations%20for%20Casual%20Riders-2.png" width="672" /></p>
 <p>And the top 10 starting stations for members:</p>
@@ -726,8 +763,8 @@ div.tocify {
 <span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis</span>(<span class="at">option =</span> <span class="st">&quot;plasma&quot;</span>)</span>
 <span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>table_member_top_10</span></code></pre></div>
-<div id="htmlwidget-cf291ace4ef564d65d2f" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-cf291ace4ef564d65d2f">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"start_station_name":["Clark St & Elm St","Kingsbury St & Kinzie St","Wells St & Concord Ln","Wells St & Elm St","Dearborn St & Erie St","Wells St & Huron St","St. Clair St & Erie St","Broadway & Barry Ave","Clinton St & Madison St","Desplaines St & Kinzie St"],"start_station_id":["TA1307000039","KA1503000043","TA1308000050","KA1504000135","13045","TA1306000012","13016","13137","TA1305000032","TA1306000003"],"member_casual":["member","member","member","member","member","member","member","member","member","member"],"count":[23076,22142,22086,19535,17801,17703,17631,16142,15979,15664]},"columns":[{"accessor":"start_station_name","name":"start_station_name","type":"character"},{"accessor":"start_station_id","name":"start_station_id","type":"character"},{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"count","name":"count","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"e8da3e0fb893f69f92c3cb49e2b466a7","key":"e8da3e0fb893f69f92c3cb49e2b466a7"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-5edf5e4d7a8d2f724b2d" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-5edf5e4d7a8d2f724b2d">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"start_station_name":["Clark St & Elm St","Kingsbury St & Kinzie St","Wells St & Concord Ln","Wells St & Elm St","Dearborn St & Erie St","Wells St & Huron St","St. Clair St & Erie St","Broadway & Barry Ave","Clinton St & Madison St","Desplaines St & Kinzie St"],"start_station_id":["TA1307000039","KA1503000043","TA1308000050","KA1504000135","13045","TA1306000012","13016","13137","TA1305000032","TA1306000003"],"member_casual":["member","member","member","member","member","member","member","member","member","member"],"count":[23076,22142,22086,19535,17801,17703,17631,16142,15979,15664]},"columns":[{"accessor":"start_station_name","name":"start_station_name","type":"character"},{"accessor":"start_station_id","name":"start_station_id","type":"character"},{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"count","name":"count","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"e8da3e0fb893f69f92c3cb49e2b466a7","key":"e8da3e0fb893f69f92c3cb49e2b466a7"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>chart_member_top_10</span></code></pre></div>
 <p><img src="Markdown_Cyclistic_files/figure-html/Top%2010%20Starting%20Station%20for%20Members-2.png" width="672" /></p>
 <p>If Cyclistic’s goal is to increase membership, an advertising blitz in the areas in these top 10 lists would be advised. Of particular note is the number one spot for casual riders, Streeter Dr. &amp; Grand Ave. It has twice as many trips as the next most popular spot, Millennium Park. Despite these eye-popping, and maybe suspicious, numbers, the data fits the context: the Streeter Dr. &amp; Grand Ave. station is the station at Navy Pier, one of the most popular tourist destinations in Chicago.</p>
@@ -743,8 +780,8 @@ div.tocify {
 <span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>casual_avg_ride_length_top10 <span class="ot">&lt;-</span> <span class="fu">head</span>(casual_avg_ride_length, <span class="dv">10</span>)</span>
 <span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(casual_avg_ride_length_top10, <span class="at">bordered =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">highlight =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div id="htmlwidget-a364696f77565a43817c" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-a364696f77565a43817c">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"start_station_name":["Museum of Science and Industry","63rd St Beach","Millennium Park","Lake Park Ave & 35th St","Buckingham Fountain","Lake Shore Dr & Monroe St","Fort Dearborn Dr & 31st St","Sheridan Rd & Loyola Ave","Lake Park Ave & 53rd St","DuSable Lake Shore Dr & Monroe St"],"count":[2065,501,18721,814,6278,9688,2412,1479,2255,9271],"member_casual":["casual","casual","casual","casual","casual","casual","casual","casual","casual","casual"],"avg_ride_length":["00:47:29","00:42:41","00:38:10","00:38:09","00:37:35","00:37:25","00:36:19","00:35:59","00:35:55","00:35:40"]},"columns":[{"accessor":"start_station_name","name":"start_station_name","type":"character"},{"accessor":"count","name":"count","type":"numeric"},{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"avg_ride_length","name":"avg_ride_length","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"67866cad366bf0ef2242166cf62d51e2","key":"67866cad366bf0ef2242166cf62d51e2"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ecc2ecbd6c313810ee66" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-ecc2ecbd6c313810ee66">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"start_station_name":["Museum of Science and Industry","63rd St Beach","Millennium Park","Lake Park Ave & 35th St","Buckingham Fountain","Lake Shore Dr & Monroe St","Fort Dearborn Dr & 31st St","Sheridan Rd & Loyola Ave","Lake Park Ave & 53rd St","DuSable Lake Shore Dr & Monroe St"],"count":[2065,501,18721,814,6278,9688,2412,1479,2255,9271],"member_casual":["casual","casual","casual","casual","casual","casual","casual","casual","casual","casual"],"avg_ride_length":["00:47:29","00:42:41","00:38:10","00:38:09","00:37:35","00:37:25","00:36:19","00:35:59","00:35:55","00:35:40"]},"columns":[{"accessor":"start_station_name","name":"start_station_name","type":"character"},{"accessor":"count","name":"count","type":"numeric"},{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"avg_ride_length","name":"avg_ride_length","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"67866cad366bf0ef2242166cf62d51e2","key":"67866cad366bf0ef2242166cf62d51e2"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 <p>Are there any stations that make an appearance in both the top 10 number of a casual rides and the top 10 average length of ride?</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>casual_top_10s <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(casual_top_10, casual_avg_ride_length_top10, <span class="st">&quot;start_station_name&quot;</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>casual_top_10s</span></code></pre></div>
@@ -763,8 +800,8 @@ div.tocify {
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(<span class="fu">head</span>(days_of_week, <span class="dv">14</span>), <span class="at">bordered =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">highlight =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div id="htmlwidget-33bf49776ca607d1f38e" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-33bf49776ca607d1f38e">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"member_casual":["casual","casual","casual","casual","casual","casual","casual","member","member","member","member","member","member","member"],"start_day":[1,2,3,4,5,6,7,1,2,3,4,5,6,7],"start_day_name":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"count":[298277,171461,167433,173436,180401,227835,355786,294667,330742,372154,381888,358679,350385,340114]},"columns":[{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"start_day","name":"start_day","type":"numeric"},{"accessor":"start_day_name","name":"start_day_name","type":"character"},{"accessor":"count","name":"count","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"89392769588111c508c655e4326e3e93","key":"89392769588111c508c655e4326e3e93"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c3ea1cff733e3b4b845d" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-c3ea1cff733e3b4b845d">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"member_casual":["casual","casual","casual","casual","casual","casual","casual","member","member","member","member","member","member","member"],"start_day":[1,2,3,4,5,6,7,1,2,3,4,5,6,7],"start_day_name":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"count":[298277,171461,167433,173436,180401,227835,355786,294667,330742,372154,381888,358679,350385,340114]},"columns":[{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"start_day","name":"start_day","type":"numeric"},{"accessor":"start_day_name","name":"start_day_name","type":"character"},{"accessor":"count","name":"count","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"89392769588111c508c655e4326e3e93","key":"89392769588111c508c655e4326e3e93"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 <p>We can take a look at this and see…</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>days_of_week <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(days_of_week) <span class="sc">%&gt;%</span>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>start_day_name, <span class="at">y =</span> count, <span class="at">fill =</span> member_casual)) <span class="sc">+</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span> </span>
@@ -883,6 +920,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {

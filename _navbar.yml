@@ -1,20 +1,19 @@
-name: "Andrew Borozan's Projects"
-title: "Andrew Borozan's Projects"
+name: "The Unlikely Analyst"
+title: "The Unlikely Analyst"
 type: inverse
 left:
-  - text: "About"
-    href: ./aboutme.html
-    #menu:
-       # - text: ""
-       #   href: ./aboutme.html
   - text: "Projects"
     menu:
        - text: "Google Data Analytics Certification Project"
          href: ./Markdown_Cyclistic.html
-       # - text: "Project part 2"
-       #   href: ./project2.html
-  - text: "Contact"
-    href: ./contact.html
+  - text: "Tutorials"
+    menu:
+       - text: "How to Web Scrape in R: Part 1"
+         href: 
+  - text: "Blog"
+    menu: 
+      - text: "\"I am crazy\" and other thoughts that flitter through my head."
+        href: 
 right:
   - icon: fa-github fa-lg
     href: https://github.com/githubusername/mywebsite
