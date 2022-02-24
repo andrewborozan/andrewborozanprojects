@@ -34,6 +34,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -123,6 +124,15 @@ code span.va { color: #0057ae; } /* Variable */
 code span.vs { color: #bf0303; } /* VerbatimString */
 code span.wa { color: #bf0303; } /* Warning */
 
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -307,6 +317,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -408,14 +421,11 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Andrew Borozan's Projects</a>
+      <a class="navbar-brand" href="index.html">The Unlikely Analyst</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="./aboutme.html">About</a>
-</li>
-<li class="dropdown">
+        <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Projects
      
@@ -425,10 +435,32 @@ div.tocify {
     <li>
       <a href="./Markdown_Cyclistic.html">Google Data Analytics Certification Project</a>
     </li>
+    <li>
+      <a href="./Reddit_Sentiment_Analysis_2_23.html">Sentiment Analysis with Reddit Comments</a>
+    </li>
   </ul>
 </li>
-<li>
-  <a href="./contact.html">Contact</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">How to Web Scrape in R: Part 1</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Blog
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./I_am_crazy.html">"I am crazy" and other thoughts that flitter through my head.</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -445,6 +477,14 @@ div.tocify {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">project1</h1>
@@ -454,19 +494,16 @@ div.tocify {
 </div>
 
 
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
-<pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --</code></pre>
-<pre><code>## v ggplot2 3.3.5     v purrr   0.3.4
-## v tibble  3.1.6     v dplyr   1.0.7
-## v tidyr   1.1.4     v stringr 1.4.0
-## v readr   2.1.1     v forcats 0.5.1</code></pre>
-<pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vembedr)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vembedr)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;vembedr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:lubridate&#39;:
+## 
+##     hms</code></pre>
 <p>Just trying this out as a test.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mtcars)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mtcars)</span></code></pre></div>
 <pre><code>##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
 ## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
 ## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
@@ -475,11 +512,16 @@ div.tocify {
 ## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
 ## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
 <p>Did this work?</p>
-<p><a href="https://rstudio4edu.github.io/rstudio4edu-book/doc-trouble.html">put a link in here</a></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span> <span class="fu">select</span>(species, flipper_length_mm) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>species, <span class="at">y=</span>flipper_length_mm)) <span class="sc">+</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
+<p><a
+href="https://rstudio4edu.github.io/rstudio4edu-book/doc-trouble.html">put
+a link in here</a></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span> <span class="fu">select</span>(species, flipper_length_mm) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>species, <span class="at">y=</span>flipper_length_mm)) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
 <pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
-<p><img src="project1_files/figure-html/unnamed-chunk-3-1.png" width="672" /> Image attempt <img src="Images/Ferris.jpg" alt="Marseilles" /></p>
+<p><img src="project1_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+Image attempt <img
+src="C:/Users/andre/Desktop/Github/andrewborozanprojects/andrewborozanprojects/Images/Ferris.jpg"
+alt="Marseilles" /></p>
 <div class = "embed-responsive embed-responsive-16by9">
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/2ivKEj3ksPk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
@@ -522,6 +564,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {

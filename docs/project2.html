@@ -34,6 +34,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -82,43 +83,52 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
+    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  { color: #cccccc; background-color: #303030; }
+  {  background-color: #f8f8f8; }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ffcfaf; } /* Alert */
-code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
-code span.at { } /* Attribute */
-code span.bn { color: #dca3a3; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #f0dfaf; } /* ControlFlow */
-code span.ch { color: #dca3a3; } /* Char */
-code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
-code span.co { color: #7f9f7f; } /* Comment */
-code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
-code span.do { color: #7f9f7f; } /* Documentation */
-code span.dt { color: #dfdfbf; } /* DataType */
-code span.dv { color: #dcdccc; } /* DecVal */
-code span.er { color: #c3bf9f; } /* Error */
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
-code span.fl { color: #c0bed1; } /* Float */
-code span.fu { color: #efef8f; } /* Function */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
 code span.im { } /* Import */
-code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
-code span.kw { color: #f0dfaf; } /* Keyword */
-code span.op { color: #f0efd0; } /* Operator */
-code span.ot { color: #efef8f; } /* Other */
-code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
-code span.sc { color: #dca3a3; } /* SpecialChar */
-code span.ss { color: #cc9393; } /* SpecialString */
-code span.st { color: #cc9393; } /* String */
-code span.va { } /* Variable */
-code span.vs { color: #cc9393; } /* VerbatimString */
-code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
 
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -303,6 +313,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -404,12 +417,11 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Andrew Borozan's Projects</a>
+      <a class="navbar-brand" href="index.html">The Unlikely Analyst</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li class="dropdown-header">About</li>
-<li class="dropdown">
+        <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Projects
      
@@ -419,10 +431,32 @@ div.tocify {
     <li>
       <a href="./Markdown_Cyclistic.html">Google Data Analytics Certification Project</a>
     </li>
+    <li>
+      <a href="./Reddit_Sentiment_Analysis_2_23.html">Sentiment Analysis with Reddit Comments</a>
+    </li>
   </ul>
 </li>
-<li>
-  <a href="./contact.html">Contact</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">How to Web Scrape in R: Part 1</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Blog
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./I_am_crazy.html">"I am crazy" and other thoughts that flitter through my head.</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -439,6 +473,14 @@ div.tocify {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">project2</h1>
@@ -449,9 +491,11 @@ div.tocify {
 
 
 <p>#Project 2</p>
-<p>I think I did something wrong last time and didn’t load my environment.</p>
+<p>I think I did something wrong last time and didn’t load my
+environment.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
-<p>Let’s trying loading the tidyverse first, then looking at the mtcars dataset.</p>
+<p>Let’s trying loading the tidyverse first, then looking at the mtcars
+dataset.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(mtcars)</span></code></pre></div>
 <p>Did it work?</p>
 
@@ -490,6 +534,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {

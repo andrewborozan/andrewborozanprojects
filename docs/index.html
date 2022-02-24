@@ -30,6 +30,7 @@
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -205,6 +206,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -241,6 +245,9 @@ $(document).ready(function () {
     <li>
       <a href="./Markdown_Cyclistic.html">Google Data Analytics Certification Project</a>
     </li>
+    <li>
+      <a href="./Reddit_Sentiment_Analysis_2_23.html">Sentiment Analysis with Reddit Comments</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -260,7 +267,9 @@ $(document).ready(function () {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">"I am crazy" and other thoughts that flitter through my head.</li>
+    <li>
+      <a href="./I_am_crazy.html">"I am crazy" and other thoughts that flitter through my head.</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -278,6 +287,14 @@ $(document).ready(function () {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 
@@ -286,16 +303,34 @@ $(document).ready(function () {
 
 <div id="welcome" class="section level1">
 <h1>Welcome!</h1>
-<p>I am delighted to share with you my learning journey. I am making a transition from the realm of education as a high school history and philosophy teacher to the world of data analytics. In a short time, I have gone from reading and talking about authoritarianism in the 20th century and the structure of ideologies, to learning R, talking Tableau, and studying statistical analysis. It is as if I have entered a portal and started setting up shop in a different universe.</p>
-<p>The purpose of this site is to document my process from the land of the qualitative, the home of humanities, into the world of the quantitative, the domain of data.</p>
+<p>I am delighted to share with you my learning journey. I am making a
+transition from the realm of education as a high school history and
+philosophy teacher to the world of data analytics. In a short time, I
+have gone from reading and talking about authoritarianism in the 20th
+century and the structure of ideologies, to learning R, talking Tableau,
+and studying statistical analysis. It is as if I have entered a portal
+and started setting up shop in a different universe.</p>
+<p>The purpose of this site is to document my process from the land of
+the qualitative, the home of humanities, into the world of the
+quantitative, the domain of data.</p>
 <p>On this site you will find the following:</p>
 <ul>
 <li><p>Completed Projects</p></li>
 <li><p>Tutorials</p></li>
 <li><p>Blog Entries</p></li>
 </ul>
-<p>This is an ongoing process, a meandering adventure full of sometimes fast, sometimes slow growth, steps forward, and sometimes steps backward. I taught students the best way to learn for themselves, and now I must utilize those same strategies to learn new content myself. A primary tactic I will employ to further my own development is one I am familiar with: teaching. Learn by teaching, teach while learning. I always told my students you don’t know something very well until you can explain it to a 5th grader. In that vain, I hope to make the content on this site accessible, engaging, fun, conversational, and above all, accurate!</p>
-<p>Explore the site, enjoy the material, and watch the video below in which I detail a little more about my unfolding career U-turn.</p>
+<p>This is an ongoing process, a meandering adventure full of sometimes
+fast, sometimes slow growth, steps forward, and sometimes steps
+backward. I taught students the best way to learn for themselves, and
+now I must utilize those same strategies to learn new content myself. A
+primary tactic I will employ to further my own development is one I am
+familiar with: teaching. Learn by teaching, teach while learning. I
+always told my students you don’t know something very well until you can
+explain it to a 5th grader. In that vain, I hope to make the content on
+this site accessible, engaging, fun, conversational, and above all,
+accurate!</p>
+<p>Explore the site, enjoy the material, and watch the video below in
+which I detail a little more about my unfolding career U-turn.</p>
 </div>
 
 
@@ -331,6 +366,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Andrew Borozan" />
+
+<meta name="date" content="2022-02-24" />
+
+<title>Sentiment Analysis on Reddit Threads</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/core-js-2.5.3/shim.min.js"></script>
+<script src="site_libs/react-17.0.0/react.min.js"></script>
+<script src="site_libs/react-17.0.0/react-dom.min.js"></script>
+<script src="site_libs/reactwidget-1.0.0/react-tools.js"></script>
+<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="site_libs/reactable-binding-0.2.3/reactable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">The Unlikely Analyst</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./Markdown_Cyclistic.html">Google Data Analytics Certification Project</a>
+    </li>
+    <li>
+      <a href="./Reddit_Sentiment_Analysis_2_23.html">Sentiment Analysis with Reddit Comments</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">How to Web Scrape in R: Part 1</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Blog
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./I_am_crazy.html">"I am crazy" and other thoughts that flitter through my head.</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/githubusername/mywebsite">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Sentiment Analysis on Reddit Threads</h1>
+<h4 class="author">Andrew Borozan</h4>
+<h4 class="date">2022-02-24</h4>
+
+</div>
+
+
+<p><br></p>
+<p>Here is a cool little project to take the temperature of the masses.
+We are going to scrape comments off of a Reddit thread and then run a
+sentiment analysis on these comments.</p>
+<p>First, let’s load in some packages that may (or may not) help us.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pacman)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">p_load</span>(tidyverse, rmarkdown, magrittr, lubridate, janitor, ggthemes, knitr, rvest, reactable, RSelenium, stringr.plus, RedditExtractoR, sentimentr)</span></code></pre></div>
+<p>We are first going to scrape some Reddit comments off of a thread. In
+efforts to make the material juicy, we are going to head to the
+political subreddit and pick the top thread from there. Lucky us, we got
+an article on Republicans being more favorable towards Putin than they
+are to leaders in the Democratic Party. Putin evokes a lot of sentiment,
+one way or the other, so we should have some good material here. We use
+the RedditExtractoR’s get_thread_content function to extract all of the
+comments at the time and place them into a two item list. The items in
+the list are data frames, the first with metadata about the thread, the
+second containing the users, comments, and other information regarding
+each post. One row of the second data frame is given as an example of
+the type of information contained in the data frame.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Politics <span class="ot">&lt;-</span> <span class="fu">get_thread_content</span>(<span class="st">&quot;https://www.reddit.com/r/politics/comments/szjnqw/republicans_view_putin_more_favorably_than_they/&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(Politics[[<span class="dv">1</span>]])</span></code></pre></div>
+<div id="htmlwidget-ce37bc5f5b3ebda90853" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-ce37bc5f5b3ebda90853">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"url":["https://www.reddit.com/r/politics/comments/szjnqw/republicans_view_putin_more_favorably_than_they/"],"author":["Archer1407"],"date":["2022-02-23"],"title":["Republicans view Putin more favorably than they do leading Democrats"],"text":[""],"subreddit":["politics"],"score":[18008],"upvotes":[18008],"downvotes":[0],"up_ratio":[0.91],"total_awards_received":[7],"golds":[0],"cross_posts":[7],"comments":[1921]},"columns":[{"accessor":"url","name":"url","type":"character"},{"accessor":"author","name":"author","type":"character"},{"accessor":"date","name":"date","type":"character"},{"accessor":"title","name":"title","type":"character"},{"accessor":"text","name":"text","type":"character"},{"accessor":"subreddit","name":"subreddit","type":"character"},{"accessor":"score","name":"score","type":"numeric"},{"accessor":"upvotes","name":"upvotes","type":"numeric"},{"accessor":"downvotes","name":"downvotes","type":"numeric"},{"accessor":"up_ratio","name":"up_ratio","type":"numeric"},{"accessor":"total_awards_received","name":"total_awards_received","type":"numeric"},{"accessor":"golds","name":"golds","type":"numeric"},{"accessor":"cross_posts","name":"cross_posts","type":"numeric"},{"accessor":"comments","name":"comments","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"c93d0b3c795744c4b2b87c419ca18809","key":"c93d0b3c795744c4b2b87c419ca18809"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(Politics[[<span class="dv">2</span>]][<span class="dv">9</span>, ])</span></code></pre></div>
+<div id="htmlwidget-c7f1e9ce971396e91a56" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-c7f1e9ce971396e91a56">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"url":["https://www.reddit.com/r/politics/comments/szjnqw/republicans_view_putin_more_favorably_than_they/"],"author":["Inside-Palpitation25"],"date":["2022-02-23"],"score":[242],"upvotes":[242],"downvotes":[0],"golds":[0],"comment":["do they even realize it's a fascist state though?  They think it's freedom. This is where education comes in, they don't fully understand that if that is what we become, they can on the whim of the leader, become the enemy, and be put to death, or in a work camp for saying something against the dear leader.  I don't they they fully get that , they think they will always be in favor."],"comment_id":["2_1_2"]},"columns":[{"accessor":"url","name":"url","type":"character"},{"accessor":"author","name":"author","type":"character"},{"accessor":"date","name":"date","type":"character"},{"accessor":"score","name":"score","type":"numeric"},{"accessor":"upvotes","name":"upvotes","type":"numeric"},{"accessor":"downvotes","name":"downvotes","type":"numeric"},{"accessor":"golds","name":"golds","type":"numeric"},{"accessor":"comment","name":"comment","type":"character"},{"accessor":"comment_id","name":"comment_id","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"a3c8f9367301297770392c422ab926e6","key":"a3c8f9367301297770392c422ab926e6"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<p>We are going to place the data frame with the comments into an
+object…</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Putin_comments <span class="ot">&lt;-</span> Politics[[<span class="dv">2</span>]]</span></code></pre></div>
+<p>Next, we are going to run a sentiment analysis using sentimentr
+(which does a good job at identifying “valence shifters” - words that
+shift the meaning of the overall sentence - in relation to other
+sentiment analysis tools). We can see the sentiment by both sentence and
+by user using different functions of sentimentr.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>(comment_sentiment_by_sentence <span class="ot">&lt;-</span> <span class="fu">sentiment</span>(Putin_comments<span class="sc">$</span>comment))</span></code></pre></div>
+<pre><code>##       element_id sentence_id word_count   sentiment
+##    1:          1           1         22  0.67158226
+##    2:          1           2         10  0.07905694
+##    3:          1           3         27 -0.92376043
+##    4:          1           4         12  0.14433757
+##    5:          1           5         38  0.32444284
+##   ---                                              
+## 1195:        497           2          5  0.00000000
+## 1196:        497           3          3 -0.86602540
+## 1197:        498           1          3  0.00000000
+## 1198:        498           2         10  0.00000000
+## 1199:        499           1         12  0.00000000</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>(comment_sentiment_by_user <span class="ot">&lt;-</span> <span class="fu">sentiment_by</span>(Putin_comments<span class="sc">$</span>comment))</span></code></pre></div>
+<pre><code>##      element_id word_count         sd ave_sentiment
+##   1:          1        178 0.49036849    0.18815541
+##   2:          2          7         NA    0.01889822
+##   3:          3         92 0.31218388    0.02674171
+##   4:          4         57 0.10393509    0.03426998
+##   5:          5          6         NA    0.24494897
+##  ---                                               
+## 495:        495          9         NA   -0.10000000
+## 496:        496         20 0.09166667   -0.07074073
+## 497:        497         12 0.50000000   -0.42283360
+## 498:        498         13 0.00000000    0.00000000
+## 499:        499         12         NA    0.00000000</code></pre>
+<p>Let’s get rid of some of the superfluous columns in the data frame
+(there were no downvotes, for example, so we can jettison that column)
+and add the information from our sentiment analysis. We will also get
+rid of the moderator comment (the first row in the data set) and rename
+the author column to user. We can add a column to signify if this post
+was an original post or a reply to a previous post.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="ot">&lt;-</span> <span class="fu">cbind</span>(Putin_comments, <span class="at">word_count =</span> comment_sentiment_by_user<span class="sc">$</span>word_count, <span class="at">sd =</span> comment_sentiment_by_user<span class="sc">$</span>sd, <span class="at">avg_sentiment =</span> comment_sentiment_by_user<span class="sc">$</span>ave_sentiment)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="ot">&lt;-</span> cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">&quot;url&quot;</span>, <span class="st">&quot;date&quot;</span>, <span class="st">&quot;score&quot;</span>, <span class="st">&quot;downvotes&quot;</span>, <span class="st">&quot;golds&quot;</span>))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="ot">&lt;-</span> cleaned_comments[<span class="sc">-</span><span class="dv">1</span>, ]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="ot">&lt;-</span> cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">user =</span> author)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="ot">&lt;-</span> cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">comment_type =</span> </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                                                  <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">&quot;_&quot;</span>, cleaned_comments<span class="sc">$</span>comment_id), <span class="st">&quot;Reply&quot;</span>, <span class="st">&quot;Original Post&quot;</span>))</span></code></pre></div>
+<p>We will make a quick histogram to see the overall tenor of the
+comments:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(avg_sentiment)) <span class="sc">+</span> <span class="fu">geom_histogram</span>()<span class="sc">+</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Sentiment Score&quot;</span>, </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Frequency of Score&quot;</span>, </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">title  =</span> <span class="st">&quot;Overall Sentiment of Reddit Posts&quot;</span>)<span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_economist</span>()</span></code></pre></div>
+<p><img src="Reddit_Sentiment_Analysis_2_23_files/figure-html/Histogram%20of%20sentiment-1.png" width="672" /></p>
+<p>Many of the comments hover around a neutral score. It would be
+interesting to do further analysis to see if this is the case for other
+Reddit threads or if this is a feature of the sentimentr package.</p>
+<p>One fun thing to do is map this sentiment by word count. Is the
+sentiment score affected by the number of words?</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cleaned_comments, <span class="fu">aes</span>(avg_sentiment, word_count)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Sentiment Score&quot;</span>, </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Word Count&quot;</span>, </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">title  =</span> <span class="st">&quot;Sentiment Score by Word Count&quot;</span>)<span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_economist</span>()</span></code></pre></div>
+<p><img src="Reddit_Sentiment_Analysis_2_23_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>Looking very similar to our histogram above. Let’s see the average
+sentiment score and the proportion of positive and negative
+sentiment.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cleaned_comments<span class="sc">$</span>avg_sentiment)</span></code></pre></div>
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+## -1.41421 -0.14464  0.00000 -0.02922  0.09769  0.90704</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>total_count <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">count</span>(cleaned_comments))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">filter</span>(avg_sentiment <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">proportion_positive_comments =</span> <span class="fu">round</span>(count<span class="sc">/</span>total_count, <span class="dv">3</span>))</span></code></pre></div>
+<pre><code>##   count proportion_positive_comments
+## 1   195                        0.392</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">filter</span>(avg_sentiment <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">proportion_negative_comments =</span> <span class="fu">round</span>(count<span class="sc">/</span>total_count, <span class="dv">3</span>))</span></code></pre></div>
+<pre><code>##   count proportion_negative_comments
+## 1   246                        0.494</code></pre>
+<p>It looks like overall, the general tone had a slightly negative
+sentiment. The overall average sentiment was a shade to the left of
+zero, and there was a higher proportion of negative comments to positive
+comments.</p>
+<p>Let’s see if there is a difference in sentiment between original
+posts and replies.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(comment_type) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">average_sentiment =</span> <span class="fu">mean</span>(avg_sentiment)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(comment_type, average_sentiment)) <span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span> <span class="fu">theme_economist</span>()<span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(average_sentiment, <span class="dv">3</span>)), <span class="at">vjust =</span> <span class="fl">1.25</span>) <span class="sc">+</span> </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Comment Type&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Average Sentiment&quot;</span>, <span class="at">title=</span> <span class="st">&quot;Average Sentiment by Comment Type&quot;</span>)<span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span>.<span class="dv">1</span>, .<span class="dv">04</span>, .<span class="dv">02</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span>.<span class="dv">08</span>, .<span class="dv">04</span>))</span></code></pre></div>
+<p><img src="Reddit_Sentiment_Analysis_2_23_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Original posts, on the surface, seem to have more negative sentiment
+than replies.</p>
+<p>Finally, does the number of upvotes suggest anything about the
+sentiment score of a post? (To make this a little cleaner, we will go
+with posts that received at least 5 upvotes.)</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">filter</span>(upvotes <span class="sc">&gt;</span> <span class="dv">4</span>) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(avg_sentiment, upvotes, <span class="at">color =</span> comment_type)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">theme_economist</span>() <span class="sc">+</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Sentiment Score&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Number of Upvotes&quot;</span>, <span class="at">title =</span> <span class="st">&quot;Sentiment score and Upvote Relationship&quot;</span>, <span class="at">color =</span> <span class="st">&quot;Comment Type&quot;</span>)</span></code></pre></div>
+<p><img src="Reddit_Sentiment_Analysis_2_23_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>count_upvotes <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">count</span>(cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">filter</span>(upvotes <span class="sc">&gt;</span> <span class="dv">4</span>)))</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">filter</span>(upvotes <span class="sc">&gt;</span> <span class="dv">4</span>, avg_sentiment <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">count_positive =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">proportion_positive_sentiment =</span> <span class="fu">round</span>(count_positive<span class="sc">/</span>count_upvotes, <span class="dv">3</span>))</span></code></pre></div>
+<pre><code>##   count_positive proportion_positive_sentiment
+## 1            104                           0.4</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">filter</span>(upvotes <span class="sc">&gt;</span> <span class="dv">4</span>, avg_sentiment <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">count_negative =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">proportion_negative_sentiment =</span> <span class="fu">round</span>(count_negative<span class="sc">/</span>count_upvotes, <span class="dv">3</span>))</span></code></pre></div>
+<pre><code>##   count_negative proportion_negative_sentiment
+## 1            131                         0.504</code></pre>
+<p>It is a little more difficult looking at it from the plot, but when
+we look at the numbers we see that with posts that received at least 5
+upvotes, there was a higher proportion (around 50%) that had a negative
+sentiment, than those which had a positive sentiment (around 40%).</p>
+<p><br></p>
+<p>This was a “scratch the surface” project on sentiment analysis on
+comments in a Reddit thread. It is merely a glimpse into the types of
+analysis that can be performed with these tools.</p>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

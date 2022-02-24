@@ -40,18 +40,18 @@ Next, we will load the data into R. The data comes from "Cyclistic" in the form 
 We will put these Excel files into R and then combine them into one data frame. The resulting data frame can be seen below, including the different variables to be used in the analysis:
 
 ```{r Load Excel Workbooks, include=FALSE}
-Cyclistic_January <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_January1.xlsm")
-Cyclistic_February <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_February.xlsm")
-Cyclistic_March <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_March.xlsm")
-Cyclistic_April <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_April.xlsm")
-Cyclistic_May <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_May.xlsm")
-Cyclistic_June <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_June.xlsm")
-Cyclistic_July <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_July.xlsm")
-Cyclistic_August <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_August.xlsm")
-Cyclistic_September <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_September.xlsm")
-Cyclistic_October <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_October.xlsm")
-Cyclistic_November <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_November.xlsm")
-Cyclistic_December <- read_excel("C:\\Users\\andre\\Desktop\\Job Hunt\\Track 1 Bike Share\\Final Clean Cyclistic\\Cyclistic_December.xlsm")
+Cyclistic_January <- read_excel("C:/Users/andre/OneDrive/Desktop/Github/andrewborozanprojects/andrewborozanprojects/Data/Cyclistic_Data/Cyclistic_January1.xlsm")
+Cyclistic_February <- read_excel("C:/Users/andre/OneDrive/Desktop/Github/andrewborozanprojects/andrewborozanprojects/Data/Cyclistic_Data/Cyclistic_February.xlsm")
+Cyclistic_March <- read_excel("C:/Users/andre/OneDrive/Desktop/Github/andrewborozanprojects/andrewborozanprojects/Data/Cyclistic_Data/Cyclistic_March.xlsm")
+Cyclistic_April <- read_excel("C:/Users/andre/OneDrive/Desktop/Github/andrewborozanprojects/andrewborozanprojects/Data/Cyclistic_Data/Cyclistic_April.xlsm")
+Cyclistic_May <- read_excel("C:/Users/andre/OneDrive/Desktop/Github/andrewborozanprojects/andrewborozanprojects/Data/Cyclistic_Data/Cyclistic_May.xlsm")
+Cyclistic_June <- read_excel("C:/Users/andre/OneDrive/Desktop/Github/andrewborozanprojects/andrewborozanprojects/Data/Cyclistic_Data/Cyclistic_June.xlsm")
+Cyclistic_July <- read_excel("C:/Users/andre/OneDrive/Desktop/Github/andrewborozanprojects/andrewborozanprojects/Data/Cyclistic_Data/Cyclistic_July.xlsm")
+Cyclistic_August <- read_excel("C:/Users/andre/OneDrive/Desktop/Github/andrewborozanprojects/andrewborozanprojects/Data/Cyclistic_Data/Cyclistic_August.xlsm")
+Cyclistic_September <- read_excel("C:/Users/andre/OneDrive/Desktop/Github/andrewborozanprojects/andrewborozanprojects/Data/Cyclistic_Data/Cyclistic_September.xlsm")
+Cyclistic_October <- read_excel("C:/Users/andre/OneDrive/Desktop/Github/andrewborozanprojects/andrewborozanprojects/Data/Cyclistic_Data/Cyclistic_October.xlsm")
+Cyclistic_November <- read_excel("C:/Users/andre/OneDrive/Desktop/Github/andrewborozanprojects/andrewborozanprojects/Data/Cyclistic_Data/Cyclistic_November.xlsm")
+Cyclistic_December <- read_excel("C:/Users/andre/OneDrive/Desktop/Github/andrewborozanprojects/andrewborozanprojects/Data/Cyclistic_Data/Cyclistic_December.xlsm")
 ```
 
 ```{r Complete Data Set}

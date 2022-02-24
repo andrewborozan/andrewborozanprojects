@@ -1,0 +1,74 @@
+---
+title: "Tom_Brady_Scraping"
+author: "Andrew Borozan"
+date: '2022-02-21'
+output: html_document
+---
+```{r}
+library(tidyverse)
+library(rvest)
+```
+
+```{r}
+URL <- "https://www.pro-football-reference.com/players/B/BradTo00/gamelog/"
+TB_page <- URL %>% read_html()
+```
+
+get regular season stats table
+```{r}
+reg_season_stats <- TB_page %>% html_element(css = "#stats") %>% html_table()
+reg_season_stats
+```
+
+get playoff stats table
+```{r}
+playoff_stats <- TB_page %>% html_element(css = "#div_stats_playoffs") %>% html_table()
+playoff_stats
+```
+
+are the tables the same?
+```{r}
+ncol(reg_season_stats)
+ncol(playoff_stats)
+```
+
+data cleaning
+problem #1: first row is the column names...but you still have differences between passing and rushing yds
+solution - combine column headers and first row. Then, remove _ at beginning of each.
+```{r}
+colnames(reg_season_stats) <- paste(colnames(reg_season_stats), reg_season_stats[1,], sep = "_")
+colnames(reg_season_stats) <- str_remove_all(colnames(reg_season_stats), "^[_]")
+
+
+```
+
+problem #2 - the column names periodically show up throughout the rows
+solution - remove unnecessary rows. We exclude any rows that start with letters in the Date column.
+```{r}
+reg_season_stats <- reg_season_stats[!grepl('^.*[A-z].*', reg_season_stats$Date), ]
+
+```
+
+
+give a name to every column (one was missing a name), and get rid of duplicate names.
+```{r}
+names(reg_season_stats) <- make.unique(colnames(reg_season_stats))
+names(reg_season_stats)[8] <- "h_a"
+names(reg_season_stats)
+reg_season_stats <- reg_season_stats %>% rename(Sack_Yds = Passing_Yds.1)
+names(reg_season_stats)
+
+
+```
+
+put in "started" for asterisks in GS
+```{r}
+reg_season_stats$GS <- reg_season_stats$GS %>% str_replace_all("[*]", "Started") %>% 
+  str_replace_all('^$', "Played but not started")
+
+```
+
+```{r}
+reg_season_stats_cleaned <- reg_season_stats %>% na_if(., "Inactive") %>% select(everything())
+```
+
