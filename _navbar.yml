@@ -10,12 +10,14 @@ left:
          href: ./Reddit_Sentiment_Analysis_2_23.html  
   - text: "Tutorials"
     menu:
-       - text: "How to Web Scrape in R: Part 1"
-         href: 
+       - text: "Reactable Tutorial"
+         href: ./Reactable_Walkthru.html
   - text: "Blog"
     menu: 
       - text: "\"I am crazy\" and other thoughts that flitter through my head."
         href: ./I_am_crazy.html
+      - text: "Frustrations Along the Way"
+        href: ./Frustrations_Along_the_Way.html
 right:
   - icon: fa-github fa-lg
     href: https://github.com/githubusername/mywebsite

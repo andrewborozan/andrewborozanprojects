@@ -108,13 +108,78 @@ nytp_head1
 
 
 
+str(salaries)
+
+salaries <- salaries[[1]]
+
+
+trout <- salaries[1, ]
+trout
+
+trimws(trout$Player)
+
+trimws(strsplit(trout$Player, " +")[[1]])
+
+scan(text = trout$Player, what = "")
+
+scan(text = salaries$Player, what = "")
+
+# Try  to figure out why there is only 100 entries being read in - maybe use RSelenium
+read_html("https://www.spotrac.com/mlb/rankings/2021/salary/") %>% html_node("table") %>% html_text2()
+salaries <- read_html("https://www.spotrac.com/mlb/rankings/2021/salary/") %>% html_table(., trim = TRUE, fill = TRUE)
+salaries <- salaries[[1]]
+
+colnames(salaries$`` = "id")
+salaries$Player
+
+# Run each player through []
+scan(text = salaries$Player[2], what = "")
+
+# example trout
+trout <- scan(text = salaries$Player[1], what = "")
+
+player_name <- paste(trout[2], trout[3])
+
+# put into empty list, then unlist it
+player_names <- list()
+player_names <- player_name
+unlist(player_names)
+
+trimws(gsub(pattern = "[\t\n]", replacement = "", x = salaries$Player[1]))
+
+
+for (i in 1:length(salaries$Player)) {
+  player <- unlist(str_split(str_squish(gsub(pattern = "[\t\n]", replacement = "", x = salaries$Player[i])), " "))
+player_names <- append(player_names, values = paste(player[2], player[3]))
+}
+  
+player_names
+trout
+
+player <- unlist(str_split(str_squish(gsub(pattern = "[\t\n]", replacement = "", x = salaries$Player[3])), " "))
+player
+length(salaries$Player)
 
 
 
 
+# This is the function to clean up the names
+for (i in 1:length(salaries$Player)) {
+  player_name <- salaries$Player[i] %>% gsub(pattern = "[\t\n]",replacement = "", x = .) %>% #have to remove the \t\n\r's first or str_squish won't do much
+    str_squish(.) %>% # gets rid of all the extra space in between the words
+    #Don't need below - easier way - word() - see below
+    # strsplit(., " ") %>% #we have too many words inside our string, so we are going to make them their own separate strings to get rid of them
+    # unlist(.) #strsplit puts the strings into a list, so we unlist them to make them a vector again.
+player_names <- append(player_names, paste(player_name[2], player_name[3])) #just pick the first and second elements of the vector to get the player's name
+}
+
+unlist(player_names)
+# SO after working on this for like 2 hours, it is just easier to copy and paste the table into Excel and manipulate from there. Just do that. 
 
 
 
-
-
-
+salaries$player
+#This is the function you want
+salaries$Player[1] %>% gsub(pattern = "[\t\n]",replacement = "", x = .) %>% str_squish(.) %>% 
+  word(start = 2, end = 3)
+#Then you would just append to the list

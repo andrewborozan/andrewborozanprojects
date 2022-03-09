@@ -4,6 +4,8 @@ output:
     toc: FALSE
 ---
 
+![](Images/webpic.jpg)
+
 # Welcome!
 
 I am delighted to share with you my learning journey. I am making a transition from the realm of education as a high school history and philosophy teacher to the world of data analytics. In a short time, I have gone from reading and talking about authoritarianism in the 20th century and the structure of ideologies, to learning R, talking Tableau, and studying statistical analysis. It is as if I have entered a portal and started setting up shop in a different universe.

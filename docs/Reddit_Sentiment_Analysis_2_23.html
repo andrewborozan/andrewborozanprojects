@@ -11,7 +11,7 @@
 
 <meta name="author" content="Andrew Borozan" />
 
-<meta name="date" content="2022-02-24" />
+<meta name="date" content="2022-03-09" />
 
 <title>Sentiment Analysis on Reddit Threads</title>
 
@@ -450,7 +450,9 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">How to Web Scrape in R: Part 1</li>
+    <li>
+      <a href="./Reactable_Walkthru.html">Reactable Tutorial</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -462,6 +464,9 @@ div.tocify {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="./I_am_crazy.html">"I am crazy" and other thoughts that flitter through my head.</a>
+    </li>
+    <li>
+      <a href="./Frustrations_Along_the_Way.html">Frustrations Along the Way</a>
     </li>
   </ul>
 </li>
@@ -492,7 +497,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Sentiment Analysis on Reddit Threads</h1>
 <h4 class="author">Andrew Borozan</h4>
-<h4 class="date">2022-02-24</h4>
+<h4 class="date">2022-03-09</h4>
 
 </div>
 
@@ -519,11 +524,11 @@ the type of information contained in the data frame.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Politics <span class="ot">&lt;-</span> <span class="fu">get_thread_content</span>(<span class="st">&quot;https://www.reddit.com/r/politics/comments/szjnqw/republicans_view_putin_more_favorably_than_they/&quot;</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(Politics[[<span class="dv">1</span>]])</span></code></pre></div>
-<div id="htmlwidget-ce37bc5f5b3ebda90853" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-ce37bc5f5b3ebda90853">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"url":["https://www.reddit.com/r/politics/comments/szjnqw/republicans_view_putin_more_favorably_than_they/"],"author":["Archer1407"],"date":["2022-02-23"],"title":["Republicans view Putin more favorably than they do leading Democrats"],"text":[""],"subreddit":["politics"],"score":[18008],"upvotes":[18008],"downvotes":[0],"up_ratio":[0.91],"total_awards_received":[7],"golds":[0],"cross_posts":[7],"comments":[1921]},"columns":[{"accessor":"url","name":"url","type":"character"},{"accessor":"author","name":"author","type":"character"},{"accessor":"date","name":"date","type":"character"},{"accessor":"title","name":"title","type":"character"},{"accessor":"text","name":"text","type":"character"},{"accessor":"subreddit","name":"subreddit","type":"character"},{"accessor":"score","name":"score","type":"numeric"},{"accessor":"upvotes","name":"upvotes","type":"numeric"},{"accessor":"downvotes","name":"downvotes","type":"numeric"},{"accessor":"up_ratio","name":"up_ratio","type":"numeric"},{"accessor":"total_awards_received","name":"total_awards_received","type":"numeric"},{"accessor":"golds","name":"golds","type":"numeric"},{"accessor":"cross_posts","name":"cross_posts","type":"numeric"},{"accessor":"comments","name":"comments","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"c93d0b3c795744c4b2b87c419ca18809","key":"c93d0b3c795744c4b2b87c419ca18809"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ecf5af537d551c444a21" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-ecf5af537d551c444a21">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"url":["https://www.reddit.com/r/politics/comments/szjnqw/republicans_view_putin_more_favorably_than_they/"],"author":["Archer1407"],"date":["2022-02-23"],"title":["Republicans view Putin more favorably than they do leading Democrats"],"text":[""],"subreddit":["politics"],"score":[18514],"upvotes":[18514],"downvotes":[0],"up_ratio":[0.91],"total_awards_received":[7],"golds":[0],"cross_posts":[7],"comments":[2004]},"columns":[{"accessor":"url","name":"url","type":"character"},{"accessor":"author","name":"author","type":"character"},{"accessor":"date","name":"date","type":"character"},{"accessor":"title","name":"title","type":"character"},{"accessor":"text","name":"text","type":"character"},{"accessor":"subreddit","name":"subreddit","type":"character"},{"accessor":"score","name":"score","type":"numeric"},{"accessor":"upvotes","name":"upvotes","type":"numeric"},{"accessor":"downvotes","name":"downvotes","type":"numeric"},{"accessor":"up_ratio","name":"up_ratio","type":"numeric"},{"accessor":"total_awards_received","name":"total_awards_received","type":"numeric"},{"accessor":"golds","name":"golds","type":"numeric"},{"accessor":"cross_posts","name":"cross_posts","type":"numeric"},{"accessor":"comments","name":"comments","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"ffac9a5972daf212ba2c065375ad0230","key":"ffac9a5972daf212ba2c065375ad0230"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(Politics[[<span class="dv">2</span>]][<span class="dv">9</span>, ])</span></code></pre></div>
-<div id="htmlwidget-c7f1e9ce971396e91a56" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-c7f1e9ce971396e91a56">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"url":["https://www.reddit.com/r/politics/comments/szjnqw/republicans_view_putin_more_favorably_than_they/"],"author":["Inside-Palpitation25"],"date":["2022-02-23"],"score":[242],"upvotes":[242],"downvotes":[0],"golds":[0],"comment":["do they even realize it's a fascist state though?  They think it's freedom. This is where education comes in, they don't fully understand that if that is what we become, they can on the whim of the leader, become the enemy, and be put to death, or in a work camp for saying something against the dear leader.  I don't they they fully get that , they think they will always be in favor."],"comment_id":["2_1_2"]},"columns":[{"accessor":"url","name":"url","type":"character"},{"accessor":"author","name":"author","type":"character"},{"accessor":"date","name":"date","type":"character"},{"accessor":"score","name":"score","type":"numeric"},{"accessor":"upvotes","name":"upvotes","type":"numeric"},{"accessor":"downvotes","name":"downvotes","type":"numeric"},{"accessor":"golds","name":"golds","type":"numeric"},{"accessor":"comment","name":"comment","type":"character"},{"accessor":"comment_id","name":"comment_id","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"a3c8f9367301297770392c422ab926e6","key":"a3c8f9367301297770392c422ab926e6"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-bb28f318315edbc9587c" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-bb28f318315edbc9587c">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"url":["https://www.reddit.com/r/politics/comments/szjnqw/republicans_view_putin_more_favorably_than_they/"],"author":["Inside-Palpitation25"],"date":["2022-02-23"],"score":[255],"upvotes":[255],"downvotes":[0],"golds":[0],"comment":["do they even realize it's a fascist state though?  They think it's freedom. This is where education comes in, they don't fully understand that if that is what we become, they can on the whim of the leader, become the enemy, and be put to death, or in a work camp for saying something against the dear leader.  I don't they they fully get that , they think they will always be in favor."],"comment_id":["2_1_2"]},"columns":[{"accessor":"url","name":"url","type":"character"},{"accessor":"author","name":"author","type":"character"},{"accessor":"date","name":"date","type":"character"},{"accessor":"score","name":"score","type":"numeric"},{"accessor":"upvotes","name":"upvotes","type":"numeric"},{"accessor":"downvotes","name":"downvotes","type":"numeric"},{"accessor":"golds","name":"golds","type":"numeric"},{"accessor":"comment","name":"comment","type":"character"},{"accessor":"comment_id","name":"comment_id","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"dacdcbd9d94530059bed9f16ece85eda","key":"dacdcbd9d94530059bed9f16ece85eda"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 <p>We are going to place the data frame with the comments into an
 object…</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Putin_comments <span class="ot">&lt;-</span> Politics[[<span class="dv">2</span>]]</span></code></pre></div>
@@ -540,11 +545,11 @@ by user using different functions of sentimentr.</p>
 ##    4:          1           4         12  0.14433757
 ##    5:          1           5         38  0.32444284
 ##   ---                                              
-## 1195:        497           2          5  0.00000000
-## 1196:        497           3          3 -0.86602540
-## 1197:        498           1          3  0.00000000
-## 1198:        498           2         10  0.00000000
-## 1199:        499           1         12  0.00000000</code></pre>
+## 1165:        492           1         12  0.18763884
+## 1166:        493           1          9 -0.46666667
+## 1167:        494           1          9 -0.10000000
+## 1168:        495           1          2  0.00000000
+## 1169:        495           2         18 -0.12963624</code></pre>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>(comment_sentiment_by_user <span class="ot">&lt;-</span> <span class="fu">sentiment_by</span>(Putin_comments<span class="sc">$</span>comment))</span></code></pre></div>
 <pre><code>##      element_id word_count         sd ave_sentiment
 ##   1:          1        178 0.49036849    0.18815541
@@ -553,11 +558,11 @@ by user using different functions of sentimentr.</p>
 ##   4:          4         57 0.10393509    0.03426998
 ##   5:          5          6         NA    0.24494897
 ##  ---                                               
-## 495:        495          9         NA   -0.10000000
-## 496:        496         20 0.09166667   -0.07074073
-## 497:        497         12 0.50000000   -0.42283360
-## 498:        498         13 0.00000000    0.00000000
-## 499:        499         12         NA    0.00000000</code></pre>
+## 491:        491          6         NA   -0.08164966
+## 492:        492         12         NA    0.18763884
+## 493:        493          9         NA   -0.46666667
+## 494:        494          9         NA   -0.10000000
+## 495:        495         20 0.09166667   -0.07074073</code></pre>
 <p>Let’s get rid of some of the superfluous columns in the data frame
 (there were no downvotes, for example, so we can jettison that column)
 and add the information from our sentiment analysis. We will also get
@@ -600,15 +605,15 @@ sentiment.</p>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cleaned_comments<span class="sc">$</span>avg_sentiment)</span></code></pre></div>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-## -1.41421 -0.14464  0.00000 -0.02922  0.09769  0.90704</code></pre>
+## -1.41421 -0.14427  0.00000 -0.02916  0.09083  0.90704</code></pre>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>total_count <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">count</span>(cleaned_comments))</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">filter</span>(avg_sentiment <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">proportion_positive_comments =</span> <span class="fu">round</span>(count<span class="sc">/</span>total_count, <span class="dv">3</span>))</span></code></pre></div>
 <pre><code>##   count proportion_positive_comments
-## 1   195                        0.392</code></pre>
+## 1   192                        0.389</code></pre>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">filter</span>(avg_sentiment <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">proportion_negative_comments =</span> <span class="fu">round</span>(count<span class="sc">/</span>total_count, <span class="dv">3</span>))</span></code></pre></div>
 <pre><code>##   count proportion_negative_comments
-## 1   246                        0.494</code></pre>
+## 1   242                         0.49</code></pre>
 <p>It looks like overall, the general tone had a slightly negative
 sentiment. The overall average sentiment was a shade to the left of
 zero, and there was a higher proportion of negative comments to positive
@@ -633,10 +638,10 @@ with posts that received at least 5 upvotes.)</p>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">filter</span>(upvotes <span class="sc">&gt;</span> <span class="dv">4</span>, avg_sentiment <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">count_positive =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">proportion_positive_sentiment =</span> <span class="fu">round</span>(count_positive<span class="sc">/</span>count_upvotes, <span class="dv">3</span>))</span></code></pre></div>
 <pre><code>##   count_positive proportion_positive_sentiment
-## 1            104                           0.4</code></pre>
+## 1            108                         0.391</code></pre>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">filter</span>(upvotes <span class="sc">&gt;</span> <span class="dv">4</span>, avg_sentiment <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">count_negative =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">proportion_negative_sentiment =</span> <span class="fu">round</span>(count_negative<span class="sc">/</span>count_upvotes, <span class="dv">3</span>))</span></code></pre></div>
 <pre><code>##   count_negative proportion_negative_sentiment
-## 1            131                         0.504</code></pre>
+## 1            134                         0.486</code></pre>
 <p>It is a little more difficult looking at it from the plot, but when
 we look at the numbers we see that with posts that received at least 5
 upvotes, there was a higher proportion (around 50%) that had a negative
