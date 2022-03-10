@@ -4,7 +4,7 @@ output:
   html_document:
     theme: journal
     highlight: tango
-    toc: true
+    toc: FALSE
     toc_depth: 2
     toc_float:
       collapsed: false
