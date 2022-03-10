@@ -1,8 +1,8 @@
 ---
-pagetitle: "The Unlikely Analyst Homepage"
 output: 
-  html_document:  
+  html_document: 
     toc: false
+pagetitle: "The Unlikely Analyst Homepage"
 ---
 
 ![](Images/webpic.jpg)
@@ -29,4 +29,3 @@ Explore the site, enjoy the material, and watch the video below in which I detai
 library(vembedr)
 embed_youtube("fcJ_h7adVvw", width = 900, height = 506)
 ```
-

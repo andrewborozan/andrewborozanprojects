@@ -18,7 +18,7 @@ left:
         href: ./I_am_crazy.html
       - text: "Frustrations Along the Way"
         href: ./Frustrations_Along_the_Way.html
-   - text: "Just Following Along"
+  - text: "Just Following Along"
     menu: 
       - text: "Tidy Tuesday: Horror Movies"
         href: ./TidyTuesday_Horror_Movies.html
