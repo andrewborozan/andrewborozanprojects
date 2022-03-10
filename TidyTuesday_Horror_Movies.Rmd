@@ -2,7 +2,7 @@
 title: "TidyTuesday with David Robinson: Horror Movies"
 author: "Andrew Borozan"
 date: "`r Sys.Date()`"
-output: 
+output:
   html_document:
     toc: FALSE
     out.width: '100%'

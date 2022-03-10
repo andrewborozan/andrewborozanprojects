@@ -1,8 +1,8 @@
 ---
 pagetitle: "The Unlikely Analyst Homepage"
 output: 
-  html_document:
-    toc: FALSE
+  html_document:  
+    toc: false
 ---
 
 ![](Images/webpic.jpg)

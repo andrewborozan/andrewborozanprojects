@@ -2,9 +2,9 @@
 title: "\"I am crazy\" and other thoughts that flitter through my head."
 author: "Andrew Borozan"
 date: '2022-02-23'
-output: 
+output:
   html_document:
-   toc: FALSE
+    toc: false
 ---
 
 <br>
@@ -23,7 +23,7 @@ One easily turns into the other too. Fly-at-you-out-of-nowhere thoughts frequent
 
 Let's stick with these two categories of thought to describe the thoughts that have been either occupying my attention (conscious thought) or whizzing through my head (Fly-at-you-out-of-nowhere thought) during the past few months, as I have made the decision (a conscious thought of action) to give up the teaching profession and enter the rabbit hole of data analytics. Many of these thoughts begin as fly-bys, but are quickly caught and digested by consciousness.
 
-One persistent gnat of a thought is the title's namesake: "Am I crazy?" Most of the time this is an external thought milling around my head that I attempt to swat away. It usually comes on the heels of a frustrating effort to learn something new ("I can't figure out how to make this chart look the way I want in Tableau"). I guess there is something about fly-at-you-out-of-nowhere thoughts; they aren't entirely out of nowhere. They can be precipitated by a condition, for instance a mood or situation. A fly sees an open window and buzzes on in for a visit. At my best, I shoo it back out the window or swat it dead. But sometimes I follow it. Sometimes the "Am I crazy?" becomes a conscious thought. At the beginning of this journey, the "Am I crazy" became the conscious thought... \n \n "I am crazy. I had it made as a teacher, an international teacher at that. I called being an international teacher "the cheat code to life"; why on earth would I give that up? I traveled the world. I mean, look at some of things I saw...
+One persistent gnat of a thought is the title's namesake: "Am I crazy?" Most of the time this is an external thought milling around my head that I attempt to swat away. It usually comes on the heels of a frustrating effort to learn something new ("I can't figure out how to make this chart look the way I want in Tableau"). I guess there is something about fly-at-you-out-of-nowhere thoughts; they aren't entirely out of nowhere. They can be precipitated by a condition, for instance a mood or situation. A fly sees an open window and buzzes on in for a visit. At my best, I shoo it back out the window or swat it dead. But sometimes I follow it. Sometimes the "Am I crazy?" becomes a conscious thought. At the beginning of this journey, the "Am I crazy" became the conscious thought... \n \\n "I am crazy. I had it made as a teacher, an international teacher at that. I called being an international teacher "the cheat code to life"; why on earth would I give that up? I traveled the world. I mean, look at some of things I saw...
 
 ![*The famous train from Kandy to Ella in Sri Lanka (which I also rode)...*](Images/sritrain.jpg)
 
