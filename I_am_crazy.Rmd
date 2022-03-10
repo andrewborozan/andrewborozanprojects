@@ -2,7 +2,9 @@
 title: "\"I am crazy\" and other thoughts that flitter through my head."
 author: "Andrew Borozan"
 date: '2022-02-23'
-output: html_document
+output: 
+  html_document:
+   toc: FALSE
 ---
 
 <br>

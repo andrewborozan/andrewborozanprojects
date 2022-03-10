@@ -22,4 +22,10 @@ On this site you will find the following:
 
 This is an ongoing process, a meandering adventure full of sometimes fast, sometimes slow growth, steps forward, and sometimes steps backward. I taught students the best way to learn for themselves, and now I must utilize those same strategies to learn new content myself. A primary tactic I will employ to further my own development is one I am familiar with: teaching. Learn by teaching, teach while learning. I always told my students you don't know something very well until you can explain it to a 5th grader. In that vain, I hope to make the content on this site accessible, engaging, fun, conversational, and above all, accurate!
 
-Explore the site, enjoy the material, and watch the video below in which I detail a little more about my unfolding career U-turn.
+Explore the site, enjoy the material, and watch the video below in which I detail a little more about my unfolding adventure.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width= "100%"}
+library(vembedr)
+embed_youtube("fcJ_h7adVvw", width = 900, height = 506)
+```
+

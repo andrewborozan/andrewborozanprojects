@@ -2,7 +2,9 @@
 title: "Reactable Tutorial"
 author: "Andrew Borozan"
 date: "`r Sys.Date()`"
-output: html_document
+output: 
+  html_document:
+     toc: FALSE
 ---
 
 In this tutorial we are going to be less focused on the data and what information we can glean from it (main gist: baseball players make a lot of money...though as I create this the cantankerous labor negotiations delaying the 2022 season is ongoing and the players are getting hosed by the owners) and more focused on how to do something.

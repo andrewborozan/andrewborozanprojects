@@ -2,7 +2,9 @@
 title: "Frustrations Along the Way"
 author: "Andrew Borozan"
 date: "`r Sys.Date()`"
-output: html_document
+output: 
+  html_document:
+     toc: FALSE
 editor_options: 
   markdown: 
     wrap: sentence
