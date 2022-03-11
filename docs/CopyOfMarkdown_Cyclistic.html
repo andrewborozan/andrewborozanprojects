@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Andrew Borozan" />
+
+
+<title>Cyclistic Project</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/core-js-2.5.3/shim.min.js"></script>
+<script src="site_libs/react-17.0.0/react.min.js"></script>
+<script src="site_libs/react-17.0.0/react-dom.min.js"></script>
+<script src="site_libs/reactwidget-1.0.0/react-tools.js"></script>
+<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="site_libs/reactable-binding-0.2.3/reactable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">The Unlikely Analyst</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./Markdown_Cyclistic_Final.html">Google Data Analytics Certification Project</a>
+    </li>
+    <li>
+      <a href="./Reddit_Sentiment_Analysis_2_23.html">Sentiment Analysis with Reddit Comments</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./Reactable_Walkthru.html">Reactable Tutorial</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Blog
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./I_am_crazy.html">"I am crazy" and other thoughts that flitter through my head.</a>
+    </li>
+    <li>
+      <a href="./Frustrations_Along_the_Way.html">Frustrations Along the Way</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Just Following Along
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./TidyTuesday_Horror_Movies.html">Tidy Tuesday: Horror Movies</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/githubusername/mywebsite">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Cyclistic Project</h1>
+<h4 class="author">Andrew Borozan</h4>
+<h4 class="date">2/10/2022</h4>
+
+</div>
+
+
+<div id="cyclistic-exploration" class="section level1">
+<h1>Cyclistic Exploration</h1>
+<p>The following is an exploration project completed at the end of my
+Google Data Analytics Certification. Here was the scenario:</p>
+<p>You are a junior data analyst working in the marketing analyst team
+at Cyclistic, a bike-share company in Chicago. The director of marketing
+believes the company’s future success depends on maximizing the number
+of annual memberships. Therefore, your team wants to understand how
+casual riders and annual members use Cyclistic bikes differently. From
+these insights, your team will design a new marketing strategy to
+convert casual riders into annual members. But first, Cyclistic
+executives must approve your recommendations, so they must be backed up
+with compelling data insights and professional data visualizations.</p>
+<p>The central business task of the project is to increase membership
+rates.</p>
+<p>For the task to be completed, analysis must address the central
+question: How do annual members and casual riders use Cyclistic bikes
+differently?</p>
+<div id="setup-r-environment" class="section level2">
+<h2>Setup R Environment</h2>
+<p>First, we will load the packages that will aid our data exploration.
+First, load the pacman package, as there is a helpful function in this
+package that will load other packages needed in the environment.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pacman)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">p_load</span>(tidyverse, skimr, scales, rmarkdown, magrittr, lubridate, </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>       janitor, htmltab, ggrepel, viridis, ggthemes, readxl, knitr, showtext,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>       showtextdb, reactable, patchwork, reactablefmtr)</span></code></pre></div>
+</div>
+<div id="loading-data" class="section level2">
+<h2>Loading Data</h2>
+<p>The data comes from Cyclistic in the form of .csv files. We load each
+month into an object and then combine all of the rows into one data
+frame.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Cyclistic <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(Cyclistic_January, Cyclistic_February, Cyclistic_March, Cyclistic_April, Cyclistic_May, Cyclistic_June, Cyclistic_July, Cyclistic_August, Cyclistic_September, Cyclistic_October, Cyclistic_November, Cyclistic_December)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Cyclistic)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 13
+##   ride_id rideable_type started_at          ended_at            start_station_n~
+##   &lt;chr&gt;   &lt;chr&gt;         &lt;dttm&gt;              &lt;dttm&gt;              &lt;chr&gt;           
+## 1 E19E6F~ electric_bike 2021-01-23 16:14:19 2021-01-23 16:24:44 California Ave ~
+## 2 DC88F2~ electric_bike 2021-01-27 18:43:08 2021-01-27 18:47:12 California Ave ~
+## 3 EC45C9~ electric_bike 2021-01-21 22:35:54 2021-01-21 22:37:14 California Ave ~
+## 4 4FA453~ electric_bike 2021-01-07 13:31:13 2021-01-07 13:42:55 California Ave ~
+## 5 BE5E8E~ electric_bike 2021-01-23 02:24:02 2021-01-23 02:24:45 California Ave ~
+## 6 5D8969~ electric_bike 2021-01-09 14:24:07 2021-01-09 15:17:54 California Ave ~
+## # ... with 8 more variables: start_station_id &lt;chr&gt;, end_station_name &lt;chr&gt;,
+## #   end_station_id &lt;chr&gt;, start_lat &lt;dbl&gt;, start_lng &lt;dbl&gt;, end_lat &lt;dbl&gt;,
+## #   end_lng &lt;dbl&gt;, member_casual &lt;chr&gt;</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Cyclistic)</span></code></pre></div>
+<pre><code>## spec_tbl_df [5,595,063 x 13] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ ride_id           : chr [1:5595063] &quot;E19E6F1B8D4C42ED&quot; &quot;DC88F20C2C55F27F&quot; &quot;EC45C94683FE3F27&quot; &quot;4FA453A75AE377DB&quot; ...
+##  $ rideable_type     : chr [1:5595063] &quot;electric_bike&quot; &quot;electric_bike&quot; &quot;electric_bike&quot; &quot;electric_bike&quot; ...
+##  $ started_at        : POSIXct[1:5595063], format: &quot;2021-01-23 16:14:19&quot; &quot;2021-01-27 18:43:08&quot; ...
+##  $ ended_at          : POSIXct[1:5595063], format: &quot;2021-01-23 16:24:44&quot; &quot;2021-01-27 18:47:12&quot; ...
+##  $ start_station_name: chr [1:5595063] &quot;California Ave &amp; Cortez St&quot; &quot;California Ave &amp; Cortez St&quot; &quot;California Ave &amp; Cortez St&quot; &quot;California Ave &amp; Cortez St&quot; ...
+##  $ start_station_id  : chr [1:5595063] &quot;17660&quot; &quot;17660&quot; &quot;17660&quot; &quot;17660&quot; ...
+##  $ end_station_name  : chr [1:5595063] NA NA NA NA ...
+##  $ end_station_id    : chr [1:5595063] NA NA NA NA ...
+##  $ start_lat         : num [1:5595063] 41.9 41.9 41.9 41.9 41.9 ...
+##  $ start_lng         : num [1:5595063] -87.7 -87.7 -87.7 -87.7 -87.7 ...
+##  $ end_lat           : num [1:5595063] 41.9 41.9 41.9 41.9 41.9 ...
+##  $ end_lng           : num [1:5595063] -87.7 -87.7 -87.7 -87.7 -87.7 ...
+##  $ member_casual     : chr [1:5595063] &quot;member&quot; &quot;member&quot; &quot;member&quot; &quot;member&quot; ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   ride_id = col_character(),
+##   ..   rideable_type = col_character(),
+##   ..   started_at = col_datetime(format = &quot;&quot;),
+##   ..   ended_at = col_datetime(format = &quot;&quot;),
+##   ..   start_station_name = col_character(),
+##   ..   start_station_id = col_character(),
+##   ..   end_station_name = col_character(),
+##   ..   end_station_id = col_character(),
+##   ..   start_lat = col_double(),
+##   ..   start_lng = col_double(),
+##   ..   end_lat = col_double(),
+##   ..   end_lng = col_double(),
+##   ..   member_casual = col_character()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+</div>
+<div id="cleaning-the-data" class="section level2">
+<h2>Cleaning the Data</h2>
+<p>Next, we clean the data to prepare it for analysis. We will complete
+the following steps:</p>
+<ul>
+<li><p>Remove any duplicates</p></li>
+<li><p>Filter out odd data (e.g. rides that go backwards through
+time)</p></li>
+<li><p>Remove entries with incomplete data (remove NAs)</p></li>
+<li><p>Create columns that may help further analysis. For example, we
+will create a ride length column (in four different formats) and extract
+the month, day, and hour start time.</p></li>
+<li><p>Rearrange columns</p></li>
+<li><p>Filter out any rides that have a ride time of less than 30
+seconds (some ride lengths were 1 second long. This is unrealistic. We
+will set the minimum ride length to 30 seconds.)</p></li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove duplicates</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>Cyclistic <span class="ot">&lt;-</span> Cyclistic <span class="sc">%&gt;%</span> <span class="fu">distinct</span>(<span class="at">.keep_all =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter out any oddities (some rides start after they end somehow)</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>Cyclistic <span class="ot">&lt;-</span> Cyclistic <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ended_at <span class="sc">&gt;</span> started_at)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>Cyclistic <span class="ot">&lt;-</span> Cyclistic <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ride_length =</span> ended_at <span class="sc">-</span> started_at,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">ride_length_period =</span> <span class="fu">seconds_to_period</span>(ride_length), </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">ride_length_numeric =</span> <span class="fu">as.numeric</span>(ride_length), </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">ride_length_char =</span> <span class="fu">sprintf</span>(<span class="st">&#39;%02d %02d:%02d:%02d&#39;</span>, <span class="fu">day</span>(ride_length_period), ride_length_period<span class="sc">@</span>hour, <span class="fu">minute</span>(ride_length_period), <span class="fu">second</span>(ride_length_period)),</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">month =</span> <span class="fu">month</span>(started_at), </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">day =</span> <span class="fu">day</span>(started_at), </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">hour =</span> <span class="fu">hour</span>(started_at), </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">weekday =</span> <span class="fu">wday</span>(started_at, <span class="at">label=</span><span class="cn">TRUE</span>, <span class="at">abbr=</span><span class="cn">FALSE</span>)) </span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>Cyclistic <span class="ot">&lt;-</span> Cyclistic <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, month, day, hour, weekday, ride_length, </span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>                                  ride_length_period, ride_length_numeric, ride_length_char, start_station_name, </span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>                                  start_station_id, end_station_name, end_station_id, start_lat, start_lng, </span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>                                  end_lat, end_lng, member_casual) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>()</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co"># This rearranges the columns and then cleans the column names</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop NAs, and make sure that the ride starts and ends at a different station (some start and end stations are the same)</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>Cyclistic <span class="ot">&lt;-</span> Cyclistic <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ride_length_numeric <span class="sc">&gt;</span> <span class="dv">29</span>)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="co">#Skim() from the skimr package will give us a snapshot at some of patterns for each variable. </span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(Cyclistic)</span></code></pre></div>
+<table>
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">Cyclistic</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">4551996</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">21</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">character</td>
+<td align="left">8</td>
+</tr>
+<tr class="odd">
+<td align="left">difftime</td>
+<td align="left">1</td>
+</tr>
+<tr class="even">
+<td align="left">factor</td>
+<td align="left">1</td>
+</tr>
+<tr class="odd">
+<td align="left">numeric</td>
+<td align="left">8</td>
+</tr>
+<tr class="even">
+<td align="left">POSIXct</td>
+<td align="left">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Timespan</td>
+<td align="left">1</td>
+</tr>
+<tr class="even">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col width="24%" />
+<col width="12%" />
+<col width="18%" />
+<col width="5%" />
+<col width="5%" />
+<col width="7%" />
+<col width="11%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">empty</th>
+<th align="right">n_unique</th>
+<th align="right">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ride_id</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">16</td>
+<td align="right">0</td>
+<td align="right">4551996</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">rideable_type</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">11</td>
+<td align="right">13</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">ride_length_char</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">11</td>
+<td align="right">11</td>
+<td align="right">0</td>
+<td align="right">23548</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">start_station_name</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">53</td>
+<td align="right">0</td>
+<td align="right">841</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">start_station_id</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">36</td>
+<td align="right">0</td>
+<td align="right">848</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">end_station_name</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">10</td>
+<td align="right">53</td>
+<td align="right">0</td>
+<td align="right">838</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">end_station_id</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">36</td>
+<td align="right">0</td>
+<td align="right">845</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">member_casual</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: difftime</strong></p>
+<table>
+<colgroup>
+<col width="18%" />
+<col width="12%" />
+<col width="18%" />
+<col width="10%" />
+<col width="16%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="left">min</th>
+<th align="left">max</th>
+<th align="left">median</th>
+<th align="right">n_unique</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ride_length</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">30 secs</td>
+<td align="left">3356649 secs</td>
+<td align="left">738 secs</td>
+<td align="right">23548</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: factor</strong></p>
+<table>
+<colgroup>
+<col width="13%" />
+<col width="9%" />
+<col width="13%" />
+<col width="7%" />
+<col width="8%" />
+<col width="48%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="left">ordered</th>
+<th align="right">n_unique</th>
+<th align="left">top_counts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">weekday</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">TRUE</td>
+<td align="right">7</td>
+<td align="left">Sat: 819094, Sun: 709367, Fri: 650637, Wed: 610958</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<colgroup>
+<col width="14%" />
+<col width="7%" />
+<col width="9%" />
+<col width="5%" />
+<col width="6%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="5%" />
+<col width="7%" />
+<col width="28%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">month</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">7.29</td>
+<td align="right">2.47</td>
+<td align="right">1.00</td>
+<td align="right">6.00</td>
+<td align="right">7.00</td>
+<td align="right">9.00</td>
+<td align="right">12.00</td>
+<td align="left">▂▅▇▇▆</td>
+</tr>
+<tr class="even">
+<td align="left">day</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">15.43</td>
+<td align="right">8.79</td>
+<td align="right">1.00</td>
+<td align="right">8.00</td>
+<td align="right">15.00</td>
+<td align="right">23.00</td>
+<td align="right">31.00</td>
+<td align="left">▇▆▇▆▆</td>
+</tr>
+<tr class="odd">
+<td align="left">hour</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">14.25</td>
+<td align="right">5.00</td>
+<td align="right">0.00</td>
+<td align="right">11.00</td>
+<td align="right">15.00</td>
+<td align="right">18.00</td>
+<td align="right">23.00</td>
+<td align="left">▁▃▅▇▃</td>
+</tr>
+<tr class="even">
+<td align="left">ride_length_numeric</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1319.00</td>
+<td align="right">11108.93</td>
+<td align="right">30.00</td>
+<td align="right">422.00</td>
+<td align="right">738.00</td>
+<td align="right">1334.00</td>
+<td align="right">3356649.00</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">start_lat</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">41.90</td>
+<td align="right">0.04</td>
+<td align="right">41.65</td>
+<td align="right">41.88</td>
+<td align="right">41.90</td>
+<td align="right">41.93</td>
+<td align="right">42.06</td>
+<td align="left">▁▁▇▇▁</td>
+</tr>
+<tr class="even">
+<td align="left">start_lng</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">-87.64</td>
+<td align="right">0.02</td>
+<td align="right">-87.83</td>
+<td align="right">-87.66</td>
+<td align="right">-87.64</td>
+<td align="right">-87.63</td>
+<td align="right">-87.53</td>
+<td align="left">▁▁▅▇▁</td>
+</tr>
+<tr class="odd">
+<td align="left">end_lat</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">41.90</td>
+<td align="right">0.04</td>
+<td align="right">41.65</td>
+<td align="right">41.88</td>
+<td align="right">41.90</td>
+<td align="right">41.93</td>
+<td align="right">42.17</td>
+<td align="left">▁▁▇▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">end_lng</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">-87.64</td>
+<td align="right">0.02</td>
+<td align="right">-87.83</td>
+<td align="right">-87.66</td>
+<td align="right">-87.64</td>
+<td align="right">-87.63</td>
+<td align="right">-87.52</td>
+<td align="left">▁▁▆▇▁</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: POSIXct</strong></p>
+<table>
+<colgroup>
+<col width="13%" />
+<col width="9%" />
+<col width="13%" />
+<col width="18%" />
+<col width="18%" />
+<col width="18%" />
+<col width="8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="left">min</th>
+<th align="left">max</th>
+<th align="left">median</th>
+<th align="right">n_unique</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">started_at</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">2021-01-01 00:02:24</td>
+<td align="left">2021-12-31 23:59:00</td>
+<td align="left">2021-07-28 17:33:47</td>
+<td align="right">3776077</td>
+</tr>
+<tr class="even">
+<td align="left">ended_at</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">2021-01-01 00:08:39</td>
+<td align="left">2022-01-03 17:32:00</td>
+<td align="left">2021-07-28 17:51:33</td>
+<td align="right">3768903</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: Timespan</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col width="28%" />
+<col width="14%" />
+<col width="20%" />
+<col width="5%" />
+<col width="5%" />
+<col width="10%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">median</th>
+<th align="right">n_unique</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ride_length_period</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">59</td>
+<td align="right">18</td>
+<td align="right">60</td>
+</tr>
+</tbody>
+</table>
+<p>And now, we start looking for some of the behavioral patterns of both
+members and casual riders.</p>
+</div>
+<div id="total-rides-and-average-length-of-ride" class="section level2">
+<h2>Total rides and average length of ride</h2>
+<p>First, we look at both the total number of rides by members and
+casual riders, and the mean and median length of ride for each type of
+rider.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Mean and median length of rides by rider type</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>Cyclistic <span class="sc">%&gt;%</span>  </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(member_casual) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>(), </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">ride_time_avg =</span> <span class="fu">mean</span>(ride_length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">ride_time_median =</span> <span class="fu">median</span>(ride_length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ride_time_avg =</span> <span class="fu">round</span>(<span class="fu">seconds_to_period</span>(ride_time_avg), <span class="at">digits =</span> <span class="dv">0</span>),</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">ride_time_median =</span> <span class="fu">round</span>(<span class="fu">seconds_to_period</span>(ride_time_median), <span class="at">digits =</span> <span class="dv">0</span>))</span></code></pre></div>
+<pre><code>## # A tibble: 2 x 4
+##   member_casual   count ride_time_avg ride_time_median
+##   &lt;chr&gt;           &lt;int&gt; &lt;Period&gt;      &lt;Period&gt;        
+## 1 casual        2036967 32M 41S       16M 46S         
+## 2 member        2515029 13M 19S       9M 50S</code></pre>
+<p>We see that the mean and median length of rides for casual riders is
+higher than members. The mean is significantly higher than the median
+for casual riders. Let’s look at the data in a quick box plot to see the
+spread.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen=</span><span class="dv">999</span>) <span class="co">#Turns off scientific notation for environment</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>Cyclistic <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(member_casual) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(member_casual, ride_length_numeric))<span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span> <span class="co"># Have to put in log scale to accomodate range/variability</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="at">label =</span> <span class="st">&quot;Rider Type&quot;</span>) <span class="sc">+</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="at">label =</span> <span class="st">&quot;Ride Length in Seconds&quot;</span>)</span></code></pre></div>
+<p><img src="CopyOfMarkdown_Cyclistic_files/figure-html/Box%20Plot%20for%20rider%20type-1.png" width="672" /></p>
+<p>Variability among casual riders is rather high.</p>
+</div>
+<div id="docked-bikes" class="section level2">
+<h2>Docked Bikes?</h2>
+<p>Our data might need further cleaning because of the presence of
+docked bikes. This problem becomes evident when we take a look at the
+maximum ride length.</p>
+<p>To see the maximum ride length…</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>maxride <span class="ot">&lt;-</span> Cyclistic[<span class="fu">which.max</span>(Cyclistic<span class="sc">$</span>ride_length), ]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(maxride)</span></code></pre></div>
+<pre><code>## Rows: 1
+## Columns: 21
+## $ ride_id             &lt;chr&gt; &quot;F043F0F6A1AA4F85&quot;
+## $ rideable_type       &lt;chr&gt; &quot;docked_bike&quot;
+## $ started_at          &lt;dttm&gt; 2021-06-05 02:27:26
+## $ ended_at            &lt;dttm&gt; 2021-07-13 22:51:35
+## $ month               &lt;dbl&gt; 6
+## $ day                 &lt;int&gt; 5
+## $ hour                &lt;int&gt; 2
+## $ weekday             &lt;ord&gt; Saturday
+## $ ride_length         &lt;drtn&gt; 3356649 secs
+## $ ride_length_period  &lt;Period&gt; 38d 20H 24M 9S
+## $ ride_length_numeric &lt;dbl&gt; 3356649
+## $ ride_length_char    &lt;chr&gt; &quot;38 20:24:09&quot;
+## $ start_station_name  &lt;chr&gt; &quot;Michigan Ave &amp; Lake St&quot;
+## $ start_station_id    &lt;chr&gt; &quot;TA1305000011&quot;
+## $ end_station_name    &lt;chr&gt; &quot;Malcolm X College Vaccination Site&quot;
+## $ end_station_id      &lt;chr&gt; &quot;631&quot;
+## $ start_lat           &lt;dbl&gt; 41.88602
+## $ start_lng           &lt;dbl&gt; -87.62412
+## $ end_lat             &lt;dbl&gt; 41.87762
+## $ end_lng             &lt;dbl&gt; -87.6739
+## $ member_casual       &lt;chr&gt; &quot;casual&quot;</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>maxride<span class="sc">$</span>ride_length_period</span></code></pre></div>
+<pre><code>## [1] &quot;38d 20H 24M 9S&quot;</code></pre>
+<p>That’s a really long “ride.” The ride type though is “docked bike”
+meaning this was a bike that was just sitting around for 38 days. If we
+take a look, docked bikes are only attributed to casual riders, possibly
+suggesting docked bikes don’t get tracked for members.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>Docked_Bike_Count <span class="ot">&lt;-</span> Cyclistic <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(member_casual, rideable_type) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rideable_type <span class="sc">==</span> <span class="st">&quot;docked_bike&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(Docked_Bike_Count, <span class="at">bordered =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">highlight =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div id="htmlwidget-e7d71f8991817d05bc98" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e7d71f8991817d05bc98">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"member_casual":["casual","member"],"rideable_type":["docked_bike","docked_bike"],"count":[310806,1]},"columns":[{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"rideable_type","name":"rideable_type","type":"character"},{"accessor":"count","name":"count","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"a29d89cda403c1eeba7b0f116c419481","key":"a29d89cda403c1eeba7b0f116c419481"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<p>We are going to filter out docked bikes as it seems it will not tell
+us much about the differences in behavior between members and causal
+riders, and therefore, gain us little achieving our primary
+objective.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Cyclistic <span class="ot">&lt;-</span> Cyclistic  <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rideable_type <span class="sc">!=</span> <span class="st">&quot;docked_bike&quot;</span>)</span></code></pre></div>
+<p>Though we are filtering out docked bikes, this might be a note for
+marketing strategy. Highlighting the benefit of membership to casual
+riders who dock frequently and/or for long periods of time might
+increase rates of membership. All docked ride types are from casual
+riders (after excluding the one member, which is presumed to be a faulty
+data point).</p>
+<p>Now that we have a data set that has removed incomplete information
+from members_casual, end_station and start_station ids, and
+ride_lengths, and we have removed docked bikes, we have a collection of
+data that can tell us something about the behavior of both members and
+casual riders. We have already seen that casual riders have much longer
+ride times on average than members. But that had included docked bikes
+in the data. What happens when we exclude docked bikes from the
+data?</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Cyclistic_CT <span class="ot">&lt;-</span> Cyclistic <span class="sc">%&gt;%</span>  </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(member_casual) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">number_of_rides =</span> <span class="fu">n</span>(), <span class="at">ride_time_avg =</span> <span class="fu">mean</span>(ride_length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">ride_time_median =</span> <span class="fu">median</span>(ride_length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ride_time_avg =</span> <span class="fu">round</span>(<span class="fu">seconds_to_period</span>(ride_time_avg), <span class="at">digits =</span> <span class="dv">0</span>),</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">ride_time_median =</span> <span class="fu">round</span>(<span class="fu">seconds_to_period</span>(ride_time_median), <span class="at">digits =</span> <span class="dv">0</span>))</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>Cyclistic_CT</span></code></pre></div>
+<pre><code>## # A tibble: 2 x 4
+##   member_casual number_of_rides ride_time_avg ride_time_median
+##   &lt;chr&gt;                   &lt;int&gt; &lt;Period&gt;      &lt;Period&gt;        
+## 1 casual                1726161 24M 27S       15M 15S         
+## 2 member                2515028 13M 19S       9M 50S</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>Cyclistic <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(member_casual) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(member_casual, ride_length_numeric))<span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span> <span class="co"># Have to put in log scale to accomodate range/variability</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="at">label =</span> <span class="st">&quot;Rider Type&quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="at">label =</span> <span class="st">&quot;Ride Length in Seconds&quot;</span>)</span></code></pre></div>
+<p><img src="CopyOfMarkdown_Cyclistic_files/figure-html/Cleaned%20Mean,%20Median,%20and%20Boxplot-1.png" width="672" /></p>
+<p>We can see a decrease in the amount of rides and average ride time
+(especially for casual riders), but this data is more robust and
+includes information we need for analysis.</p>
+<p>Visually, the data looks like this:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">font_add_google</span>(<span class="st">&quot;Exo&quot;</span>, <span class="st">&quot;exo&quot;</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">showtext_auto</span>()</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>number <span class="ot">&lt;-</span> </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(Cyclistic_CT, </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> member_casual, </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> number_of_rides, <span class="at">fill =</span> member_casual)) <span class="sc">+</span> </span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure scales package enabled so the label = comma(count) works.</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">comma</span>(number_of_rides)), </span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust=</span> .<span class="dv">5</span>,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="sc">-</span>.<span class="dv">15</span>, </span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> <span class="st">&quot;exo&quot;</span>, </span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">size =</span> <span class="fl">4.5</span>) <span class="sc">+</span> </span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Rider Status&quot;</span>, </span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Number of Rides&quot;</span>, </span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">title  =</span> <span class="st">&quot;Cyclistic Rides by Rider Status&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># the following puts labels in thousands on y-axis (label = scales::comma)</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and makes sure the graph starts on the axis. &quot;limits =&quot; sets the limit of the axis.</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">label =</span> scales<span class="sc">::</span>comma, <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">3500000</span>))<span class="sc">+</span>  </span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;indianred1&quot;</span>, <span class="st">&quot;goldenrod1&quot;</span>))<span class="sc">+</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;exo&quot;</span>, <span class="at">size =</span> <span class="dv">20</span>),</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>length <span class="ot">&lt;-</span> </span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(Cyclistic_CT, </span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> member_casual, </span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> ride_time_avg, </span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> member_casual)) <span class="sc">+</span> </span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> ride_time_avg), </span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust=</span> .<span class="dv">5</span>,</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="sc">-</span>.<span class="dv">15</span>,</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> <span class="st">&quot;exo&quot;</span>,</span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>            <span class="at">size =</span> <span class="fl">4.5</span>) <span class="sc">+</span></span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Rider Status&quot;</span>, </span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Average Length of Ride&quot;</span>, </span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a>       <span class="at">title  =</span> <span class="st">&quot;Average Length of Ride by Rider Status&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">labels =</span> <span class="cn">NULL</span>, <span class="at">breaks =</span> <span class="cn">NULL</span>, <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">2</span>)))<span class="sc">+</span></span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;indianred1&quot;</span>, <span class="st">&quot;goldenrod1&quot;</span>))<span class="sc">+</span></span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)<span class="sc">+</span></span>
+<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;exo&quot;</span>, <span class="at">size =</span> <span class="dv">20</span>))</span>
+<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a>number <span class="sc">/</span> length</span></code></pre></div>
+<p><img src="CopyOfMarkdown_Cyclistic_files/figure-html/Total%20rides%20by%20rider%20type-1.png" width="100%" /></p>
+</div>
+<div id="most-popular-stations" class="section level2">
+<h2>Most Popular Stations</h2>
+<p>Which stations are the most popular launching points for each type of
+rider?</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>Pop_Station_Name <span class="ot">&lt;-</span> Cyclistic <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(start_station_name, start_station_id, member_casual) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">select</span>(start_station_name, start_station_id, member_casual, count) </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(Pop_Station_Name, <span class="at">bordered =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">highlight =</span> <span class="cn">TRUE</span>, <span class="at">theme =</span> <span class="fu">fivethirtyeight</span>(), <span class="at">searchable =</span> <span class="cn">TRUE</span>, <span class="at">pageSizeOptions =</span> <span class="dv">25</span>, <span class="at">filterable =</span> <span class="cn">TRUE</span> )</span></code></pre></div>
+<div id="htmlwidget-c1b4fffc0cef91455363" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-c1b4fffc0cef91455363">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"start_station_name":["2112 W Peterson Ave","2112 W Peterson Ave","351","63rd St Beach","63rd St Beach","900 W Harrison St","900 W Harrison St","Aberdeen St & Jackson Blvd","Aberdeen St & Jackson Blvd","Aberdeen St & Monroe St","Aberdeen St & Monroe St","Aberdeen St & Randolph St","Aberdeen St & Randolph St","Ada St & 113th St","Ada St & 113th St","Ada St & Washington Blvd","Ada St & Washington Blvd","Adler Planetarium","Adler Planetarium","Albany Ave & 26th St","Albany Ave & 26th St","Albany Ave & Belmont Ave","Albany Ave & Belmont Ave","Albany Ave & Bloomingdale Ave","Albany Ave & Bloomingdale Ave","Albany Ave & Montrose Ave","Albany Ave & Montrose Ave","Altgeld Gardens","Altgeld Gardens","Archer (Damen) Ave & 37th St","Archer (Damen) Ave & 37th St","Archer Ave & 43rd St","Archer Ave & 43rd St","Artesian Ave & 55th St","Artesian Ave & Hubbard St","Artesian Ave & Hubbard St","Ashland Ave & 13th St","Ashland Ave & 13th St","Ashland Ave & 50th St","Ashland Ave & 50th St","Ashland Ave & 63rd St","Ashland Ave & 63rd St","Ashland Ave & 66th St","Ashland Ave & 66th St","Ashland Ave & 74th St","Ashland Ave & 74th St","Ashland Ave & 78th St","Ashland Ave & 78th St","Ashland Ave & Archer Ave","Ashland Ave & Archer Ave","Ashland Ave & Augusta Blvd","Ashland Ave & Augusta Blvd","Ashland Ave & Belle Plaine Ave","Ashland Ave & Belle Plaine Ave","Ashland Ave & Blackhawk St","Ashland Ave & Blackhawk St","Ashland Ave & Chicago Ave","Ashland Ave & Chicago Ave","Ashland Ave & Division St","Ashland Ave & Division St","Ashland Ave & Garfield Blvd","Ashland Ave & Garfield Blvd","Ashland Ave & Grace St","Ashland Ave & Grace St","Ashland Ave & Grand Ave","Ashland Ave & Grand Ave","Ashland Ave & Lake St","Ashland Ave & Lake St","Ashland Ave & McDowell Ave","Ashland Ave & McDowell Ave","Ashland Ave & Pershing Rd","Ashland Ave & Pershing Rd","Ashland Ave & Wellington Ave","Ashland Ave & Wellington Ave","Ashland Ave & Wrightwood Ave","Ashland Ave & Wrightwood Ave","Augusta Blvd & Laramie Ave","Austin Blvd & Chicago Ave","Austin Blvd & Chicago Ave","Austin Blvd & Lake St","Austin Blvd & Lake St","Austin Blvd & Madison St","Austin Blvd & Madison St","Avenue L & 114th St","Avenue L & 114th St","Avenue O & 118th St","Avenue O & 118th St","Avenue O & 134th St","Avenue O & 134th St","Avers Ave & Belmont Ave","Avers Ave & Belmont Ave","Avondale Ave & Irving Park Rd","Avondale Ave & Irving Park Rd","Baltimore Ave & 87th St","Baltimore Ave & 87th St","Base - 2132 W Hubbard Warehouse","Base - 2132 W Hubbard Warehouse","Bennett Ave & 79th St","Bennett Ave & 79th St","Benson Ave & Church St","Benson Ave & Church St","Bernard St & Elston Ave","Bernard St & Elston Ave","Big Marsh Park","Big Marsh Park","Bissell St & Armitage Ave","Bissell St & Armitage Ave","Blackstone Ave & Hyde Park Blvd","Blackstone Ave & Hyde Park Blvd","Bloomingdale Ave & Harlem Ave","Bloomingdale Ave & Harlem Ave","Blue Island Ave & 18th St","Blue Island Ave & 18th St","Bosworth Ave & Howard St","Bosworth Ave & Howard St","Bradley Park","Bradley Park","Broadway & Argyle St","Broadway & Argyle St","Broadway & Barry Ave","Broadway & Barry Ave","Broadway & Belmont Ave","Broadway & Belmont Ave","Broadway & Berwyn Ave","Broadway & Berwyn Ave","Broadway & Cornelia Ave","Broadway & Cornelia Ave","Broadway & Granville Ave","Broadway & Granville Ave","Broadway & Ridge Ave","Broadway & Ridge Ave","Broadway & Sheridan Rd","Broadway & Sheridan Rd","Broadway & Thorndale Ave","Broadway & Thorndale Ave","Broadway & Waveland Ave","Broadway & Waveland Ave","Broadway & Wilson - Truman College Vaccination Site","Broadway & Wilson - Truman College Vaccination Site","Broadway & Wilson Ave","Broadway & Wilson Ave","Buckingham Fountain","Buckingham Fountain","Budlong Woods Library","Budlong Woods Library","Burling St & Diversey Pkwy","Burling St & Diversey Pkwy","Burnham Greenway & 105th St","Burnham Greenway & 105th St","Burnham Harbor","Burnham Harbor","California Ave & 21st St","California Ave & 21st St","California Ave & 23rd Pl","California Ave & 23rd Pl","California Ave & 26th St","California Ave & 26th St","California Ave & 29th St","California Ave & 29th St","California Ave & 36th St","California Ave & Altgeld St","California Ave & Altgeld St","California Ave & Byron St","California Ave & Byron St","California Ave & Cortez St","California Ave & Cortez St","California Ave & Division St","California Ave & Division St","California Ave & Fletcher St","California Ave & Fletcher St","California Ave & Francis Pl (Temp)","California Ave & Francis Pl (Temp)","California Ave & Lake St","California Ave & Lake St","California Ave & Marquette Rd","California Ave & Milwaukee Ave","California Ave & Milwaukee Ave","California Ave & Montrose Ave","California Ave & Montrose Ave","California Ave & North Ave","California Ave & North Ave","California Ave & Winona St","California Ave & Winona St","Calumet Ave & 18th St","Calumet Ave & 18th St","Calumet Ave & 21st St","Calumet Ave & 21st St","Calumet Ave & 33rd St","Calumet Ave & 33rd St","Calumet Ave & 35th St","Calumet Ave & 35th St","Calumet Ave & 51st St","Calumet Ave & 51st St","Calumet Ave & 71st St","Calumet Ave & 71st St","Calumet Park","Calumet Park","Campbell Ave & 51st St","Campbell Ave & Fullerton Ave","Campbell Ave & Fullerton Ave","Campbell Ave & Montrose Ave","Campbell Ave & Montrose Ave","Campbell Ave & North Ave","Campbell Ave & North Ave","Canal St & Adams St","Canal St & Adams St","Canal St & Harrison St","Canal St & Harrison St","Canal St & Jackson Blvd","Canal St & Jackson Blvd","Canal St & Madison St","Canal St & Madison St","Canal St & Monroe St","Canal St & Monroe St","Canal St & Taylor St","Canal St & Taylor St","Cannon Dr & Fullerton Ave","Cannon Dr & Fullerton Ave","Carpenter St & 63rd St","Carpenter St & 63rd St","Carpenter St & Huron St","Carpenter St & Huron St","Central Ave & Chicago Ave","Central Ave & Chicago Ave","Central Ave & Harrison St","Central Ave & Harrison St","Central Ave & Lake St","Central Ave & Lake St","Central Ave & Madison St","Central Ave & Madison St","Central Ave & Parker Ave","Central Ave & Parker Ave","Central Ave & Roscoe St","Central Ave & Roscoe St","Central Park & Augusta Blvd","Central Park & Augusta Blvd","Central Park Ave & 24th St","Central Park Ave & 24th St","Central Park Ave & Bloomingdale Ave","Central Park Ave & Bloomingdale Ave","Central Park Ave & Douglas Blvd","Central Park Ave & Douglas Blvd","Central Park Ave & Douglas Blvd","Central Park Ave & Elbridge Ave","Central Park Ave & Elbridge Ave","Central Park Ave & North Ave","Central Park Ave & North Ave","Central Park Ave & Ogden Ave","Central Park Ave & Ogden Ave","Central Park Ave & Ohio St","Central Park Blvd & 5th Ave","Central Park Blvd & 5th Ave","Central St & Girard Ave","Central St & Girard Ave","Central St Metra","Central St Metra","Cherry Ave & Blackhawk St","Cherry Ave & Blackhawk St","Chicago Ave & Sheridan Rd","Chicago Ave & Sheridan Rd","Chicago Ave & Washington St","Chicago Ave & Washington St","Chicago State University","Chicago State University","Christiana Ave & Lawrence Ave","Christiana Ave & Lawrence Ave","Cicero Ave & Flournoy St","Cicero Ave & Flournoy St","Cicero Ave & Grace St","Cicero Ave & Grace St","Cicero Ave & Lake St","Cicero Ave & Lake St","Cicero Ave & Quincy St","Cicero Ave & Quincy St","Cityfront Plaza Dr & Pioneer Ct","Cityfront Plaza Dr & Pioneer Ct","Claremont Ave & Hirsch St","Claremont Ave & Hirsch St","Clarendon Ave & Gordon Ter","Clarendon Ave & Gordon Ter","Clarendon Ave & Junior Ter","Clarendon Ave & Junior Ter","Clarendon Ave & Leland Ave","Clarendon Ave & Leland Ave","Clark St & 9th St (AMLI)","Clark St & 9th St (AMLI)","Clark St & Armitage Ave","Clark St & Armitage Ave","Clark St & Berwyn Ave","Clark St & Berwyn Ave","Clark St & Bryn Mawr Ave","Clark St & Bryn Mawr Ave","Clark St & Chicago Ave","Clark St & Chicago Ave","Clark St & Columbia Ave","Clark St & Columbia Ave","Clark St & Drummond Pl","Clark St & Drummond Pl","Clark St & Elm St","Clark St & Elm St","Clark St & Elmdale Ave","Clark St & Elmdale Ave","Clark St & Grace St","Clark St & Grace St","Clark St & Ida B Wells Dr","Clark St & Ida B Wells Dr","Clark St & Jarvis Ave","Clark St & Jarvis Ave","Clark St & Lake St","Clark St & Lake St","Clark St & Leland Ave","Clark St & Leland Ave","Clark St & Lincoln Ave","Clark St & Lincoln Ave","Clark St & Lunt Ave","Clark St & Lunt Ave","Clark St & Montrose Ave","Clark St & Montrose Ave","Clark St & Newport St","Clark St & Newport St","Clark St & North Ave","Clark St & North Ave","Clark St & Randolph St","Clark St & Randolph St","Clark St & Schiller St","Clark St & Schiller St","Clark St & Schreiber Ave","Clark St & Schreiber Ave","Clark St & Touhy Ave","Clark St & Touhy Ave","Clark St & Wellington Ave","Clark St & Wellington Ave","Clark St & Winnemac Ave","Clark St & Winnemac Ave","Clark St & Wrightwood Ave","Clark St & Wrightwood Ave","Clifton Ave & Armitage Ave","Clifton Ave & Armitage Ave","Clinton St & 18th St","Clinton St & 18th St","Clinton St & Jackson Blvd","Clinton St & Jackson Blvd","Clinton St & Lake St","Clinton St & Lake St","Clinton St & Madison St","Clinton St & Madison St","Clinton St & Polk St","Clinton St & Polk St","Clinton St & Roosevelt Rd","Clinton St & Roosevelt Rd","Clinton St & Tilden St","Clinton St & Tilden St","Clinton St & Washington Blvd","Clinton St & Washington Blvd","Clybourn Ave & Division St","Clybourn Ave & Division St","Clyde Ave & 87th St","Clyde Ave & 87th St","Columbus Dr & Randolph St","Columbus Dr & Randolph St","Commercial Ave & 100th St","Commercial Ave & 130th St","Commercial Ave & 130th St","Commercial Ave & 83rd St","Commercial Ave & 83rd St","Conservatory Dr & Lake St","Conservatory Dr & Lake St","Constance Ave & 95th St","Constance Ave & 95th St","Cornell Ave & Hyde Park Blvd","Cornell Ave & Hyde Park Blvd","Cornell Dr & Hayes Dr","Cornell Dr & Hayes Dr","Cottage Grove Ave & 111th Pl","Cottage Grove Ave & 111th Pl","Cottage Grove Ave & 43rd St","Cottage Grove Ave & 43rd St","Cottage Grove Ave & 47th St","Cottage Grove Ave & 47th St","Cottage Grove Ave & 51st St","Cottage Grove Ave & 51st St","Cottage Grove Ave & 63rd St","Cottage Grove Ave & 63rd St","Cottage Grove Ave & 67th St","Cottage Grove Ave & 67th St","Cottage Grove Ave & 71st St","Cottage Grove Ave & 71st St","Cottage Grove Ave & 78th St","Cottage Grove Ave & 78th St","Cottage Grove Ave & 83rd St","Cottage Grove Ave & 83rd St","Cottage Grove Ave & Oakwood Blvd","Cottage Grove Ave & Oakwood Blvd","Daley Center Plaza","Daley Center Plaza","Damen Ave & 33rd St","Damen Ave & 33rd St","Damen Ave & 51st St","Damen Ave & 51st St","Damen Ave & 59th St","Damen Ave & 59th St","Damen Ave & Charleston St","Damen Ave & Charleston St","Damen Ave & Chicago Ave","Damen Ave & Chicago Ave","Damen Ave & Clybourn Ave","Damen Ave & Clybourn Ave","Damen Ave & Cortland St","Damen Ave & Cortland St","Damen Ave & Coulter St","Damen Ave & Coulter St","Damen Ave & Cullerton St","Damen Ave & Cullerton St","Damen Ave & Division St","Damen Ave & Division St","Damen Ave & Foster Ave","Damen Ave & Foster Ave","Damen Ave & Grand Ave","Damen Ave & Grand Ave","Damen Ave & Leland Ave","Damen Ave & Leland Ave","Damen Ave & Madison St","Damen Ave & Madison St","Damen Ave & Melrose Ave","Damen Ave & Melrose Ave","Damen Ave & Pershing Rd","Damen Ave & Pershing Rd","Damen Ave & Pierce Ave","Damen Ave & Pierce Ave","Damen Ave & Sunnyside Ave","Damen Ave & Sunnyside Ave","Damen Ave & Thomas St (Augusta Blvd)","Damen Ave & Thomas St (Augusta Blvd)","Damen Ave & Wabansia Ave","Damen Ave & Wabansia Ave","Damen Ave & Wabansia Ave","Damen Ave & Wabansia Ave","Damen Ave & Walnut (Lake) St","Damen Ave & Walnut (Lake) St","Damen Ave & Wellington Ave","Damen Ave & Wellington Ave","Dauphin Ave & 103rd St","Dauphin Ave & 103rd St","Dauphin Ave & 87th St","Dauphin Ave & 87th St","Dayton St & North Ave","Dayton St & North Ave","Dearborn Pkwy & Delaware Pl","Dearborn Pkwy & Delaware Pl","Dearborn St & Adams St","Dearborn St & Adams St","Dearborn St & Erie St","Dearborn St & Erie St","Dearborn St & Monroe St","Dearborn St & Monroe St","Dearborn St & Van Buren St","Dearborn St & Van Buren St","Delano Ct & Roosevelt Rd","Delano Ct & Roosevelt Rd","Desplaines St & Jackson Blvd","Desplaines St & Jackson Blvd","Desplaines St & Kinzie St","Desplaines St & Kinzie St","Desplaines St & Randolph St","Desplaines St & Randolph St","DIVVY CASSETTE REPAIR MOBILE STATION","Dodge Ave & Church St","Dodge Ave & Church St","Dodge Ave & Main St","Dodge Ave & Main St","Dodge Ave & Mulford St","Dodge Ave & Mulford St","Dorchester Ave & 49th St","Dorchester Ave & 49th St","Dorchester Ave & 63rd St","Dorchester Ave & 63rd St","Doty Ave & 111th St","Drake Ave & Addison St","Drake Ave & Addison St","Drake Ave & Montrose Ave","Drake Ave & Montrose Ave","Dusable Harbor","Dusable Harbor","DuSable Lake Shore Dr & Belmont Ave","DuSable Lake Shore Dr & Belmont Ave","DuSable Lake Shore Dr & Diversey Pkwy","DuSable Lake Shore Dr & Diversey Pkwy","DuSable Lake Shore Dr & Monroe St","DuSable Lake Shore Dr & Monroe St","DuSable Lake Shore Dr & North Blvd","DuSable Lake Shore Dr & North Blvd","DuSable Lake Shore Dr & Ohio St","DuSable Lake Shore Dr & Ohio St","DuSable Lake Shore Dr & Wellington Ave","DuSable Lake Shore Dr & Wellington Ave","DuSable Museum","DuSable Museum","East End Ave & 87th St","East End Ave & 87th St","Eastlake Ter & Rogers Ave","Eastlake Ter & Rogers Ave","Eberhart Ave & 131st St","Eberhart Ave & 131st St","Eberhart Ave & 61st St","Eberhart Ave & 61st St","Eberhart Ave & 91st St","Eberhart Ave & 91st St","Eckhart Park","Eckhart Park","Eggleston Ave & 69th St","Eggleston Ave & 69th St","Eggleston Ave & 92nd St","Eggleston Ave & 92nd St","Elizabeth (May) St & Fulton St","Elizabeth (May) St & Fulton St","Elizabeth St & 47th St","Elizabeth St & 47th St","Elizabeth St & 59th St","Elizabeth St & 59th St","Elizabeth St & 92nd St","Elizabeth St & 92nd St","Ellis Ave & 53rd St","Ellis Ave & 53rd St","Ellis Ave & 55th St","Ellis Ave & 55th St","Ellis Ave & 58th St","Ellis Ave & 58th St","Ellis Ave & 60th St","Ellis Ave & 60th St","Ellis Ave & 83rd St","Ellis Ave & 83rd St","Elmwood Ave & Austin St","Elmwood Ave & Austin St","Elston Ave & Cortland St","Elston Ave & Cortland St","Elston Ave & George St","Elston Ave & George St","Elston Ave & Henderson St","Elston Ave & Henderson St","Elston Ave & Wabansia Ave","Elston Ave & Wabansia Ave","Emerald Ave & 28th St","Emerald Ave & 28th St","Emerald Ave & 31st St","Emerald Ave & 31st St","Evans Ave & 75th St","Evans Ave & 75th St","Evanston Civic Center","Evanston Civic Center","Ewing Ave & Burnham Greenway","Ewing Ave & Burnham Greenway","Exchange Ave & 79th St","Exchange Ave & 79th St","Fairbanks Ct & Grand Ave","Fairbanks Ct & Grand Ave","Fairbanks St & Superior St","Fairbanks St & Superior St","Fairfield Ave & 44th St","Fairfield Ave & 44th St","Fairfield Ave & Roosevelt Rd","Fairfield Ave & Roosevelt Rd","Federal St & Polk St","Federal St & Polk St","Field Blvd & South Water St","Field Blvd & South Water St","Field Museum","Field Museum","Financial Pl & Ida B Wells Dr","Financial Pl & Ida B Wells Dr","Fort Dearborn Dr & 31st St","Fort Dearborn Dr & 31st St","Francisco Ave & 47th St","Francisco Ave & 47th St","Francisco Ave & Bloomingdale Ave","Francisco Ave & Bloomingdale Ave","Francisco Ave & Foster Ave","Francisco Ave & Foster Ave","Francisco Ave & Hollywood Ave","Francisco Ave & Hollywood Ave","Francisco Ave & Montrose Ave","Francisco Ave & Montrose Ave","Franklin St & Adams St (Temp)","Franklin St & Adams St (Temp)","Franklin St & Chicago Ave","Franklin St & Chicago Ave","Franklin St & Illinois St","Franklin St & Illinois St","Franklin St & Jackson Blvd","Franklin St & Jackson Blvd","Franklin St & Lake St","Franklin St & Lake St","Franklin St & Monroe St","Franklin St & Monroe St","Glenwood Ave & Morse Ave","Glenwood Ave & Morse Ave","Glenwood Ave & Touhy Ave","Glenwood Ave & Touhy Ave","Green St & Madison St","Green St & Madison St","Green St & Randolph St","Green St & Randolph St","Greenview Ave & Diversey Pkwy","Greenview Ave & Diversey Pkwy","Greenview Ave & Fullerton Ave","Greenview Ave & Fullerton Ave","Greenview Ave & Jarvis Ave","Greenview Ave & Jarvis Ave","Greenwood Ave & 47th St","Greenwood Ave & 47th St","Greenwood Ave & 79th St","Greenwood Ave & 79th St","Greenwood Ave & 91st St","Greenwood Ave & 91st St","Greenwood Ave & 97th St","Greenwood Ave & 97th St","Hale Ave & 107th St","Hale Ave & 107th St","Halsted & 63rd - Kennedy-King Vaccination Site","Halsted & 63rd - Kennedy-King Vaccination Site","Halsted St & 104th St","Halsted St & 104th St","Halsted St & 111th St","Halsted St & 111th St","Halsted St & 18th St","Halsted St & 18th St","Halsted St & 18th St (Temp)","Halsted St & 18th St (Temp)","Halsted St & 21st St","Halsted St & 21st St","Halsted St & 35th St","Halsted St & 35th St","Halsted St & 37th St","Halsted St & 37th St","Halsted St & 47th Pl","Halsted St & 47th Pl","Halsted St & 51st St","Halsted St & 51st St","Halsted St & 56th St","Halsted St & 56th St","Halsted St & 59th St","Halsted St & 59th St","Halsted St & 63rd St","Halsted St & 63rd St","Halsted St & 69th St","Halsted St & 69th St","Halsted St & 73rd St","Halsted St & 73rd St","Halsted St & 78th St","Halsted St & 78th St","Halsted St & 96th St","Halsted St & 96th St","Halsted St & Archer Ave","Halsted St & Archer Ave","Halsted St & Clybourn Ave","Halsted St & Clybourn Ave","Halsted St & Dickens Ave","Halsted St & Dickens Ave","Halsted St & Maxwell St","Halsted St & Maxwell St","Halsted St & North Branch St","Halsted St & North Branch St","Halsted St & Polk St","Halsted St & Polk St","Halsted St & Roosevelt Rd","Halsted St & Roosevelt Rd","Halsted St & Roscoe St","Halsted St & Roscoe St","Halsted St & Willow St","Halsted St & Willow St","Halsted St & Wrightwood Ave","Halsted St & Wrightwood Ave","Hamlin Ave & 62nd Pl","Hampden Ct & Diversey Ave","Hampden Ct & Diversey Ave","Hampden Ct & Diversey Ave","Hampden Ct & Diversey Ave","Harding Ave & 26th St","Harding Ave & 26th St","Harding Ave & 26th St","Harlem & Irving Park","Harlem & Irving Park","Harlem Ave & Grace St","Harlem Ave & Grace St","Harper Ave & 59th St","Harper Ave & 59th St","Hegewisch Metra Station","Hegewisch Metra Station","Hermitage Ave & Polk St","Hermitage Ave & Polk St","Homan Ave & Fillmore St","Homan Ave & Fillmore St","Homan Ave & Fillmore St","Homan Ave & Fillmore St","Homewood Ave & 115th St","Homewood Ave & 115th St","Honore St & Division St","Honore St & Division St","Houston Ave & 92nd St","Houston Ave & 92nd St","Hoyne Ave & 34th St","Hoyne Ave & 34th St","Hoyne Ave & 47th St","Hoyne Ave & 47th St","Hoyne Ave & Balmoral Ave","Hoyne Ave & Balmoral Ave","Humboldt Blvd & Armitage Ave","Humboldt Blvd & Armitage Ave","Indiana Ave & 103rd St","Indiana Ave & 103rd St","Indiana Ave & 133rd St","Indiana Ave & 26th St","Indiana Ave & 26th St","Indiana Ave & 31st St","Indiana Ave & 31st St","Indiana Ave & 40th St","Indiana Ave & 40th St","Indiana Ave & Roosevelt Rd","Indiana Ave & Roosevelt Rd","Jefferson St & Monroe St","Jefferson St & Monroe St","Jeffery Blvd & 67th St","Jeffery Blvd & 67th St","Jeffery Blvd & 71st St","Jeffery Blvd & 71st St","Jeffery Blvd & 76th St","Jeffery Blvd & 76th St","Karlov Ave & Madison St","Karlov Ave & Madison St","Kedzie Ave & 104th St","Kedzie Ave & 104th St","Kedzie Ave & 110th St","Kedzie Ave & 110th St","Kedzie Ave & 21st St","Kedzie Ave & 21st St","Kedzie Ave & 24th St","Kedzie Ave & 24th St","Kedzie Ave & 48th Pl","Kedzie Ave & 48th Pl","Kedzie Ave & 52nd St","Kedzie Ave & 52nd St","Kedzie Ave & 57th St","Kedzie Ave & 57th St","Kedzie Ave & Bryn Mawr Ave","Kedzie Ave & Bryn Mawr Ave","Kedzie Ave & Chicago Ave","Kedzie Ave & Chicago Ave","Kedzie Ave & Foster Ave","Kedzie Ave & Foster Ave","Kedzie Ave & George St","Kedzie Ave & George St","Kedzie Ave & Harrison St","Kedzie Ave & Harrison St","Kedzie Ave & Lake St","Kedzie Ave & Lake St","Kedzie Ave & Leland Ave","Kedzie Ave & Leland Ave","Kedzie Ave & Milwaukee Ave","Kedzie Ave & Milwaukee Ave","Kedzie Ave & Palmer Ct","Kedzie Ave & Palmer Ct","Kedzie Ave & Roosevelt Rd","Kedzie Ave & Roosevelt Rd","Keeler Ave & Roosevelt Rd","Keeler Ave & Roosevelt Rd","Kenneth Ave & 50th St","Kenneth Ave & 50th St","Kenosha & Wellington","Kenosha & Wellington","Kenton Ave & Madison St","Kenton Ave & Madison St","Keystone Ave & Fullerton Ave","Keystone Ave & Fullerton Ave","Keystone Ave & Montrose Ave","Keystone Ave & Montrose Ave","Kilbourn & Belden","Kilbourn & Belden","Kilbourn & Roscoe","Kilbourn & Roscoe","Kilbourn Ave & Irving Park Rd","Kilbourn Ave & Irving Park Rd","Kilbourn Ave & Milwaukee Ave","Kilbourn Ave & Milwaukee Ave","Kildare Ave & 26th St","Kildare Ave & 26th St","Kildare Ave & 47th St","Kildare Ave & 55th St","Kildare Ave & Chicago Ave","Kildare Ave & Division St","Kildare Ave & Division St","Kildare Ave & Montrose Ave","Kildare Ave & Montrose Ave","Kilpatrick Ave & Grand Ave","Kilpatrick Ave & Grand Ave","Kilpatrick Ave & Parker Ave","Kilpatrick Ave & Parker Ave","Kimball Ave & Belmont Ave","Kimball Ave & Belmont Ave","Kimbark Ave & 53rd St","Kimbark Ave & 53rd St","Kingsbury St & Erie St","Kingsbury St & Erie St","Kingsbury St & Kinzie St","Kingsbury St & Kinzie St","Knox Ave & Montrose Ave","Knox Ave & Montrose Ave","Komensky Ave & 31st St","Komensky Ave & 31st St","Komensky Ave & 31st St","Komensky Ave & 55th St","Kosciuszko Park","Kosciuszko Park","Kostner Ave & 63rd St","Kostner Ave & 63rd St","Kostner Ave & Adams St","Kostner Ave & Adams St","Kostner Ave & Lake St","Kostner Ave & Lake St","Kostner Ave & Wrightwood Ave","Kostner Ave & Wrightwood Ave","Laflin St & Cullerton St","Laflin St & Cullerton St","Lake Park Ave & 35th St","Lake Park Ave & 35th St","Lake Park Ave & 47th St","Lake Park Ave & 47th St","Lake Park Ave & 53rd St","Lake Park Ave & 53rd St","Lake Park Ave & 56th St","Lake Park Ave & 56th St","Lake Shore Dr & Belmont Ave","Lake Shore Dr & Belmont Ave","Lake Shore Dr & Diversey Pkwy","Lake Shore Dr & Diversey Pkwy","Lake Shore Dr & Monroe St","Lake Shore Dr & Monroe St","Lake Shore Dr & North Blvd","Lake Shore Dr & North Blvd","Lake Shore Dr & Ohio St","Lake Shore Dr & Ohio St","Lake Shore Dr & Wellington Ave","Lake Shore Dr & Wellington Ave","Lakefront Trail & Bryn Mawr Ave","Lakefront Trail & Bryn Mawr Ave","Lakefront Trail & Wilson Ave","Lakefront Trail & Wilson Ave","Lakeview Ave & Fullerton Pkwy","Lakeview Ave & Fullerton Pkwy","Lamon Ave & Armitage Ave","Lamon Ave & Armitage Ave","Lamon Ave & Belmont Ave","Lamon Ave & Belmont Ave","Lamon Ave & Chicago Ave","Laramie Ave & Gladys Ave","Laramie Ave & Gladys Ave","Laramie Ave & Kinzie St","Laramie Ave & Kinzie St","Laramie Ave & Madison St","Laramie Ave & Madison St","Larrabee St & Armitage Ave","Larrabee St & Armitage Ave","Larrabee St & Division St","Larrabee St & Division St","Larrabee St & Kingsbury St","Larrabee St & Kingsbury St","Larrabee St & Menomonee St","Larrabee St & Menomonee St","Larrabee St & North Ave","Larrabee St & North Ave","Larrabee St & Oak St","Larrabee St & Oak St","Larrabee St & Webster Ave","Larrabee St & Webster Ave","LaSalle Dr & Huron St","LaSalle Dr & Huron St","LaSalle St & Adams St","LaSalle St & Adams St","LaSalle St & Illinois St","LaSalle St & Illinois St","LaSalle St & Jackson Blvd","LaSalle St & Jackson Blvd","LaSalle St & Washington St","LaSalle St & Washington St","Latrobe Ave & Chicago Ave","Latrobe Ave & Chicago Ave","Lavergne & Fullerton","Lavergne & Fullerton","Lavergne Ave & 46th St","Lavergne Ave & 46th St","Lavergne Ave & Division St","Lavergne Ave & Division St","Lawler Ave & 50th St","Lawler Ave & 50th St","Lawndale Ave & 111th St","Lawndale Ave & 111th St","Lawndale Ave & 16th St","Lawndale Ave & 16th St","Lawndale Ave & 30th St","Lawndale Ave & 30th St","Lawndale Ave & 30th St","Leamington Ave & Hirsch St","Leavitt St & Addison St","Leavitt St & Addison St","Leavitt St & Archer Ave","Leavitt St & Archer Ave","Leavitt St & Armitage Ave","Leavitt St & Armitage Ave","Leavitt St & Belmont Ave","Leavitt St & Belmont Ave","Leavitt St & Chicago Ave","Leavitt St & Chicago Ave","Leavitt St & Division St","Leavitt St & Division St","Leavitt St & Lawrence Ave","Leavitt St & Lawrence Ave","Leavitt St & North Ave","Leavitt St & North Ave","Lincoln Ave & Addison St","Lincoln Ave & Addison St","Lincoln Ave & Balmoral Ave","Lincoln Ave & Balmoral Ave","Lincoln Ave & Belle Plaine Ave","Lincoln Ave & Belle Plaine Ave","Lincoln Ave & Belmont Ave","Lincoln Ave & Belmont Ave","Lincoln Ave & Diversey Pkwy","Lincoln Ave & Diversey Pkwy","Lincoln Ave & Fullerton Ave","Lincoln Ave & Fullerton Ave","Lincoln Ave & Peterson Ave","Lincoln Ave & Peterson Ave","Lincoln Ave & Roscoe St","Lincoln Ave & Roscoe St","Lincoln Ave & Sunnyside Ave","Lincoln Ave & Sunnyside Ave","Lincoln Ave & Waveland Ave","Lincoln Ave & Waveland Ave","Lincoln Ave & Winona St","Lincoln Ave & Winona St","Lincoln Park Conservatory","Lincoln Park Conservatory","Lincolnwood Dr & Central St","Lincolnwood Dr & Central St","Lockwood Ave & Wrightwood Ave","Lockwood Ave & Wrightwood Ave","Logan Blvd & Elston Ave","Logan Blvd & Elston Ave","Long & Irving Park","Long & Irving Park","Long Ave & Belden Ave","Long Ave & Belden Ave","Long Ave & Belmont Ave","Long Ave & Belmont Ave","Long Ave & North Ave","Long Ave & North Ave","Loomis Blvd & 84th St","Loomis Blvd & 84th St","Loomis St & 89th St","Loomis St & 89th St","Loomis St & 89th St","Loomis St & Archer Ave","Loomis St & Archer Ave","Loomis St & Jackson Blvd","Loomis St & Jackson Blvd","Loomis St & Lexington St","Loomis St & Lexington St","Lyft Driver Center Private Rack","Major Ave & Bloomingdale Ave","Major Ave & Bloomingdale Ave","Major Taylor Trail & 115th St","Major Taylor Trail & 115th St","Major Taylor Trail & 124th St","Major Taylor Trail & 124th St","Malcolm X College","Malcolm X College","Malcolm X College Vaccination Site","Malcolm X College Vaccination Site","Manor Ave & Leland Ave","Manor Ave & Leland Ave","Maplewood Ave & 59th St","Maplewood Ave & 59th St","Maplewood Ave & Peterson Ave","Maplewood Ave & Peterson Ave","Marine Dr & Ainslie St","Marine Dr & Ainslie St","Marquette Ave & 89th St","Marquette Ave & 89th St","Marshfield Ave & 44th St","Marshfield Ave & 44th St","Marshfield Ave & 59th St","Marshfield Ave & 59th St","Marshfield Ave & Cortland St","Marshfield Ave & Cortland St","Maryland Ave & 104th St","Maryland Ave & 104th St","Mason Ave & Belmont Ave","Mason Ave & Belmont Ave","May St & 69th St","May St & 69th St","May St & Cullerton St","May St & Cullerton St","May St & Taylor St","May St & Taylor St","McClurg Ct & Erie St","McClurg Ct & Erie St","McClurg Ct & Ohio St","McClurg Ct & Ohio St","McCormick Place","McCormick Place","Meade Ave & Addison St","Meade Ave & Addison St","Meade Ave & Diversey Ave","Meade Ave & Diversey Ave","Menard Ave & Division St","Menard Ave & Division St","Menard Ave & North Ave","Menard Ave & North Ave","Michigan Ave & 114th St","Michigan Ave & 114th St","Michigan Ave & 14th St","Michigan Ave & 14th St","Michigan Ave & 18th St","Michigan Ave & 18th St","Michigan Ave & 71st St","Michigan Ave & 71st St","Michigan Ave & 8th St","Michigan Ave & 8th St","Michigan Ave & Ida B Wells Dr","Michigan Ave & Ida B Wells Dr","Michigan Ave & Jackson Blvd","Michigan Ave & Jackson Blvd","Michigan Ave & Lake St","Michigan Ave & Lake St","Michigan Ave & Madison St","Michigan Ave & Madison St","Michigan Ave & Oak St","Michigan Ave & Oak St","Michigan Ave & Pearson St","Michigan Ave & Pearson St","Michigan Ave & Washington St","Michigan Ave & Washington St","Mies van der Rohe Way & Chestnut St","Mies van der Rohe Way & Chestnut St","Mies van der Rohe Way & Chicago Ave","Mies van der Rohe Way & Chicago Ave","Millard Ave & 26th St","Millard Ave & 26th St","Millennium Park","Millennium Park","Milwaukee Ave & Cuyler Ave","Milwaukee Ave & Cuyler Ave","Milwaukee Ave & Fullerton Ave","Milwaukee Ave & Fullerton Ave","Milwaukee Ave & Grand Ave","Milwaukee Ave & Grand Ave","Milwaukee Ave & Rockwell St","Milwaukee Ave & Rockwell St","Milwaukee Ave & Wabansia Ave","Milwaukee Ave & Wabansia Ave","MLK Jr Dr & 29th St","MLK Jr Dr & 29th St","MLK Jr Dr & 47th St","MLK Jr Dr & 47th St","MLK Jr Dr & 56th St","MLK Jr Dr & 56th St","MLK Jr Dr & 63rd St","MLK Jr Dr & 63rd St","MLK Jr Dr & 83rd St","MLK Jr Dr & 83rd St","MLK Jr Dr & Pershing Rd","MLK Jr Dr & Pershing Rd","Monticello Ave & Chicago Ave","Monticello Ave & Chicago Ave","Monticello Ave & Irving Park Rd","Monticello Ave & Irving Park Rd","Montrose Harbor","Montrose Harbor","Morgan Ave & 14th Pl","Morgan Ave & 14th Pl","Morgan St & 18th St","Morgan St & 18th St","Morgan St & 31st St","Morgan St & 31st St","Morgan St & Lake St","Morgan St & Lake St","Morgan St & Pershing Rd","Morgan St & Pershing Rd","Morgan St & Polk St","Morgan St & Polk St","Mozart St & Jackson Blvd","Mozart St & Jackson Blvd","Mulligan Ave & Wellington Ave","Mulligan Ave & Wellington Ave","Museum of Science and Industry","Museum of Science and Industry","N Carpenter St & W Lake St","N Carpenter St & W Lake St","N Carpenter St & W Lake St","N Carpenter St & W Lake St","N Clark St & W Elm St","N Clark St & W Elm St","N Clark St & W Elm St","N Damen Ave & W Chicago Ave","N Damen Ave & W Chicago Ave","N Damen Ave & W Chicago Ave","N Green St & W Lake St","N Green St & W Lake St","N Green St & W Lake St","N Green St & W Lake St","N Hampden Ct & W Diversey Ave","N Paulina St & Lincoln Ave","N Paulina St & Lincoln Ave","N Paulina St & Lincoln Ave","N Paulina St & Lincoln Ave","N Sheffield Ave & W Wellington Ave","N Sheffield Ave & W Wellington Ave","N Sheffield Ave & W Wellington Ave","N Sheffield Ave & W Wellington Ave","N Shore Channel Trail & Argyle Ave","N Southport Ave & W Newport Ave","N Southport Ave & W Newport Ave","N Southport Ave & W Newport Ave","N Southport Ave & W Newport Ave","Narragansett & Irving Park","Narragansett & Irving Park","Narragansett & McLean","Narragansett & McLean","Narragansett & Wrightwood","Narragansett & Wrightwood","Narragansett Ave & School St","Narragansett Ave & School St","New St & Illinois St","New St & Illinois St","Noble St & Milwaukee Ave","Noble St & Milwaukee Ave","Nordica & Medill","Nordica & Medill","Normal Ave & Archer Ave","Normal Ave & Archer Ave","North Ave & New England Ave","North Ave & New England Ave","Oak Park & Wellington","Oak Park & Wellington","Oakley Ave & Irving Park Rd","Oakley Ave & Irving Park Rd","Oakley Ave & Touhy Ave","Oakley Ave & Touhy Ave","Ogden Ave & Chicago Ave","Ogden Ave & Chicago Ave","Ogden Ave & Congress Pkwy","Ogden Ave & Congress Pkwy","Ogden Ave & Race Ave","Ogden Ave & Race Ave","Ogden Ave & Roosevelt Rd","Ogden Ave & Roosevelt Rd","Oglesby Ave & 100th St","Oglesby Ave & 100th St","Oketo Ave & Addison St","Olive Harvey College","Orange & Addison","Orange & Addison","Orleans St & Chestnut St (NEXT Apts)","Orleans St & Chestnut St (NEXT Apts)","Orleans St & Elm St","Orleans St & Elm St","Orleans St & Hubbard St","Orleans St & Hubbard St","Orleans St & Merchandise Mart Plaza","Orleans St & Merchandise Mart Plaza","Panama Ave & Grace St","Parkside Ave & Armitage Ave","Paulina Ave & North Ave","Paulina Ave & North Ave","Paulina St & 18th St","Paulina St & 18th St","Paulina St & Flournoy St","Paulina St & Flournoy St","Paulina St & Howard St","Paulina St & Howard St","Paulina St & Montrose Ave","Paulina St & Montrose Ave","Peoria St & Jackson Blvd","Peoria St & Jackson Blvd","Perry Ave & 69th St","Perry Ave & 69th St","Phillips Ave & 79th St","Phillips Ave & 79th St","Phillips Ave & 83rd St","Phillips Ave & 83rd St","Pine Grove Ave & Irving Park Rd","Pine Grove Ave & Irving Park Rd","Pine Grove Ave & Waveland Ave","Pine Grove Ave & Waveland Ave","Ping Tom Park (East)","Ping Tom Park (East)","Ping Tom Park (East)","Ping Tom Park (East)","Plainfield & Irving Park","Plainfield & Irving Park","Prairie Ave & 43rd St","Prairie Ave & 43rd St","Prairie Ave & Garfield Blvd","Prairie Ave & Garfield Blvd","Princeton Ave & 47th St","Princeton Ave & 47th St","Princeton Ave & Garfield Blvd","Princeton Ave & Garfield Blvd","Prospect Sq & 91st St","Prospect Sq & 91st St","Pulaski & Ann Lurie Pl","Pulaski & Ann Lurie Pl","Pulaski Rd & 21st St","Pulaski Rd & 21st St","Pulaski Rd & 21st St","Pulaski Rd & 21st St","Pulaski Rd & 51st St","Pulaski Rd & 51st St","Pulaski Rd & 60th St","Pulaski Rd & 60th St","Pulaski Rd & Congress Pkwy","Pulaski Rd & Congress Pkwy","Pulaski Rd & Eddy St (Temp)","Pulaski Rd & Eddy St (Temp)","Pulaski Rd & Lake St","Pulaski Rd & Lake St","Racine Ave & 13th St","Racine Ave & 13th St","Racine Ave & 15th St","Racine Ave & 15th St","Racine Ave & 18th St","Racine Ave & 18th St","Racine Ave & 35th St","Racine Ave & 35th St","Racine Ave & 61st St","Racine Ave & 61st St","Racine Ave & 65th St","Racine Ave & 65th St","Racine Ave & Belmont Ave","Racine Ave & Belmont Ave","Racine Ave & Congress Pkwy","Racine Ave & Congress Pkwy","Racine Ave & Fullerton Ave","Racine Ave & Fullerton Ave","Racine Ave & Garfield Blvd","Racine Ave & Garfield Blvd","Racine Ave & Randolph St","Racine Ave & Randolph St","Racine Ave & Washington Blvd","Racine Ave & Washington Blvd","Racine Ave & Wrightwood Ave","Racine Ave & Wrightwood Ave","Rainbow Beach","Rainbow Beach","Ravenswood Ave & Berteau Ave","Ravenswood Ave & Berteau Ave","Ravenswood Ave & Irving Park Rd","Ravenswood Ave & Irving Park Rd","Ravenswood Ave & Lawrence Ave","Ravenswood Ave & Lawrence Ave","Rhodes Ave & 32nd St","Rhodes Ave & 32nd St","Rhodes Ave & 71st St","Rhodes Ave & 71st St","Richmond St & 59th St","Richmond St & 59th St","Richmond St & Diversey Ave","Richmond St & Diversey Ave","Richmond St & Lincoln Ave","Richmond St & Lincoln Ave","Ridge Blvd & Howard St","Ridge Blvd & Howard St","Ridge Blvd & Touhy Ave","Ridge Blvd & Touhy Ave","Ritchie Ct & Banks St","Ritchie Ct & Banks St","Rockwell St & 57th St","Rockwell St & Archer Ave","Rockwell St & Archer Ave","Rockwell St & Cermak Rd","Rockwell St & Cermak Rd","Rockwell St & Eastwood Ave","Rockwell St & Eastwood Ave","Rockwell St & Fletcher St","Rockwell St & Fletcher St","Roscoe & Harlem","Roscoe & Harlem","Rush St & Cedar St","Rush St & Cedar St","Rush St & Hubbard St","Rush St & Hubbard St","Rush St & Superior St","Rush St & Superior St","S Aberdeen St & W 106th St","S Aberdeen St & W 106th St","S Michigan Ave & E 118th St","S Michigan Ave & E 118th St","S Wentworth Ave & W 111th St","Sacramento Ave & 25th St","Sacramento Ave & Pershing Rd","Sacramento Ave & Pershing Rd","Sacramento Blvd & Addison St","Sacramento Blvd & Addison St","Sacramento Blvd & Franklin Blvd","Sacramento Blvd & Franklin Blvd","Sacramento Blvd & Fulton Ave","Sacramento Blvd & Fulton Ave","Sacramento Blvd & Polk St","Sangamon St & Washington Blvd","Sangamon St & Washington Blvd","Sawyer Ave & Irving Park Rd","Sawyer Ave & Irving Park Rd","Sayre & Diversey","Sayre & Diversey","Sedgwick St & Huron St","Sedgwick St & Huron St","Sedgwick St & North Ave","Sedgwick St & North Ave","Sedgwick St & Schiller St","Sedgwick St & Schiller St","Sedgwick St & Webster Ave","Sedgwick St & Webster Ave","Seeley Ave & Garfield Blvd","Seeley Ave & Garfield Blvd","Seeley Ave & Roscoe St","Seeley Ave & Roscoe St","Shedd Aquarium","Shedd Aquarium","Sheffield Ave & Fullerton Ave","Sheffield Ave & Fullerton Ave","Sheffield Ave & Kingsbury St","Sheffield Ave & Kingsbury St","Sheffield Ave & Waveland Ave","Sheffield Ave & Waveland Ave","Sheffield Ave & Webster Ave","Sheffield Ave & Webster Ave","Sheffield Ave & Wellington Ave","Sheffield Ave & Wellington Ave","Sheffield Ave & Willow St","Sheffield Ave & Willow St","Sheffield Ave & Wrightwood Ave","Sheffield Ave & Wrightwood Ave","Sheridan Rd & Buena Ave","Sheridan Rd & Buena Ave","Sheridan Rd & Columbia Ave","Sheridan Rd & Columbia Ave","Sheridan Rd & Greenleaf Ave","Sheridan Rd & Greenleaf Ave","Sheridan Rd & Irving Park Rd","Sheridan Rd & Irving Park Rd","Sheridan Rd & Lawrence Ave","Sheridan Rd & Lawrence Ave","Sheridan Rd & Loyola Ave","Sheridan Rd & Loyola Ave","Sheridan Rd & Montrose Ave","Sheridan Rd & Montrose Ave","Sheridan Rd & Noyes St (NU)","Sheridan Rd & Noyes St (NU)","Shields Ave & 28th Pl","Shields Ave & 28th Pl","Shields Ave & 31st St","Shields Ave & 31st St","Shields Ave & 43rd St","Shields Ave & 43rd St","Shore Dr & 55th St","Shore Dr & 55th St","Smith Park","Smith Park","South Chicago Ave & 83rd St","South Chicago Ave & 83rd St","South Chicago Ave & Elliot Ave","South Chicago Ave & Elliot Ave","South Shore Dr & 67th St","South Shore Dr & 67th St","South Shore Dr & 71st St","South Shore Dr & 71st St","South Shore Dr & 74th St","South Shore Dr & 74th St","Southport Ave & Belmont Ave","Southport Ave & Belmont Ave","Southport Ave & Clark St","Southport Ave & Clark St","Southport Ave & Clybourn Ave","Southport Ave & Clybourn Ave","Southport Ave & Irving Park Rd","Southport Ave & Irving Park Rd","Southport Ave & Roscoe St","Southport Ave & Roscoe St","Southport Ave & Waveland Ave","Southport Ave & Waveland Ave","Southport Ave & Wellington Ave","Southport Ave & Wellington Ave","Southport Ave & Wrightwood Ave","Southport Ave & Wrightwood Ave","Spaulding Ave & 16th St","Spaulding Ave & 16th St","Spaulding Ave & 63rd St","Spaulding Ave & 63rd St","Spaulding Ave & Armitage Ave","Spaulding Ave & Armitage Ave","Spaulding Ave & Division St","Spaulding Ave & Division St","Springfield Ave & 47th St","Springfield Ave & 47th St","St Louis Ave & 59th St","St Louis Ave & Norman Bobbins Ave","St. Clair St & Erie St","St. Clair St & Erie St","St. Louis Ave & Balmoral Ave","St. Louis Ave & Balmoral Ave","St. Louis Ave & Fullerton Ave","St. Louis Ave & Fullerton Ave","State St & 123rd St","State St & 123rd St","State St & 19th St","State St & 19th St","State St & 29th St","State St & 29th St","State St & 33rd St","State St & 33rd St","State St & 35th St","State St & 35th St","State St & 54th St","State St & 54th St","State St & 76th St","State St & 76th St","State St & 79th St","State St & 79th St","State St & 95th St","State St & 95th St","State St & Chicago Ave","State St & Chicago Ave","State St & Harrison St","State St & Harrison St","State St & Kinzie St","State St & Kinzie St","State St & Pearson St","State St & Pearson St","State St & Pershing Rd","State St & Pershing Rd","State St & Randolph St","State St & Randolph St","State St & Van Buren St","State St & Van Buren St","Stave St & Armitage Ave","Stave St & Armitage Ave","Stetson Ave & South Water St","Stetson Ave & South Water St","Stewart Ave & 63rd St","Stewart Ave & 63rd St","Stewart Ave & 83rd St","Stewart Ave & 83rd St","Stockton Dr & Wrightwood Ave","Stockton Dr & Wrightwood Ave","Stony Island Ave & 64th St","Stony Island Ave & 64th St","Stony Island Ave & 67th St","Stony Island Ave & 67th St","Stony Island Ave & 71st St","Stony Island Ave & 71st St","Stony Island Ave & 75th St","Stony Island Ave & 75th St","Stony Island Ave & 82nd St","Stony Island Ave & 82nd St","Stony Island Ave & 90th St","Stony Island Ave & 90th St","Stony Island Ave & South Chicago Ave","Stony Island Ave & South Chicago Ave","Streeter Dr & Grand Ave","Streeter Dr & Grand Ave","Summit Ave & 86th St","Summit Ave & 86th St","Talman Ave & Addison St","Talman Ave & Addison St","Theater on the Lake","Theater on the Lake","Throop St & 52nd St","Throop St & 52nd St","Throop St & Taylor St","Throop St & Taylor St","Torrence Ave & 106th St","Torrence Ave & 106th St","Torrence Ave & 126th Pl","Torrence Ave & 126th Pl","Tripp Ave & 15th St","Tripp Ave & 15th St","Tripp Ave & 31st St","Tripp Ave & 31st St","Tripp Ave & 31st St","Tripp Ave & 65th St","Troy St & Elston Ave","Troy St & Elston Ave","Troy St & Grace St","Troy St & Grace St","Troy St & North Ave","Troy St & North Ave","Union Ave & Root St","Union Ave & Root St","University Ave & 57th St","University Ave & 57th St","University Library (NU)","University Library (NU)","Valli Produce - Evanston Plaza","Valli Produce - Evanston Plaza","Vernon Ave & 107th St","Vernon Ave & 107th St","Vernon Ave & 75th St","Vernon Ave & 75th St","Vernon Ave & 79th St","Vernon Ave & 79th St","Vincennes Ave & 104th St","Vincennes Ave & 104th St","Vincennes Ave & 75th St","Vincennes Ave & 75th St","Virginia Ave & Catalpa Ave","Virginia Ave & Catalpa Ave","W 103rd St & S Avers Ave","W 103rd St & S Avers Ave","W Armitage Ave & N Sheffield Ave","W Armitage Ave & N Sheffield Ave","W Armitage Ave & N Sheffield Ave","W Armitage Ave & N Sheffield Ave","W Oakdale Ave & N Broadway","W Oakdale Ave & N Broadway","W Oakdale Ave & N Broadway","W Oakdale Ave & N Broadway","W Washington Blvd & N Peoria St","W Washington Blvd & N Peoria St","W Washington Blvd & N Peoria St","W Washington Blvd & N Peoria St","Wabash Ave & 16th St","Wabash Ave & 16th St","Wabash Ave & 83rd St","Wabash Ave & 83rd St","Wabash Ave & 87th St","Wabash Ave & 87th St","Wabash Ave & 9th St","Wabash Ave & 9th St","Wabash Ave & Adams St","Wabash Ave & Adams St","Wabash Ave & Cermak Rd","Wabash Ave & Cermak Rd","Wabash Ave & Grand Ave","Wabash Ave & Grand Ave","Wabash Ave & Roosevelt Rd","Wabash Ave & Roosevelt Rd","Wabash Ave & Wacker Pl","Wabash Ave & Wacker Pl","Wacker Dr & Washington St","Wacker Dr & Washington St","Walden Pkwy & 100th St","Walden Pkwy & 100th St","Wallace St & 35th St","Wallace St & 35th St","Walsh Park","Walsh Park","Warren Park East","Warren Park East","Warren Park West","Warren Park West","Washtenaw Ave & Lawrence Ave","Washtenaw Ave & Lawrence Ave","Washtenaw Ave & Madison St","Washtenaw Ave & Madison St","Washtenaw Ave & Ogden Ave","Washtenaw Ave & Ogden Ave","Washtenaw Ave & Peterson Ave","Wells St & 19th St","Wells St & 19th St","Wells St & Concord Ln","Wells St & Concord Ln","Wells St & Elm St","Wells St & Elm St","Wells St & Evergreen Ave","Wells St & Evergreen Ave","Wells St & Hubbard St","Wells St & Hubbard St","Wells St & Huron St","Wells St & Huron St","Wells St & Polk St","Wells St & Polk St","Wells St & Walton St","Wells St & Walton St","Wentworth Ave & 104th St","Wentworth Ave & 104th St","Wentworth Ave & 24th St (Temp)","Wentworth Ave & 24th St (Temp)","Wentworth Ave & 33rd St","Wentworth Ave & 33rd St","Wentworth Ave & 35th St","Wentworth Ave & 35th St","Wentworth Ave & 63rd St","Wentworth Ave & 63rd St","Wentworth Ave & Cermak Rd","Wentworth Ave & Cermak Rd","WEST CHI-WATSON","WEST CHI-WATSON","Western & 28th - Velasquez Institute Vaccination Site","Western & 28th - Velasquez Institute Vaccination Site","Western Ave & 104th St","Western Ave & 104th St","Western Ave & 111th St","Western Ave & 111th St","Western Ave & 21st St","Western Ave & 21st St","Western Ave & 24th St","Western Ave & 24th St","Western Ave & 28th St","Western Ave & 62nd St","Western Ave & 62nd St","Western Ave & Ardmore Ave","Western Ave & Ardmore Ave","Western Ave & Congress Pkwy","Western Ave & Congress Pkwy","Western Ave & Division St","Western Ave & Division St","Western Ave & Fillmore St","Western Ave & Fillmore St","Western Ave & Grace St","Western Ave & Grace St","Western Ave & Granville Ave","Western Ave & Granville Ave","Western Ave & Gunnison St","Western Ave & Gunnison St","Western Ave & Howard St","Western Ave & Howard St","Western Ave & Lake St","Western Ave & Lake St","Western Ave & Leland Ave","Western Ave & Leland Ave","Western Ave & Lunt Ave","Western Ave & Lunt Ave","Western Ave & Monroe St","Western Ave & Monroe St","Western Ave & Roscoe St","Western Ave & Roscoe St","Western Ave & Walton St","Western Ave & Walton St","Western Ave & Winnebago Ave","Western Ave & Winnebago Ave","Western Blvd & 48th Pl","Western Blvd & 48th Pl","Whipple/Irving Park","Whipple/Irving Park","Wilton Ave & Belmont Ave","Wilton Ave & Belmont Ave","Wilton Ave & Diversey Pkwy","Wilton Ave & Diversey Pkwy","Winchester (Ravenswood) Ave & Balmoral Ave","Winchester (Ravenswood) Ave & Balmoral Ave","Winchester Ave & Elston Ave","Winchester Ave & Elston Ave","Winthrop Ave & Lawrence Ave","Winthrop Ave & Lawrence Ave","Wolcott (Ravenswood) Ave & Montrose Ave","Wolcott (Ravenswood) Ave & Montrose Ave","Wolcott Ave & Fargo Ave","Wolcott Ave & Fargo Ave","Wolcott Ave & Polk St","Wolcott Ave & Polk St","Wood St & 35th St","Wood St & 35th St","Wood St & Augusta Blvd","Wood St & Augusta Blvd","Wood St & Chicago Ave","Wood St & Chicago Ave","Wood St & Hubbard St","Wood St & Hubbard St","Wood St & Milwaukee Ave","Wood St & Milwaukee Ave","Wood St & Taylor St (Temp)","Wood St & Taylor St (Temp)","Woodlawn & 103rd - Olive Harvey Vaccination Site","Woodlawn & 103rd - Olive Harvey Vaccination Site","Woodlawn Ave & 55th St","Woodlawn Ave & 55th St","Woodlawn Ave & 75th St","Woodlawn Ave & 75th St","Woodlawn Ave & Lake Park Ave","Woodlawn Ave & Lake Park Ave","Yates Blvd & 75th St","Yates Blvd & 75th St","Yates Blvd & 93rd St","Yates Blvd & 93rd St"],"start_station_id":["KA1504000155","KA1504000155","351","15491","15491","13028","13028","13157","13157","13156","13156","18062","18062","20129","20129","13353","13353","13431","13431","15691","15691","434","434","15655","15655","15621","15621","20212","20212","18022","18022","341","341","345","15664","15664","13354","13354","16940","16940","16948","16948","16950","16950","20245","20245","20234","20234","15442","15442","13248","13248","13249","13249","13224","13224","13247","13247","13061","13061","16943","16943","13319","13319","13434","13434","13073","13073","16937","16937","16932","16932","13269","13269","13296","13296","373","16921","16921","16906","16906","16918","16918","20220","20220","20218","20218","20214","20214","15640","15640","15624","15624","20229","20229","Hubbard Bike-checking (LBS-WH-TEST)","Hubbard Bike-checking (LBS-WH-TEST)","16970","16970","596","596","18016","18016","20232","20232","13059","13059","13398","13398","377","377","13135","13135","16806","16806","20227","20227","13108","13108","13137","13137","13277","13277","13109","13109","13278","13278","15571","15571","15578","15578","13323","13323","15575","15575","13325","13325","13074","13074","13074","13074","15541","15541","15585","15585","TA1309000036","TA1309000036","20222","20222","15545","15545","13096","13096","15689","15689","15692","15692","466","466","338","15646","15646","15628","15628","17660","17660","13256","13256","15642","15642","13259","13259","15666","15666","390","13084","13084","15622","15622","13258","13258","443","443","13102","13102","15546","15546","13217","13217","13345","13345","15470","15470","15599","15599","20224","20224","383","15648","15648","15623","15623","13257","13257","13011","13011","13326","13326","13138","13138","13341","13341","13056","13056","15550","15550","13124","13124","18025","18025","13196","13196","16920","16920","16915","16915","16905","16905","16916","16916","355","355","396","396","370","370","15687","15687","18017","18017","329","329.0","329.0","15644","15644","15652","15652","15685","15685","369","16907","16907","E007","E007","E006","E006","18069","18069","E008","E008","E002","E002","20106","20106","15615","15615","16912","16912","322","322","16903","16903","16913","16913","13427","13427","13245","13245","13379","13379","13389","13389","TA1307000119","TA1307000119","SL-009","SL-009","13146","13146","KA1504000146","KA1504000146","KA1504000151","KA1504000151","13303","13303","RP-008","RP-008","TA1307000142","TA1307000142","TA1307000039","TA1307000039","KA1504000148","KA1504000148","TA1307000127","TA1307000127","TA1305000009","TA1305000009","517","517","KA1503000012","KA1503000012","TA1309000014","TA1309000014","13179","13179","KA1504000162","KA1504000162","KA1503000022","KA1503000022","632","632","13128","13128","TA1305000030","TA1305000030","TA1309000024","TA1309000024","KA1504000156","KA1504000156","RP-007","RP-007","TA1307000136","TA1307000136","TA1309000035","TA1309000035","TA1305000014","TA1305000014","TA1307000163","TA1307000163","TA1307000044","TA1307000044","638","638","13021","13021","TA1305000032","TA1305000032","15542","15542","WL-008","WL-008","13037","13037","WL-012","WL-012","TA1307000115","TA1307000115","20230","20230","13263","13263","20225","20213","20213","TA1309000051","TA1309000051","518","518","20228","20228","KA1503000007","KA1503000007","653","653","20131","20131","TA1308000023","TA1308000023","TA1309000053","TA1309000053","TA1309000067","TA1309000067","KA1503000054","KA1503000054","KA1503000031","KA1503000031","KA1503000003","KA1503000003","575","575","585","585","TA1308000038","TA1308000038","TA1306000010","TA1306000010","471","471","554","554","561","561","13288","13288","13132","13132","13271","13271","13133","13133","TA1307000066","TA1307000066","13089","13089","13136","13136","KA1504000149","KA1504000149","TA1308000006","TA1308000006","TA1307000158","TA1307000158","13134","13134","13143","13143","546","546","TA1305000041","TA1305000041","TA1309000012","TA1309000012","TA1307000070","TA1307000070","20","20","20.0","20.0","KA17018054","KA17018054","13268","13268","20113","20113","20116","20116","13058","13058","TA1307000128","TA1307000128","TA1305000005","TA1305000005","13045","13045","TA1305000006","TA1305000006","624","624","KA1706005007","KA1706005007","15539","15539","TA1306000003","TA1306000003","15535","15535","DIVVY CASSETTE REPAIR MOBILE STATION","600","600","E011","E011","662","662","KA1503000069","KA1503000069","KA1503000046","KA1503000046","20114","KA1504000142","KA1504000142","KA1504000097","KA1504000097","KA1503000064","KA1503000064","TA1309000049","TA1309000049","TA1309000039","TA1309000039","13300","13300","LF-005","LF-005","TA1306000029","TA1306000029","TA1307000041","TA1307000041","KA1503000075","KA1503000075","20231","20231","523","523","20211","20211","KA1503000033","KA1503000033","20110","20110","13289","13289","650","650","20118","20118","13197","13197","553","553","647","647","20119","20119","KA1503000052","KA1503000052","KA1504000076","KA1504000076","TA1309000011","TA1309000011","KA1503000014","KA1503000014","584","584","598","598","TA1305000039","TA1305000039","472","472","433","433","TA1309000032","TA1309000032","TA1307000153","TA1307000153","TA1309000055","TA1309000055","570","570","661","661","20223","20223","580","580","TA1305000003","TA1305000003","18003","18003","380","380","KA1504000102","KA1504000102","SL-008","SL-008","15534","15534","13029","13029","SL-010","SL-010","TA1307000048","TA1307000048","381","381","429","429","KA1504000160","KA1504000160","460","460","446","446","TA1309000008","TA1309000008","13017","13017","RN-","RN-","TA1305000025","TA1305000025","TA1307000111","TA1307000111","TA1309000007","TA1309000007","KA1504000175","KA1504000175","525","525","TA1307000120","TA1307000120","13053","13053","13294","13294","TA1307000001","TA1307000001","520","520","TA1308000002","TA1308000002","576","576","20235","20235","20238","20238","20108","20108","KA1503000055","KA1503000055","20125","20125","20127","20127","13099","13099","13099","13099","13162","13162","TA1308000043","TA1308000043","TA1307000161","TA1307000161","KA1503000051","KA1503000051","KA1503000010","KA1503000010","KA1503000011","KA1503000011","593","593","KA1503000055","KA1503000055","15597","15597","20244","20244","20233","20233","20105","20105","TA1308000013","TA1308000013","331","331","13192","13192","TA1309000001","TA1309000001","KA1504000117","KA1504000117","TA1307000121","TA1307000121","TA1305000017","TA1305000017","TA1309000025","TA1309000025","TA1307000166","TA1307000166","TA1309000061","TA1309000061","350","202480","202480","202480.0","202480.0","332","332.0","332.0","326","326","325","325","KA1503000070","KA1503000070","20215","20215","13080","13080","364","364","364.0","364.0","20206","20206","TA1305000034","TA1305000034","20242","20242","337","337","KA1504000091","KA1504000091","655","655","15651","15651","20112","20112","20240","TA1307000005","TA1307000005","TA1308000036","TA1308000036","13083","13083","SL-005","SL-005","WL-011","WL-011","KA1503000030","KA1503000030","KA1503000018","KA1503000018","KA1503000028","KA1503000028","534","534","20201","20201","20204","20204","15686","15686","KA1504000086","KA1504000086","382","382","384","384","346","346","KA1504000167","KA1504000167","KA1504000114","KA1504000114","KA1504000128","KA1504000128","436","436","KA1504000082","KA1504000082","KA1504000106","KA1504000106","KA1504000126","KA1504000126","13085","13085","13292","13292","15682","15682","330.0","330.0","402","402","361","361","537","537","16010","16010","KA1504000164","KA1504000164","359","359","360","360","590","590","16994","16994","365","365.0","401","403","371","303","303","KA1706005015","KA1706005015","374","374","358","358","KA150400009X","KA150400009X","TA1309000037","TA1309000037","13265","13265","KA1503000043","KA1503000043","592","592","335","335.0","335.0","347","15643","15643","406","406","545","545","536","536","321","321","13307","13307","KA1503000004","KA1503000004","TA1308000035","TA1308000035","KA1503000059","KA1503000059","TA1309000063","TA1309000063","TA1309000049","TA1309000049","TA1309000039","TA1309000039","13300","13300","LF-005","LF-005","TA1306000029","TA1306000029","TA1307000041","TA1307000041","KA1504000152","KA1504000152","639","639","TA1309000019","TA1309000019","357","357","316","316","302","543","543","530","530","540","540","TA1309000006","TA1309000006","KA1504000079","KA1504000079","TA1306000009","TA1306000009","TA1306000007","TA1306000007","TA1306000008","TA1306000008","KA1504000116","KA1504000116","13193","13193","KP1705001026","KP1705001026","KA1503000034","KA1503000034","13430","13430","TA1309000004","TA1309000004","13006","13006","642","642","356","356","399","399","304","304","400","400","20203","20203","362.0","362.0","334","334.0","334.0","307","KA1504000143","KA1504000143","KA1503000068","KA1503000068","TA1309000029","TA1309000029","KA17018068","KA17018068","18058","18058","658","658","TA1309000015","TA1309000015","TA1308000005","TA1308000005","TA1309000050","TA1309000050","442","442","TA1309000026","TA1309000026","TA1309000042","TA1309000042","TA1307000064","TA1307000064","TA1309000058","TA1309000058","462","462","TA1307000138","TA1307000138","TA1307000156","TA1307000156","13253","13253","KA1504000078","KA1504000078","LP-","LP-","E014","E014","312","312","TA1308000031","TA1308000031","398","398","313","313","317","317","375","375","20121","20121","20102","201022","201022","KA1503000040","KA1503000040","13206","13206","13332","13332","20999","308","308","20207","20207","20208","20208","631","631","631","631","KA1504000127","KA1504000127","389","389","KA1504000130","KA1504000130","KA1504000171","KA1504000171","20239","20239","549","549","560","560","TA1305000039","TA1305000039","20134","20134","473","473","567","567","13331","13331","13160","13160","KA1503000041","KA1503000041","TA1306000029","TA1306000029","TA1305000004","TA1305000004","324","324","353","353","305","305","376","376","20243","20243","TA1307000124","TA1307000124","13150","13150","651","651","623","623","TA1305000010","TA1305000010","TA1309000002","TA1309000002","TA1305000011","TA1305000011","13036","13036","13042","13042","13034","13034","13001","13001","15529","15529","13338","13338","KA1504000110","KA1504000110","13008","13008","16991","16991","428","428","13033","13033","13242","13242","13243","13243","TA1307000139","TA1307000139","TA1308000007","TA1308000007","KA1503000073","KA1503000073","KA1503000053","KA1503000053","586","586","13420","13420","301","301","KA1504000139","KA1504000139","TA1308000012","TA1308000012","TA1306000002","TA1306000002","13163","13163","TA1308000046","TA1308000046","TA1306000015","TA1306000015","16933","16933","TA1307000130","TA1307000130","418","418","351","351","KA1503000074","KA1503000074","20251","20251","20251.0","20251.0","20249","20249.0","20249.0","20255","20255.0","20255.0","20246","20246","20246.0","20246.0","20248.0","20253","20253","20253.0","20253.0","20256","20256","20256.0","20256.0","444","20257","20257","20257.0","20257.0","323","323","309","309","314","314","397","397","TA1306000013","TA1306000013","13290","13290","378","378","TA1308000014","TA1308000014","310","310","318","318","KA1504000158","KA1504000158","RP-004","RP-004","TA1305000020","TA1305000020","13081","13081","13194","13194","KA1504000101","KA1504000101","20226","20226","393","20111","320","320","620","620","TA1306000006","TA1306000006","636","636","TA1305000022","TA1305000022","394","354","TA1305000037","TA1305000037","TA1307000159","TA1307000159","KA1504000104","KA1504000104","515","515","TA1309000021","TA1309000021","13158","13158","KA1503000047","KA1503000047","579","579","582","582","TA1308000022","TA1308000022","TA1307000150","TA1307000150","20260","20260","20260.0","20260.0","327","327","KA1503000027","KA1503000027","TA1307000160","TA1307000160","KA1503000009","KA1503000009","KA1503000013","KA1503000013","20103","20103","340","340","331","331","331.0","331.0","343","343","404","404","535","535","KA1504000141","KA1504000141","528","528","13165","13165","13304","13304","13164","13164","15446","15446","562","562","564","564","TA1308000019","TA1308000019","TA1306000025","TA1306000025","TA1306000026","TA1306000026","559","559","13155","13155","654","654","TA1309000059","TA1309000059","KA1503000049","KA1503000049","TA1309000018","TA1309000018","TA1307000149","TA1307000149","TA1309000066","TA1309000066","13215","13215","652","652","388","388","15645","15645","452","452","514","514","RP-006","RP-006","KA1504000134","KA1504000134","386","379","379","425","425","KA1504000093","KA1504000093","435","435","319","319","KA1504000133","KA1504000133","KA1503000044","KA1503000044","15530","15530","20126","20126","20209","20209","20128","424","339","339","432","432","KA1504000113","KA1504000113","414","414","419","13409","13409","KA1504000096","KA1504000096","352","352","TA1307000062","TA1307000062","TA1307000038","TA1307000038","TA1307000143","TA1307000143","13191","13191","557","557","13144","13144","15544","15544","TA1306000016","TA1306000016","13154","13154","TA1307000126","TA1307000126","TA1309000033","TA1309000033","TA1307000052","TA1307000052","TA1306000032","TA1306000032","TA1309000023","TA1309000023","TA1309000027","TA1309000027","660","660","KA1504000159","KA1504000159","13063","13063","TA1309000041","TA1309000041","RP-009","RP-009","TA1307000107","TA1307000107","604","604","15443","15443","KA1503000038","KA1503000038","KA1503000001","KA1503000001","TA1308000009","TA1308000009","643","643","588","588","665","665","KA1503000029","KA1503000029","KA1503000002","KA1503000002","KA1503000020","KA1503000020","13229","13229","TA1308000047","TA1308000047","TA1309000030","TA1309000030","TA1309000043","TA1309000043","13071","13071","13235","13235","TA1307000006","TA1307000006","TA1307000113","TA1307000113","366.0","366.0","349","349","15650","15650","15654","15654","344","344","387","385","13016","13016","KA1504000161","KA1504000161","KA1504000090","KA1504000090","20210","20210","SL-013","SL-013","13213","13213","13216","13216","TA1307000129","TA1307000129","646","646","572","572","573","573","20104","20104","21544","21544","SL-007","SL-007","13050","13050","TA1307000061","TA1307000061","15449","15449","TA1305000029","TA1305000029","TA1305000035","TA1305000035","13266","13266","TA1308000029","TA1308000029","649","649","20120","20120","13276","13276","KA1503000021","KA1503000021","KA1503000023","KA1503000023","KA1503000045","KA1503000045","KA1503000019","KA1503000019","583","583","20236","20236","577","577","13022","13022","20101","20101","15632","15632","TA1308000001","TA1308000001","556","556","13139","13139","20221","20221","20217","20217","363.0","363.0","368","368.0","368.0","407","15631","15631","430","430","15653","15653","KA1503000032","KA1503000032","KA1503000071","KA1503000071","605","605","599","599","20109","20109","571","571","574","574","20124","20124","16953","16953","441","441","20202","20202","20254","20254","20254.0","20254.0","20252","20252","20252.0","20252.0","20247","20247","20247.0","20247.0","SL-012","SL-012","587","587","595","595","TA1309000010","TA1309000010","KA1503000015","KA1503000015","TA1305000001","TA1305000001","TA1307000117","TA1307000117","TA1305000002","TA1305000002","TA1307000131","TA1307000131","KA1503000072","KA1503000072","20107","20107","TA1308000045","TA1308000045","18067","18067","RP-002","RP-002","RP-001","RP-001","KA1504000080","KA1504000080","416","416","KA1504000109","KA1504000109","458","SL-006","SL-006","TA1308000050","TA1308000050","KA1504000135","KA1504000135","TA1308000049","TA1308000049","TA1307000151","TA1307000151","TA1306000012","TA1306000012","SL-011","SL-011","TA1306000011","TA1306000011","20130","20130","TA1308000026","TA1308000026","15445","15445","KA1503000005","KA1503000005","KA1503000025","KA1503000025","13075","13075","DIVVY 001","DIVVY 001","KA1504000168","KA1504000168","20123","20123","20205","20205","13091","13091","TA1309000003","TA1309000003","KA1504000168","348","348","464","464","15668","15668","13241","13241","644","644","431","431","KA1504000129","KA1504000129","445","445","527","527","415","415","TA1307000140","TA1307000140","RP-005","RP-005","15667","15667","15634","15634","KA1504000103","KA1504000103","13068","13068","594","594","475","475","TA1307000134","TA1307000134","TA1306000014","TA1306000014","KA1504000147","KA1504000147","KA1504000140","KA1504000140","TA1308000021","TA1308000021","TA1307000144","TA1307000144","519","519","TA1309000064","TA1309000064","KA1503000066","KA1503000066","657","657","637","637","13432","13432","13221","13221","13285","13285","20133","20133","TA1307000164","TA1307000164","569","569","KA1503000065","KA1503000065","KA1503000024","KA1503000024","20237","20237"],"member_casual":["casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","casual","casual","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","member","casual","member","casual","member","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","member","casual","member","casual","casual","member","casual","member","casual","member","member","casual","member","casual","member","casual","member","casual","member","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member","casual","member"],"count":[316,515,1,866,562,2074,5578,3049,8029,3045,6926,3394,5750,35,10,2676,5816,6837,5279,118,109,11,34,1822,2303,597,1099,38,5,174,189,10,3,19,600,1558,493,2085,91,25,69,44,46,13,68,17,47,34,378,580,2303,5139,1269,1560,4272,5745,3259,5565,9161,13230,74,14,2602,4143,2555,3200,2171,2365,113,155,108,194,1816,3892,2884,3716,4,115,105,290,130,137,104,6,1,69,9,79,9,698,774,654,494,109,39,10,161,37,19,2037,3240,419,570,138,63,7891,10675,1792,2474,16,5,1829,3187,283,571,94,12,2890,5222,10919,16812,6344,9382,2289,5281,7518,12100,2438,4183,2086,4066,5170,7899,2203,4017,6794,12805,3092,5381,11,121,8166,1980,414,438,4926,8785,117,38,3765,8183,445,660,165,564,101,169,2,1,9,1650,1911,713,1102,1923,2529,1608,1794,1240,1380,1872,2059,352,377,3,4421,4727,780,1669,1854,2263,5,20,3036,5626,1601,1748,630,4393,622,1294,573,258,44,13,214,42,2,1486,1682,505,1984,2697,2678,4385,11319,855,1915,1424,4600,3670,8372,2196,5881,2002,3302,3587,2344,21,6,4085,6059,108,410,77,41,162,60,76,136,31,4,23,22,6,6,95,30,1268,1244,5,42,1,732,951,639,285,271,209,11,132,94,440,537,501,711,512,1066,1946,1674,1045,2359,181,213,550,679,39,33,10,7,112,20,58,7,5432,6871,1092,1276,4113,8151,4060,7091,2403,3844,2462,3738,13246,15909,3660,5415,2131,4323,5734,8259,592,1439,9039,12907,14254,23680,852,2091,7728,7785,1577,3335,250,743,5780,9220,3096,5556,14153,15577,751,1569,1896,3840,10910,9738,6044,6484,4808,9783,7955,12936,810,1651,260,596,7114,11150,4202,7195,9599,13607,3753,7138,831,1914,2996,9701,4897,11661,6612,16314,479,711,2839,4581,1063,2059,4571,14622,2088,4567,84,37,7793,12638,37,100,14,65,24,407,247,57,10,2551,4028,231,143,98,27,321,319,482,464,558,433,394,270,192,52,117,11,111,21,115,57,755,650,5479,11641,9,8,65,13,48,16,2350,3192,4269,6642,1682,3039,5096,6521,225,315,957,1347,4130,5783,1284,2139,2178,2815,1407,3805,1268,1836,1679,1703,182,198,9044,10153,981,2175,3046,4436,25,44,309,286,1075,1479,2013,2529,59,13,149,18,4874,6627,8719,13493,2848,5427,10553,18462,5374,10993,2987,4172,2679,3614,3052,8258,7861,15962,4676,7131,4,243,437,181,191,208,234,431,665,448,234,7,323,403,324,782,9687,5332,4987,5487,4661,5577,11188,4619,11797,9047,4778,4088,4531,5926,307,369,61,56,631,1677,50,5,300,78,126,34,3674,5890,82,20,110,17,1716,3469,47,26,27,12,113,4,1684,3755,2766,8654,1431,5342,3911,12258,147,11,255,661,2429,3349,18,38,14,14,1153,1709,438,1873,982,4018,82,31,749,603,31,37,80,78,9927,12789,2562,6042,11,1,203,275,7365,10711,4917,6861,4714,1535,2171,4624,3735,4465,3,2,1,14,612,1151,1,2,5,5,3128,5482,4351,9348,6215,10216,6044,9197,5065,9656,3660,8553,1279,2480,645,1237,9394,15221,8672,10468,2952,4054,4906,7483,704,2094,776,862,99,30,34,3,187,15,117,50,107,61,67,7,51,12,569,870,648,947,928,864,596,977,219,307,229,359,46,44,58,21,27,8,2,1,35,15,56,5,66,10,52,30,589,967,6478,11581,6588,9495,2297,5055,945,1445,1578,7869,940,3477,9099,11362,4012,7394,7481,10639,9,19,73,144,202,1,15,4,26,11,15,4,914,2616,37,16,169,974,1,1,39,2,105,18,5078,5496,65,23,11,6,140,93,722,1202,2580,2302,81,17,1,744,2094,732,2977,212,296,12273,12387,2739,5573,344,181,205,65,125,23,78,19,16,2,55,14,187,83,96,54,23,1,16,8,16,3,343,459,294,306,429,540,5,43,111,42,325,239,489,498,4646,4055,1664,2180,174,41,25,8,7,4,11,5,53,10,430,227,299,314,35,20,43,46,141,184,133,128,1,6,3,4,9,10,3,231,310,7,2,33,24,770,924,3907,6887,5700,13386,8667,22465,183,210,4,19,2,7,928,683,8,1,67,52,67,10,60,20,955,1236,1406,977,1032,1178,2608,2907,1838,3633,4475,4858,4753,5296,12222,5286,11343,8558,4531,4373,4215,5601,5786,8781,3242,4854,9953,12586,38,5,29,28,5,45,17,104,29,77,58,3959,6623,4388,7143,4040,11512,1838,3956,2993,4667,2099,5502,11323,13984,5888,8347,1906,3190,10393,11833,2644,8346,2760,6611,72,25,25,19,7,2,20,2,13,14,131,14,15,1,6,49,2,10,880,1418,256,426,2053,3039,1467,2124,1746,2676,1428,2693,827,1784,2765,3579,1303,1775,5,26,1727,3807,3830,6917,5641,9585,9384,12772,1,4,3942,7003,1390,3410,1556,3298,850,1300,7117,5679,184,481,68,22,2196,2800,83,54,23,10,37,42,10,1,104,38,5,72,3,373,763,1733,4734,2238,13467,1,24,3,93,17,65,10,1,26,708,898,412,1214,9,1,258,224,3093,4436,99,11,72,206,24,16,629,1344,21,1,57,5,58,34,794,1123,1993,7072,6378,12434,61,119,2332,1071,36,26,34,7,22,1,4,1,66,7,4568,8401,3014,6077,63,18,9770,5670,3671,2733,5533,3634,10361,10679,4944,5454,21820,13945,5817,5427,10213,10498,6229,10287,4817,10311,149,67,22356,8191,214,383,43,51,6790,10722,1837,2399,4524,7424,1385,5955,488,193,216,147,157,128,33,16,533,504,9,4,541,496,8033,7912,947,3699,1725,2581,927,2067,7707,10290,74,95,1510,8327,2,7,39,20,2418,1829,21,60,61,115,1,3,6,1,4,6,47,119,850,818,1,2,15,50,52,24,18,261,213,1,9,12,170,133,27,5,13,3,46,17,33,13,12016,11137,2949,5827,30,26,271,856,14,9,50,17,845,1210,257,223,4320,6198,570,2033,3034,7064,516,858,52,13,37,1,30,3,4227,6714,2102,3347,2966,6736,5830,12271,15,13,3911,5300,1396,2247,1736,8179,637,1192,993,2029,4546,10038,138,31,138,91,70,10,5221,8260,7065,11550,1,3,5,6,43,1,516,304,475,517,243,113,170,113,112,41,4,1,1,1,18,4,13,6,2,4,97,12,246,155,106,77,510,521,1053,1731,2290,4305,398,566,24,13,27,8,6376,7254,1211,3954,4328,9860,77,16,1926,3135,1776,3192,3112,5254,146,63,885,2512,1431,3656,3589,7776,886,2886,59,7,14,1,907,931,2,9,239,443,273,307,5649,7516,20,16,8,15,4,573,1981,27,20,11,9,8006,10952,3460,5441,7329,11002,7,6,3,2,4,3,15,4,5,7,106,223,5,3,1,3677,6164,430,432,29,6,3766,9474,6946,8960,2421,3149,6015,8927,32,23,2147,3024,15237,4777,5935,11300,4300,9171,8699,8945,6735,9454,7222,10183,4253,8769,7108,8162,2919,5573,1151,2411,804,1150,5147,8656,1982,3703,1809,2381,5069,8941,2136,2704,563,1007,520,2465,79,34,4824,6007,674,1215,78,16,19,4,579,489,656,754,249,178,4617,5160,1191,2023,3648,5526,2473,4731,7838,10383,6595,10565,4980,7412,5798,6071,43,8,10,3,1648,1476,711,896,3,4,4,9,8288,18107,322,381,1119,1184,148,5,1190,1585,265,377,1129,7967,779,2810,119,55,23,8,179,64,272,68,5,13,3741,4048,7718,10613,4434,6812,85,173,7672,10015,2936,4756,1773,2346,4531,6681,84,35,123,13,7448,9341,258,107,231,74,250,42,153,115,109,78,64,47,107,30,45962,15638,66,10,878,1570,15893,15042,48,10,1326,5493,40,1,33,2,14,2,3,33,3,17,761,1112,15,25,1266,1184,177,299,3291,10990,908,1571,481,471,73,1,95,18,118,26,54,29,47,4,5,14,39,7,19,57,301,309,41,42,737,591,1,10,62,77,2883,6154,27,9,201,36,6238,9087,4090,5313,1642,1570,12683,15730,7481,12956,7294,5903,2378,5694,138,23,561,1917,2866,4463,321,468,509,389,806,1800,1,1,366,667,3,978,1165,17280,22562,14615,20075,11539,12849,8124,14378,10661,18083,4869,7080,3420,5601,57,11,754,909,693,1787,608,847,126,63,4045,3491,8,1,41,68,103,13,108,10,480,1122,250,493,5,6,1,3,1,775,1970,2236,2701,877,3739,6,14,456,479,19,31,317,338,3,1,1804,3786,345,858,547,1320,873,1431,2810,3953,3453,4761,188,69,10,2,10881,14074,7509,10775,512,1097,1372,1893,2469,3536,1371,3100,219,201,1404,8080,272,311,1985,3389,2304,4349,1488,2643,6295,8216,894,5807,9,3,2212,4127,32,9,637,802,113,39,58,16]},"columns":[{"accessor":"start_station_name","name":"start_station_name","type":"character"},{"accessor":"start_station_id","name":"start_station_id","type":"character"},{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"count","name":"count","type":"numeric"}],"filterable":true,"searchable":true,"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"theme":{"color":"#222222","backgroundColor":"#ffffff","borderColor":"#dddddd","borderWidth":"1px","stripedColor":"#dddddd","highlightColor":"#f0f0f0","cellPadding":5,"tableStyle":{"fontFamily":"Helvetica","fontSize":14,"borderBottom":"3px solid #222222"},"headerStyle":{"borderWidth":"3px","paddingTop":"12px","verticalAlign":"bottom","textAlign":"bottom","background":"#ffffff","textTransform":"uppercase","borderColor":"#222222","color":"#000000","&:hover":{"background":"#dddddd"},"&[aria-sort='ascending'], &[aria-sort='descending']":{"background":"#5b5e5f","color":"#ffffff"},"borderColor.1":"#333","fontSize":12,"fontFamily":"Helvetica"},"groupHeaderStyle":{"&:not(:empty)":{"paddingBottom":"3px","verticalAlign":"bottom","textAlign":"bottom","backgroundColor":"#ffffff","textTransform":"uppercase","fontSize":12,"fontFamily":"Helvetica","color":"#222222"}},"rowSelectedStyle":{"backgroundColor":"#dddddd"},"inputStyle":{"backgroundColor":"#ffffff","color":"#222222"},"searchInputStyle":{"textTransform":"uppercase","color":"#222222","fontSize":"14px"},"paginationStyle":{"textTransform":"uppercase","fontSize":"14px"},"pageButtonStyle":{"textTransform":"uppercase","fontSize":"14px"}},"dataKey":"91c5f33f0eed5c36629d67c33fd03f1f","key":"91c5f33f0eed5c36629d67c33fd03f1f"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<p>This table provides information that gives the starting station name,
+starting station id, whether the user was a member or a casual rider,
+and the number of rides started from that station based on whether the
+user was a member or casual rider. This is a very useful data frame from
+which we can draw important information.</p>
+<p>For instance, we can identify the top ten starting stations for
+casual riders:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>casual_10 <span class="ot">&lt;-</span> Pop_Station_Name <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(member_casual, <span class="fu">desc</span>(count))</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>casual_top_10 <span class="ot">&lt;-</span> <span class="fu">head</span>(casual_10, <span class="dv">10</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>table_casual_top_10 <span class="ot">&lt;-</span> <span class="fu">reactable</span>(casual_top_10, <span class="at">bordered =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">highlight =</span> <span class="cn">TRUE</span>, <span class="at">theme =</span> <span class="fu">fivethirtyeight</span>(), <span class="at">searchable =</span> <span class="cn">TRUE</span>, <span class="at">filterable =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>chart_casual_top_10 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(casual_top_10, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(start_station_name, count), <span class="at">y =</span> count, <span class="at">fill =</span> count)) <span class="sc">+</span> </span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> count), <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="dv">6</span>,</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust=</span> .<span class="dv">5</span>,</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="sc">-</span>.<span class="dv">1</span>, </span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> <span class="st">&quot;exo&quot;</span>) <span class="sc">+</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;Number of Rides&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;Start Station Name&quot;</span>,</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">title  =</span> <span class="st">&quot;Most Popular Start Stations for Casual Riders&quot;</span>) <span class="sc">+</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">label =</span> scales<span class="sc">::</span>comma, <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50000</span>)) <span class="sc">+</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>),</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>, </span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;exo&quot;</span>, <span class="at">size =</span> <span class="dv">17</span>)) <span class="sc">+</span></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis</span>(<span class="at">option =</span> <span class="st">&quot;magma&quot;</span>, <span class="at">begin =</span> .<span class="dv">95</span>, <span class="at">end =</span> .<span class="dv">5</span>)</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>table_casual_top_10</span></code></pre></div>
+<div id="htmlwidget-acce37bc5f5b3ebda908" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-acce37bc5f5b3ebda908">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"start_station_name":["Streeter Dr & Grand Ave","Millennium Park","Michigan Ave & Oak St","Wells St & Concord Ln","Theater on the Lake","Shedd Aquarium","Wells St & Elm St","Clark St & Elm St","Clark St & Lincoln Ave","Clark St & Armitage Ave"],"start_station_id":["13022","13008","13042","TA1308000050","TA1308000001","15544","KA1504000135","TA1307000039","13179","13146"],"member_casual":["casual","casual","casual","casual","casual","casual","casual","casual","casual","casual"],"count":[45962,22356,21820,17280,15893,15237,14615,14254,14153,13246]},"columns":[{"accessor":"start_station_name","name":"start_station_name","type":"character"},{"accessor":"start_station_id","name":"start_station_id","type":"character"},{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"count","name":"count","type":"numeric"}],"filterable":true,"searchable":true,"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"theme":{"color":"#222222","backgroundColor":"#ffffff","borderColor":"#dddddd","borderWidth":"1px","stripedColor":"#dddddd","highlightColor":"#f0f0f0","cellPadding":5,"tableStyle":{"fontFamily":"Helvetica","fontSize":14,"borderBottom":"3px solid #222222"},"headerStyle":{"borderWidth":"3px","paddingTop":"12px","verticalAlign":"bottom","textAlign":"bottom","background":"#ffffff","textTransform":"uppercase","borderColor":"#222222","color":"#000000","&:hover":{"background":"#dddddd"},"&[aria-sort='ascending'], &[aria-sort='descending']":{"background":"#5b5e5f","color":"#ffffff"},"borderColor.1":"#333","fontSize":12,"fontFamily":"Helvetica"},"groupHeaderStyle":{"&:not(:empty)":{"paddingBottom":"3px","verticalAlign":"bottom","textAlign":"bottom","backgroundColor":"#ffffff","textTransform":"uppercase","fontSize":12,"fontFamily":"Helvetica","color":"#222222"}},"rowSelectedStyle":{"backgroundColor":"#dddddd"},"inputStyle":{"backgroundColor":"#ffffff","color":"#222222"},"searchInputStyle":{"textTransform":"uppercase","color":"#222222","fontSize":"14px"},"paginationStyle":{"textTransform":"uppercase","fontSize":"14px"},"pageButtonStyle":{"textTransform":"uppercase","fontSize":"14px"}},"dataKey":"d9ece8b74a7af06966b13d19ee739e9e","key":"d9ece8b74a7af06966b13d19ee739e9e"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>chart_casual_top_10</span></code></pre></div>
+<p><img src="CopyOfMarkdown_Cyclistic_files/figure-html/Top%2010%20Starting%20Stations%20for%20Casual%20Riders-2.png" width="672" /></p>
+<p>And the top 10 starting stations for members:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>member_10 <span class="ot">&lt;-</span> Pop_Station_Name <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(member_casual), <span class="fu">desc</span>(count))</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>member_top_10 <span class="ot">&lt;-</span> <span class="fu">head</span>(member_10, <span class="dv">10</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>table_member_top_10 <span class="ot">&lt;-</span> <span class="fu">reactable</span>(member_top_10, <span class="at">bordered =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">highlight =</span> <span class="cn">TRUE</span>, <span class="at">theme =</span> <span class="fu">fivethirtyeight</span>(), <span class="at">searchable =</span> <span class="cn">TRUE</span>, <span class="at">filterable =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>chart_member_top_10 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(member_top_10, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(start_station_name, count), <span class="at">y =</span> count, <span class="at">fill =</span> count)) <span class="sc">+</span> </span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> count), <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="dv">6</span>,</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust=</span> .<span class="dv">5</span>,</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="sc">-</span>.<span class="dv">1</span>, </span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> <span class="st">&quot;exo&quot;</span>) <span class="sc">+</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;Number of Rides&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;Start Station Name&quot;</span>,</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">title  =</span> <span class="st">&quot;Most Popular Start Stations for Members&quot;</span>) <span class="sc">+</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># the following puts labels in thousands on y-axis (label = scales::comma)</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and makes sure the graph starts on the axis. &quot;limits =&quot; sets the limit of the axis.</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">label =</span> scales<span class="sc">::</span>comma, <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">28000</span>)) <span class="sc">+</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>),</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>, </span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;exo&quot;</span>, <span class="at">size =</span> <span class="dv">17</span>))  <span class="sc">+</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis</span>(<span class="at">option =</span> <span class="st">&quot;magma&quot;</span>, <span class="at">begin =</span> .<span class="dv">95</span>, <span class="at">end =</span> .<span class="dv">5</span>)</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>table_member_top_10</span></code></pre></div>
+<div id="htmlwidget-53c7f1e9ce971396e91a" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-53c7f1e9ce971396e91a">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"start_station_name":["Clark St & Elm St","Wells St & Concord Ln","Kingsbury St & Kinzie St","Wells St & Elm St","Dearborn St & Erie St","St. Clair St & Erie St","Wells St & Huron St","Broadway & Barry Ave","Clinton St & Madison St","Desplaines St & Kinzie St"],"start_station_id":["TA1307000039","TA1308000050","KA1503000043","KA1504000135","13045","13016","TA1306000012","13137","TA1305000032","TA1306000003"],"member_casual":["member","member","member","member","member","member","member","member","member","member"],"count":[23680,22562,22465,20075,18462,18107,18083,16812,16314,15962]},"columns":[{"accessor":"start_station_name","name":"start_station_name","type":"character"},{"accessor":"start_station_id","name":"start_station_id","type":"character"},{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"count","name":"count","type":"numeric"}],"filterable":true,"searchable":true,"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"theme":{"color":"#222222","backgroundColor":"#ffffff","borderColor":"#dddddd","borderWidth":"1px","stripedColor":"#dddddd","highlightColor":"#f0f0f0","cellPadding":5,"tableStyle":{"fontFamily":"Helvetica","fontSize":14,"borderBottom":"3px solid #222222"},"headerStyle":{"borderWidth":"3px","paddingTop":"12px","verticalAlign":"bottom","textAlign":"bottom","background":"#ffffff","textTransform":"uppercase","borderColor":"#222222","color":"#000000","&:hover":{"background":"#dddddd"},"&[aria-sort='ascending'], &[aria-sort='descending']":{"background":"#5b5e5f","color":"#ffffff"},"borderColor.1":"#333","fontSize":12,"fontFamily":"Helvetica"},"groupHeaderStyle":{"&:not(:empty)":{"paddingBottom":"3px","verticalAlign":"bottom","textAlign":"bottom","backgroundColor":"#ffffff","textTransform":"uppercase","fontSize":12,"fontFamily":"Helvetica","color":"#222222"}},"rowSelectedStyle":{"backgroundColor":"#dddddd"},"inputStyle":{"backgroundColor":"#ffffff","color":"#222222"},"searchInputStyle":{"textTransform":"uppercase","color":"#222222","fontSize":"14px"},"paginationStyle":{"textTransform":"uppercase","fontSize":"14px"},"pageButtonStyle":{"textTransform":"uppercase","fontSize":"14px"}},"dataKey":"e6070fd31c3abe3036a888ed4a7bca3d","key":"e6070fd31c3abe3036a888ed4a7bca3d"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>chart_member_top_10</span></code></pre></div>
+<p><img src="CopyOfMarkdown_Cyclistic_files/figure-html/Top%2010%20Starting%20Station%20for%20Members-2.png" width="672" /></p>
+<p>If Cyclistic’s goal is to increase membership, an advertising blitz
+in the areas in these top 10 lists would be advised. Of particular note
+is the number one spot for casual riders, Streeter Dr. &amp; Grand Ave.
+It has twice as many trips as the next most popular spot, Millennium
+Park. Despite these eye-popping, and maybe suspicious, numbers, the data
+fits the context: the Streeter Dr. &amp; Grand Ave. station is the
+station at Navy Pier, one of the most popular tourist destinations in
+Chicago.</p>
+<p>The start station areas with high volumes of users might be areas
+ripe for marketing. So might the areas around start stations with high
+volumes of casual riders that also have long ride times. For casual
+riders, let’s see what high volume start stations (over 500 rides) have
+the longest ride times.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>casual_avg_ride_length <span class="ot">&lt;-</span> Cyclistic <span class="sc">%&gt;%</span>  <span class="fu">group_by</span>(start_station_name, member_casual) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(member_casual <span class="sc">==</span> <span class="st">&quot;casual&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>(), <span class="at">avg_ride_length =</span> <span class="fu">round</span>(<span class="fu">mean</span>(ride_length_numeric), <span class="at">digits =</span> <span class="dv">0</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sectime =</span> <span class="fu">seconds_to_period</span>(avg_ride_length)) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">avg_ride_length_char =</span> <span class="fu">sprintf</span>(<span class="st">&#39;%02d:%02d:%02d&#39;</span>, sectime<span class="sc">@</span>hour, <span class="fu">minute</span>(sectime), <span class="fu">second</span>(sectime))) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#sprintf is from stackoverflow - https://stackoverflow.com/questions/27312292/convert-seconds-to-days-hoursminutesseconds</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(count <span class="sc">&gt;=</span> <span class="dv">500</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(start_station_name, count, member_casual, avg_ride_length_char) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ungroup() %&gt;% </span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avg_ride_length_char))</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>casual_avg_ride_length_top10 <span class="ot">&lt;-</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(casual_avg_ride_length, <span class="dv">10</span>)</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(casual_avg_ride_length_top10, <span class="at">bordered =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">highlight =</span> <span class="cn">TRUE</span>, <span class="at">theme =</span> <span class="fu">fivethirtyeight</span>(), <span class="at">searchable =</span> <span class="cn">TRUE</span>, <span class="at">filterable =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div id="htmlwidget-56e72a393418262cbc7d" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-56e72a393418262cbc7d">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"start_station_name":["Lake Park Ave & 35th St","63rd St Beach","South Shore Dr & 67th St","Museum of Science and Industry","Cottage Grove Ave & Oakwood Blvd","South Shore Dr & 71st St","Fort Dearborn Dr & 31st St","Woodlawn Ave & Lake Park Ave","Sheridan Rd & Loyola Ave","Buckingham Fountain"],"count":[1406,866,579,2418,755,656,3735,637,1809,8166],"member_casual":["casual","casual","casual","casual","casual","casual","casual","casual","casual","casual"],"avg_ride_length_char":["00:48:18","00:47:10","00:46:56","00:45:55","00:45:15","00:43:59","00:43:58","00:42:44","00:39:54","00:39:33"]},"columns":[{"accessor":"start_station_name","name":"start_station_name","type":"character"},{"accessor":"count","name":"count","type":"numeric"},{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"avg_ride_length_char","name":"avg_ride_length_char","type":"character"}],"filterable":true,"searchable":true,"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"theme":{"color":"#222222","backgroundColor":"#ffffff","borderColor":"#dddddd","borderWidth":"1px","stripedColor":"#dddddd","highlightColor":"#f0f0f0","cellPadding":5,"tableStyle":{"fontFamily":"Helvetica","fontSize":14,"borderBottom":"3px solid #222222"},"headerStyle":{"borderWidth":"3px","paddingTop":"12px","verticalAlign":"bottom","textAlign":"bottom","background":"#ffffff","textTransform":"uppercase","borderColor":"#222222","color":"#000000","&:hover":{"background":"#dddddd"},"&[aria-sort='ascending'], &[aria-sort='descending']":{"background":"#5b5e5f","color":"#ffffff"},"borderColor.1":"#333","fontSize":12,"fontFamily":"Helvetica"},"groupHeaderStyle":{"&:not(:empty)":{"paddingBottom":"3px","verticalAlign":"bottom","textAlign":"bottom","backgroundColor":"#ffffff","textTransform":"uppercase","fontSize":12,"fontFamily":"Helvetica","color":"#222222"}},"rowSelectedStyle":{"backgroundColor":"#dddddd"},"inputStyle":{"backgroundColor":"#ffffff","color":"#222222"},"searchInputStyle":{"textTransform":"uppercase","color":"#222222","fontSize":"14px"},"paginationStyle":{"textTransform":"uppercase","fontSize":"14px"},"pageButtonStyle":{"textTransform":"uppercase","fontSize":"14px"}},"dataKey":"25202d7f9c07232343cf8252e1fa9371","key":"25202d7f9c07232343cf8252e1fa9371"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<p>Are there any stations that make an appearance in both the top 10
+number of a casual rides and the top 10 average length of ride?</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>casual_top_10s <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(casual_top_10, casual_avg_ride_length_top10, <span class="st">&quot;start_station_name&quot;</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>casual_top_10s</span></code></pre></div>
+<pre><code>## # A tibble: 0 x 7
+## # Groups:   start_station_name, start_station_id [0]
+## # ... with 7 variables: start_station_name &lt;chr&gt;, start_station_id &lt;chr&gt;,
+## #   member_casual.x &lt;chr&gt;, count.x &lt;int&gt;, count.y &lt;int&gt;, member_casual.y &lt;chr&gt;,
+## #   avg_ride_length_char &lt;chr&gt;</code></pre>
+<p>There is no overlapping station in the top 10 for casual riders by
+volume (number of rides) and the top 10 for casual riders by ride
+length. However, zoom out and include just the next one on the ride
+length list and you will find a very popular start station by volume:
+Millennium Park. A unique marketing strategy for Millennium Park might
+be beneficial, while Cyclistic might want to take different marketing
+angles towards the different stations on the respective lists above.</p>
+</div>
+<div id="days-of-the-week" class="section level2">
+<h2>Days of the Week</h2>
+<p>Let’s now take a look at days of the week. Should Cyclistic focus
+advertising efforts on certain days of the week for casual riders? Are
+members more inclined to ride on weekdays or weekends?</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>days_of_week <span class="ot">&lt;-</span> Cyclistic <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(member_casual, weekday) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(<span class="fu">head</span>(days_of_week, <span class="dv">14</span>), <span class="at">bordered =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">highlight =</span> <span class="cn">TRUE</span>, <span class="at">theme =</span> <span class="fu">fivethirtyeight</span>(), <span class="at">searchable =</span> <span class="cn">TRUE</span>, <span class="at">filterable =</span> <span class="cn">TRUE</span>, <span class="at">pagination =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div id="htmlwidget-d2ecf5af537d551c444a" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-d2ecf5af537d551c444a">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"member_casual":["casual","casual","casual","casual","casual","casual","casual","member","member","member","member","member","member","member"],"weekday":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"count":[331420,191353,184237,189425,195441,246580,387705,307863,343062,384588,394015,370005,362182,353313]},"columns":[{"accessor":"member_casual","name":"member_casual","type":"character"},{"accessor":"weekday","name":"weekday","type":["ordered","factor"]},{"accessor":"count","name":"count","type":"numeric"}],"filterable":true,"searchable":true,"defaultPageSize":14,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"theme":{"color":"#222222","backgroundColor":"#ffffff","borderColor":"#dddddd","borderWidth":"1px","stripedColor":"#dddddd","highlightColor":"#f0f0f0","cellPadding":5,"tableStyle":{"fontFamily":"Helvetica","fontSize":14,"borderBottom":"3px solid #222222"},"headerStyle":{"borderWidth":"3px","paddingTop":"12px","verticalAlign":"bottom","textAlign":"bottom","background":"#ffffff","textTransform":"uppercase","borderColor":"#222222","color":"#000000","&:hover":{"background":"#dddddd"},"&[aria-sort='ascending'], &[aria-sort='descending']":{"background":"#5b5e5f","color":"#ffffff"},"borderColor.1":"#333","fontSize":12,"fontFamily":"Helvetica"},"groupHeaderStyle":{"&:not(:empty)":{"paddingBottom":"3px","verticalAlign":"bottom","textAlign":"bottom","backgroundColor":"#ffffff","textTransform":"uppercase","fontSize":12,"fontFamily":"Helvetica","color":"#222222"}},"rowSelectedStyle":{"backgroundColor":"#dddddd"},"inputStyle":{"backgroundColor":"#ffffff","color":"#222222"},"searchInputStyle":{"textTransform":"uppercase","color":"#222222","fontSize":"14px"},"paginationStyle":{"textTransform":"uppercase","fontSize":"14px"},"pageButtonStyle":{"textTransform":"uppercase","fontSize":"14px"}},"dataKey":"8a2b5286173d6fe7f5b3c8e123626776","key":"8a2b5286173d6fe7f5b3c8e123626776"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<p>We can take a look at this and see…</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>days_of_week <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(days_of_week) <span class="sc">%&gt;%</span>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span> weekday, <span class="at">y =</span> count, <span class="at">fill =</span> member_casual)) <span class="sc">+</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">comma</span>(count)), <span class="at">color =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">fontface =</span> <span class="st">&quot;bold&quot;</span>,</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">vjust=</span> .<span class="dv">5</span>,</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">hjust =</span> <span class="fl">1.15</span>, </span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">family =</span> <span class="st">&quot;exo&quot;</span>) <span class="sc">+</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;Number of Rides&quot;</span>,</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">title  =</span> <span class="st">&quot;Number of Rides by Day of Week&quot;</span>) <span class="sc">+</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># expand_limits(y=c(0, 50000)) +</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># put the discrete variables in the order you want them. </span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="st">&quot;Saturday&quot;</span>, <span class="st">&quot;Friday&quot;</span>, <span class="st">&quot;Thursday&quot;</span>, <span class="st">&quot;Wednesday&quot;</span>, <span class="st">&quot;Tuesday&quot;</span>, <span class="st">&quot;Monday&quot;</span>, <span class="st">&quot;Sunday&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;indianred1&quot;</span>, <span class="st">&quot;goldenrod1&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>, </span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;exo&quot;</span>, <span class="at">size =</span> <span class="dv">20</span>)) <span class="sc">+</span></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(. <span class="sc">~</span> member_casual)</span></code></pre></div>
+<p><img src="CopyOfMarkdown_Cyclistic_files/figure-html/Rides%20by%20Day%20of%20Week%20Visualized-1.png" width="672" /></p>
+<p>…that casual riders are more likely to ride on the weekends. If
+targeting casual riders, advertising on the weekends is recommended.</p>
+</div>
+<div id="time-of-day-by-day-of-week" class="section level2">
+<h2>Time of Day by Day of Week</h2>
+<p>Another avenue to explore is time of day to target casual riders. We
+can accomplish this by taking a look at the time of day both members and
+casual riders are typically beginning their rides.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>Cyclistic_hour_start <span class="ot">&lt;-</span> Cyclistic  <span class="sc">%&gt;%</span> </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">transform</span> (<span class="at">weekday =</span> <span class="fu">factor</span>(weekday, <span class="at">levels=</span><span class="fu">c</span>(<span class="st">&quot;Sunday&quot;</span>, <span class="st">&quot;Monday&quot;</span>, <span class="st">&quot;Tuesday&quot;</span>, <span class="st">&quot;Wednesday&quot;</span>, <span class="st">&quot;Thursday&quot;</span>, <span class="st">&quot;Friday&quot;</span>, <span class="st">&quot;Saturday&quot;</span>)))</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>Cyclistic_hour_start <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hour, <span class="at">fill =</span> member_casual)) <span class="sc">+</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()<span class="sc">+</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Start Hour&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Number of Rides&quot;</span>, <span class="at">title =</span> <span class="st">&quot;Number of Rides by Hour&quot;</span>, </span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;By Day&quot;</span>) <span class="sc">+</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">label =</span> scales<span class="sc">::</span>comma, <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">30000</span>, <span class="dv">60000</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">75000</span>))<span class="sc">+</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;indianred1&quot;</span>, <span class="st">&quot;goldenrod1&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;exo&quot;</span>), </span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing.y =</span> <span class="fu">unit</span>(<span class="dv">2</span>, <span class="st">&quot;lines&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">&quot;Rider Type&quot;</span>)<span class="sc">+</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> weekday, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>)</span></code></pre></div>
+<p><img src="CopyOfMarkdown_Cyclistic_files/figure-html/Time%20of%20Day%20for%20Casual%20Riders%20and%20Members-1.png" width="672" /></p>
+<p>We see from these visualizations that people tend to sleep in on the
+weekends, but also causal rider traffic is most heavy in the middle of
+the day on Saturday and Sunday. On weekdays, casual riders traffic
+increases throughout the day, peaking in late afternoon or early
+evening. Advertising efforts should focus their efforts on these high
+traffic hour windows.</p>
+</div>
+</div>
+<div id="interactive-map-on-tableau" class="section level1">
+<h1>Interactive Map on Tableau</h1>
+<p>Finally, <a
+href="https://public.tableau.com/views/Top20StationswithMap/Top20withMap?:language=en-US&amp;publish=yes&amp;:display_count=n&amp;:origin=viz_share_link">here
+is a link to an interactive dashboard on Tableau.</a> The top 20 start
+stations by total number of rides are given, along with the total hours
+ridden from each station. One can filter by rider type at the top. An
+interactive map is also included which shows number of rides by station
+(minimum of 100 rides). The rider type filter at the top also applies to
+the data presented in the map.</p>
+<p>Useful information to be gleaned from the dashboard:</p>
+<ul>
+<li><p>Not surprisingly, casual riders are practically non-existent in
+the months of January and February. Advertising directed at casual
+riders during this time is ill-advised.</p></li>
+<li><p>There is a swell of casual riders during the summer months,
+particular around popular tourist destinations.</p></li>
+<li><p>There is increased activity among members along Ellis Ave, south
+of the city center, during the fall months. The area of increased
+activity is in the vicinity of the University of Chicago medical
+complex. The increased rate could be tied to Covid cases and/or testing,
+but this information could be used to target casual riders as well,
+highlighting easy accessibility to health care facilities.</p></li>
+</ul>
+<p>*Because of imprecision in latitude and longitude data in the
+original data set, some ride totals may be slightly different than what
+is presented above. Some station names did not match the latitude and
+longitude coordinates, therefore there is some information missing, such
+as the Shedd Aquarium station from the top 20 stations for casual
+riders. Most of the same information from above was captured however,
+and the general conclusions remain the same.</p>
+</div>
+<div id="moving-forward" class="section level1">
+<h1>Moving Forward</h1>
+<p>The primary objective of the analysis was to determine behavioral
+differences between casual riders and members. After completing this
+analysis, the following behavioral differences were identified:</p>
+<ul>
+<li><p>Casual riders have longer ride times on average than
+members</p></li>
+<li><p>Many top 10 start stations by number of rides for casual riders
+are popular tourist destinations throughout city.</p></li>
+<li><p>There is a disproportionate number of rides for casual riders on
+the weekend.</p></li>
+<li><p>Most weekday rides for casual riders begin late afternoon to
+early evening. Most weekend rides begin midday through afternoon. This
+is in contrast to riders who are members who have higher number of rides
+during weekday mornings.</p></li>
+<li><p>There is a higher volume of casual riders in the summer
+months.</p></li>
+</ul>
+<div id="deductions-and-recommendations" class="section level2">
+<h2>Deductions and Recommendations</h2>
+<p>It seems as if many casual riders are tourists, as gleaned from the
+volume of rides by time of year and popular start stations. It will be
+difficult to convince one-off weekend riders to sign up for a Cyclistic
+membership. Strategies to combat this challenge include:</p>
+<ul>
+<li><p>Partnering with other business or services and presenting
+membership as part of a packaged deal.</p></li>
+<li><p>Offering short-term membership options. If the only membership
+option is yearly, 3 month membership options might be more appealing to
+casual riders.</p></li>
+</ul>
+<p>Marketing strategies have been suggested throughout the project, but
+one further strategy is dependent on how casual riders are currently
+charged.</p>
+<ul>
+<li><p>If casual riders are charged by ride, advertising efforts should
+be directed toward high volume stations for casual riders - Streeter
+Dr. &amp; Grand Ave., Millennium Park, Michigan Ave. &amp; Oak St., etc.
+Highlight the benefit of membership for number of rides.</p></li>
+<li><p>If casual riders are charged by length of ride, advertising
+efforts should be directed toward stations with long ride times - Museum
+of Science and Industry, 63rd St. Beach, etc. Highlight the benefit of
+membership for long ride times. If Cyclistic has an app, push
+notifications could be used to inform the rider how much money they
+would have saved on their long ride with a membership.</p></li>
+</ul>
+<p>One possible avenue of further exploration is presence of other bike
+sharing ventures in other urban areas. A packaged deal for membership
+with other bike share ventures (similar to a previous suggestion) could
+entice casual riders to pursue membership. More data on bike share
+ventures in other urban areas would be needed for this analysis.</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -11,11 +11,11 @@
 
 <meta name="author" content="Andrew Borozan" />
 
-<meta name="date" content="2022-03-09" />
+<meta name="date" content="2022-03-11" />
 
 <title>Sentiment Analysis on Reddit Threads</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
@@ -31,9 +31,6 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <script src="site_libs/core-js-2.5.3/shim.min.js"></script>
@@ -53,6 +50,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -185,6 +183,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -326,75 +327,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-.tocify-subheader {
-  display: inline;
-}
-.tocify-subheader .tocify-item {
-  font-size: 0.95em;
-}
-
-</style>
-
-
 
 </head>
 
@@ -404,22 +336,12 @@ div.tocify {
 <div class="container-fluid main-container">
 
 
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
-
-
 
 
 <div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -429,14 +351,14 @@ div.tocify {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Projects
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="./Markdown_Cyclistic.html">Google Data Analytics Certification Project</a>
+      <a href="./Markdown_Cyclistic_Final.html">Google Data Analytics Certification Project</a>
     </li>
     <li>
       <a href="./Reddit_Sentiment_Analysis_2_23.html">Sentiment Analysis with Reddit Comments</a>
@@ -444,7 +366,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Tutorials
      
     <span class="caret"></span>
@@ -456,7 +378,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Blog
      
     <span class="caret"></span>
@@ -467,6 +389,18 @@ div.tocify {
     </li>
     <li>
       <a href="./Frustrations_Along_the_Way.html">Frustrations Along the Way</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Just Following Along
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./TidyTuesday_Horror_Movies.html">Tidy Tuesday: Horror Movies</a>
     </li>
   </ul>
 </li>
@@ -486,7 +420,7 @@ div.tocify {
 <div id="header">
 
 <div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
 <ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
@@ -497,7 +431,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Sentiment Analysis on Reddit Threads</h1>
 <h4 class="author">Andrew Borozan</h4>
-<h4 class="date">2022-03-09</h4>
+<h4 class="date">2022-03-11</h4>
 
 </div>
 
@@ -524,11 +458,11 @@ the type of information contained in the data frame.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Politics <span class="ot">&lt;-</span> <span class="fu">get_thread_content</span>(<span class="st">&quot;https://www.reddit.com/r/politics/comments/szjnqw/republicans_view_putin_more_favorably_than_they/&quot;</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(Politics[[<span class="dv">1</span>]])</span></code></pre></div>
-<div id="htmlwidget-ecf5af537d551c444a21" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-ecf5af537d551c444a21">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"url":["https://www.reddit.com/r/politics/comments/szjnqw/republicans_view_putin_more_favorably_than_they/"],"author":["Archer1407"],"date":["2022-02-23"],"title":["Republicans view Putin more favorably than they do leading Democrats"],"text":[""],"subreddit":["politics"],"score":[18514],"upvotes":[18514],"downvotes":[0],"up_ratio":[0.91],"total_awards_received":[7],"golds":[0],"cross_posts":[7],"comments":[2004]},"columns":[{"accessor":"url","name":"url","type":"character"},{"accessor":"author","name":"author","type":"character"},{"accessor":"date","name":"date","type":"character"},{"accessor":"title","name":"title","type":"character"},{"accessor":"text","name":"text","type":"character"},{"accessor":"subreddit","name":"subreddit","type":"character"},{"accessor":"score","name":"score","type":"numeric"},{"accessor":"upvotes","name":"upvotes","type":"numeric"},{"accessor":"downvotes","name":"downvotes","type":"numeric"},{"accessor":"up_ratio","name":"up_ratio","type":"numeric"},{"accessor":"total_awards_received","name":"total_awards_received","type":"numeric"},{"accessor":"golds","name":"golds","type":"numeric"},{"accessor":"cross_posts","name":"cross_posts","type":"numeric"},{"accessor":"comments","name":"comments","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"ffac9a5972daf212ba2c065375ad0230","key":"ffac9a5972daf212ba2c065375ad0230"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-8505093dd0f5cda6d33e" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-8505093dd0f5cda6d33e">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"url":["https://www.reddit.com/r/politics/comments/szjnqw/republicans_view_putin_more_favorably_than_they/"],"author":["[deleted]"],"date":["2022-02-23"],"timestamp":[1645628885],"title":["Republicans view Putin more favorably than they do leading Democrats"],"text":["[deleted]"],"subreddit":["politics"],"score":[18512],"upvotes":[18512],"downvotes":[0],"up_ratio":[0.91],"total_awards_received":[7],"golds":[0],"cross_posts":[7],"comments":[2003]},"columns":[{"accessor":"url","name":"url","type":"character"},{"accessor":"author","name":"author","type":"character"},{"accessor":"date","name":"date","type":"character"},{"accessor":"timestamp","name":"timestamp","type":"numeric"},{"accessor":"title","name":"title","type":"character"},{"accessor":"text","name":"text","type":"character"},{"accessor":"subreddit","name":"subreddit","type":"character"},{"accessor":"score","name":"score","type":"numeric"},{"accessor":"upvotes","name":"upvotes","type":"numeric"},{"accessor":"downvotes","name":"downvotes","type":"numeric"},{"accessor":"up_ratio","name":"up_ratio","type":"numeric"},{"accessor":"total_awards_received","name":"total_awards_received","type":"numeric"},{"accessor":"golds","name":"golds","type":"numeric"},{"accessor":"cross_posts","name":"cross_posts","type":"numeric"},{"accessor":"comments","name":"comments","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"c7a79b5cd517153d01d537700ed5831b","key":"c7a79b5cd517153d01d537700ed5831b"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(Politics[[<span class="dv">2</span>]][<span class="dv">9</span>, ])</span></code></pre></div>
-<div id="htmlwidget-bb28f318315edbc9587c" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-bb28f318315edbc9587c">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"url":["https://www.reddit.com/r/politics/comments/szjnqw/republicans_view_putin_more_favorably_than_they/"],"author":["Inside-Palpitation25"],"date":["2022-02-23"],"score":[255],"upvotes":[255],"downvotes":[0],"golds":[0],"comment":["do they even realize it's a fascist state though?  They think it's freedom. This is where education comes in, they don't fully understand that if that is what we become, they can on the whim of the leader, become the enemy, and be put to death, or in a work camp for saying something against the dear leader.  I don't they they fully get that , they think they will always be in favor."],"comment_id":["2_1_2"]},"columns":[{"accessor":"url","name":"url","type":"character"},{"accessor":"author","name":"author","type":"character"},{"accessor":"date","name":"date","type":"character"},{"accessor":"score","name":"score","type":"numeric"},{"accessor":"upvotes","name":"upvotes","type":"numeric"},{"accessor":"downvotes","name":"downvotes","type":"numeric"},{"accessor":"golds","name":"golds","type":"numeric"},{"accessor":"comment","name":"comment","type":"character"},{"accessor":"comment_id","name":"comment_id","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"dacdcbd9d94530059bed9f16ece85eda","key":"dacdcbd9d94530059bed9f16ece85eda"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-76b0c08f95f58e73509a" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-76b0c08f95f58e73509a">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"url":["https://www.reddit.com/r/politics/comments/szjnqw/republicans_view_putin_more_favorably_than_they/"],"author":["Inside-Palpitation25"],"date":["2022-02-23"],"timestamp":[1645659437],"score":[261],"upvotes":[261],"downvotes":[0],"golds":[0],"comment":["do they even realize it's a fascist state though?  They think it's freedom. This is where education comes in, they don't fully understand that if that is what we become, they can on the whim of the leader, become the enemy, and be put to death, or in a work camp for saying something against the dear leader.  I don't they they fully get that , they think they will always be in favor."],"comment_id":["2_1_2"]},"columns":[{"accessor":"url","name":"url","type":"character"},{"accessor":"author","name":"author","type":"character"},{"accessor":"date","name":"date","type":"character"},{"accessor":"timestamp","name":"timestamp","type":"numeric"},{"accessor":"score","name":"score","type":"numeric"},{"accessor":"upvotes","name":"upvotes","type":"numeric"},{"accessor":"downvotes","name":"downvotes","type":"numeric"},{"accessor":"golds","name":"golds","type":"numeric"},{"accessor":"comment","name":"comment","type":"character"},{"accessor":"comment_id","name":"comment_id","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"39f9fbf52b0cc91fbc3aeb72f03dca2f","key":"39f9fbf52b0cc91fbc3aeb72f03dca2f"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 <p>We are going to place the data frame with the comments into an
 object…</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Putin_comments <span class="ot">&lt;-</span> Politics[[<span class="dv">2</span>]]</span></code></pre></div>
@@ -545,11 +479,11 @@ by user using different functions of sentimentr.</p>
 ##    4:          1           4         12  0.14433757
 ##    5:          1           5         38  0.32444284
 ##   ---                                              
-## 1165:        492           1         12  0.18763884
-## 1166:        493           1          9 -0.46666667
-## 1167:        494           1          9 -0.10000000
-## 1168:        495           1          2  0.00000000
-## 1169:        495           2         18 -0.12963624</code></pre>
+## 1164:        491           1         12  0.18763884
+## 1165:        492           1          9 -0.46666667
+## 1166:        493           1          9 -0.10000000
+## 1167:        494           1          2  0.00000000
+## 1168:        494           2         18 -0.12963624</code></pre>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>(comment_sentiment_by_user <span class="ot">&lt;-</span> <span class="fu">sentiment_by</span>(Putin_comments<span class="sc">$</span>comment))</span></code></pre></div>
 <pre><code>##      element_id word_count         sd ave_sentiment
 ##   1:          1        178 0.49036849    0.18815541
@@ -558,11 +492,11 @@ by user using different functions of sentimentr.</p>
 ##   4:          4         57 0.10393509    0.03426998
 ##   5:          5          6         NA    0.24494897
 ##  ---                                               
-## 491:        491          6         NA   -0.08164966
-## 492:        492         12         NA    0.18763884
-## 493:        493          9         NA   -0.46666667
-## 494:        494          9         NA   -0.10000000
-## 495:        495         20 0.09166667   -0.07074073</code></pre>
+## 490:        490          6         NA   -0.08164966
+## 491:        491         12         NA    0.18763884
+## 492:        492          9         NA   -0.46666667
+## 493:        493          9         NA   -0.10000000
+## 494:        494         20 0.09166667   -0.07074073</code></pre>
 <p>Let’s get rid of some of the superfluous columns in the data frame
 (there were no downvotes, for example, so we can jettison that column)
 and add the information from our sentiment analysis. We will also get
@@ -605,7 +539,7 @@ sentiment.</p>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cleaned_comments<span class="sc">$</span>avg_sentiment)</span></code></pre></div>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-## -1.41421 -0.14427  0.00000 -0.02916  0.09083  0.90704</code></pre>
+## -1.41421 -0.14434  0.00000 -0.02922  0.09224  0.90704</code></pre>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>total_count <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">count</span>(cleaned_comments))</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">filter</span>(avg_sentiment <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">proportion_positive_comments =</span> <span class="fu">round</span>(count<span class="sc">/</span>total_count, <span class="dv">3</span>))</span></code></pre></div>
@@ -613,7 +547,7 @@ sentiment.</p>
 ## 1   192                        0.389</code></pre>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">filter</span>(avg_sentiment <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">proportion_negative_comments =</span> <span class="fu">round</span>(count<span class="sc">/</span>total_count, <span class="dv">3</span>))</span></code></pre></div>
 <pre><code>##   count proportion_negative_comments
-## 1   242                         0.49</code></pre>
+## 1   242                        0.491</code></pre>
 <p>It looks like overall, the general tone had a slightly negative
 sentiment. The overall average sentiment was a shade to the left of
 zero, and there was a higher proportion of negative comments to positive
@@ -638,7 +572,7 @@ with posts that received at least 5 upvotes.)</p>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">filter</span>(upvotes <span class="sc">&gt;</span> <span class="dv">4</span>, avg_sentiment <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">count_positive =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">proportion_positive_sentiment =</span> <span class="fu">round</span>(count_positive<span class="sc">/</span>count_upvotes, <span class="dv">3</span>))</span></code></pre></div>
 <pre><code>##   count_positive proportion_positive_sentiment
-## 1            108                         0.391</code></pre>
+## 1            106                         0.384</code></pre>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>cleaned_comments <span class="sc">%&gt;%</span> <span class="fu">filter</span>(upvotes <span class="sc">&gt;</span> <span class="dv">4</span>, avg_sentiment <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">count_negative =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">proportion_negative_sentiment =</span> <span class="fu">round</span>(count_negative<span class="sc">/</span>count_upvotes, <span class="dv">3</span>))</span></code></pre></div>
 <pre><code>##   count_negative proportion_negative_sentiment
 ## 1            134                         0.486</code></pre>
@@ -653,8 +587,6 @@ analysis that can be performed with these tools.</p>
 
 
 
-</div>
-</div>
 
 </div>
 
@@ -692,35 +624,6 @@ $(document).ready(function () {
 });
 </script>
 
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = false;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

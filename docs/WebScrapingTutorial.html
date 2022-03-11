@@ -14,7 +14,7 @@
 
 <title>Web Scraping Tutorial Part 1</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
@@ -30,9 +30,6 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -46,6 +43,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -178,6 +176,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -319,75 +320,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-.tocify-subheader {
-  display: inline;
-}
-.tocify-subheader .tocify-item {
-  font-size: 0.95em;
-}
-
-</style>
-
-
 
 </head>
 
@@ -397,22 +329,12 @@ div.tocify {
 <div class="container-fluid main-container">
 
 
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
-
-
 
 
 <div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -422,14 +344,14 @@ div.tocify {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Projects
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="./Markdown_Cyclistic.html">Google Data Analytics Certification Project</a>
+      <a href="./Markdown_Cyclistic_Final.html">Google Data Analytics Certification Project</a>
     </li>
     <li>
       <a href="./Reddit_Sentiment_Analysis_2_23.html">Sentiment Analysis with Reddit Comments</a>
@@ -437,7 +359,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Tutorials
      
     <span class="caret"></span>
@@ -449,7 +371,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Blog
      
     <span class="caret"></span>
@@ -460,6 +382,18 @@ div.tocify {
     </li>
     <li>
       <a href="./Frustrations_Along_the_Way.html">Frustrations Along the Way</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Just Following Along
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./TidyTuesday_Horror_Movies.html">Tidy Tuesday: Horror Movies</a>
     </li>
   </ul>
 </li>
@@ -479,7 +413,7 @@ div.tocify {
 <div id="header">
 
 <div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
 <ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
@@ -634,17 +568,17 @@ this in a table that I can do some analysis on.</p>
 ##  [69] &quot;Dr. Fantástico&quot;                                 
 ##  [70] &quot;Coringa&quot;                                        
 ##  [71] &quot;Homem-Aranha no Aranhaverso&quot;                    
-##  [72] &quot;Batman&quot;                                         
-##  [73] &quot;Oldboy&quot;                                         
-##  [74] &quot;Coração Valente&quot;                                
-##  [75] &quot;Toy Story&quot;                                      
-##  [76] &quot;Amadeus&quot;                                        
-##  [77] &quot;Viva: A Vida é uma Festa&quot;                       
-##  [78] &quot;Bastardos Inglórios&quot;                            
-##  [79] &quot;O Barco: Inferno no Mar&quot;                        
-##  [80] &quot;Vingadores: Ultimato&quot;                           
-##  [81] &quot;Princesa Mononoke&quot;                              
-##  [82] &quot;Era uma Vez na América&quot;                         
+##  [72] &quot;Oldboy&quot;                                         
+##  [73] &quot;Coração Valente&quot;                                
+##  [74] &quot;Toy Story&quot;                                      
+##  [75] &quot;Amadeus&quot;                                        
+##  [76] &quot;Viva: A Vida é uma Festa&quot;                       
+##  [77] &quot;Bastardos Inglórios&quot;                            
+##  [78] &quot;O Barco: Inferno no Mar&quot;                        
+##  [79] &quot;Vingadores: Ultimato&quot;                           
+##  [80] &quot;Princesa Mononoke&quot;                              
+##  [81] &quot;Era uma Vez na América&quot;                         
+##  [82] &quot;Batman&quot;                                         
 ##  [83] &quot;Gênio Indomável&quot;                                
 ##  [84] &quot;Toy Story 3&quot;                                    
 ##  [85] &quot;Réquiem para um Sonho&quot;                          
@@ -672,10 +606,10 @@ this in a table that I can do some analysis on.</p>
 ## [107] &quot;Se Meu Apartamento Falasse&quot;                     
 ## [108] &quot;Taxi Driver: Motorista de Táxi&quot;                 
 ## [109] &quot;O Sol é para Todos&quot;                             
-## [110] &quot;Hamilton&quot;                                       
-## [111] &quot;Golpe de Mestre&quot;                                
-## [112] &quot;Los Angeles: Cidade Proibida&quot;                   
-## [113] &quot;Up: Altas Aventuras&quot;                            
+## [110] &quot;Golpe de Mestre&quot;                                
+## [111] &quot;Los Angeles: Cidade Proibida&quot;                   
+## [112] &quot;Up: Altas Aventuras&quot;                            
+## [113] &quot;Hamilton&quot;                                       
 ## [114] &quot;Fogo Contra Fogo&quot;                               
 ## [115] &quot;Viver&quot;                                          
 ## [116] &quot;Snatch: Porcos e Diamantes&quot;                     
@@ -758,8 +692,8 @@ this in a table that I can do some analysis on.</p>
 ## [193] &quot;Bancando o Águia&quot;                               
 ## [194] &quot;Até o Último Homem&quot;                             
 ## [195] &quot;Como Treinar o Seu Dragão&quot;                      
-## [196] &quot;O Salário do Medo&quot;                              
-## [197] &quot;Memórias de um Assassino&quot;                       
+## [196] &quot;Memórias de um Assassino&quot;                       
+## [197] &quot;O Salário do Medo&quot;                              
 ## [198] &quot;O Sétimo Selo&quot;                                  
 ## [199] &quot;Barry Lyndon&quot;                                   
 ## [200] &quot;O Grande Lebowski&quot;                              
@@ -794,13 +728,13 @@ this in a table that I can do some analysis on.</p>
 ## [229] &quot;Antes do Pôr-do-Sol&quot;                            
 ## [230] &quot;Rebecca, a Mulher Inesquecível&quot;                 
 ## [231] &quot;Duna&quot;                                           
-## [232] &quot;As Vinhas da Ira&quot;                               
-## [233] &quot;Meu Pai e Meu Filho&quot;                            
+## [232] &quot;Meu Pai e Meu Filho&quot;                            
+## [233] &quot;As Vinhas da Ira&quot;                               
 ## [234] &quot;Rebeldia Indomável&quot;                             
 ## [235] &quot;Ser ou Não Ser&quot;                                 
-## [236] &quot;Amores Brutos&quot;                                  
-## [237] &quot;A Batalha de Argel&quot;                             
-## [238] &quot;Piratas do Caribe: A Maldição do Pérola Negra&quot;  
+## [236] &quot;A Batalha de Argel&quot;                             
+## [237] &quot;Piratas do Caribe: A Maldição do Pérola Negra&quot;  
+## [238] &quot;Amores Brutos&quot;                                  
 ## [239] &quot;A Noviça Rebelde&quot;                               
 ## [240] &quot;A Vida de Brian&quot;                                
 ## [241] &quot;Os Incompreendidos&quot;                             
@@ -823,13 +757,13 @@ this in a table that I can do some analysis on.</p>
 ##  [41] &quot;(2021)&quot; &quot;(2006)&quot; &quot;(1942)&quot; &quot;(2014)&quot; &quot;(2011)&quot; &quot;(1936)&quot; &quot;(1968)&quot; &quot;(1962)&quot;
 ##  [49] &quot;(1988)&quot; &quot;(1979)&quot; &quot;(1954)&quot; &quot;(1931)&quot; &quot;(2000)&quot; &quot;(1979)&quot; &quot;(1988)&quot; &quot;(1981)&quot;
 ##  [57] &quot;(2012)&quot; &quot;(2008)&quot; &quot;(2006)&quot; &quot;(1950)&quot; &quot;(1980)&quot; &quot;(1957)&quot; &quot;(1940)&quot; &quot;(2018)&quot;
-##  [65] &quot;(1957)&quot; &quot;(1986)&quot; &quot;(1999)&quot; &quot;(2012)&quot; &quot;(1964)&quot; &quot;(2019)&quot; &quot;(2018)&quot; &quot;(2022)&quot;
-##  [73] &quot;(2003)&quot; &quot;(1995)&quot; &quot;(1995)&quot; &quot;(1984)&quot; &quot;(2017)&quot; &quot;(2009)&quot; &quot;(1981)&quot; &quot;(2019)&quot;
-##  [81] &quot;(1997)&quot; &quot;(1984)&quot; &quot;(1997)&quot; &quot;(2010)&quot; &quot;(2000)&quot; &quot;(2009)&quot; &quot;(1952)&quot; &quot;(2016)&quot;
+##  [65] &quot;(1957)&quot; &quot;(1986)&quot; &quot;(1999)&quot; &quot;(2012)&quot; &quot;(1964)&quot; &quot;(2019)&quot; &quot;(2018)&quot; &quot;(2003)&quot;
+##  [73] &quot;(1995)&quot; &quot;(1995)&quot; &quot;(1984)&quot; &quot;(2017)&quot; &quot;(2009)&quot; &quot;(1981)&quot; &quot;(2019)&quot; &quot;(1997)&quot;
+##  [81] &quot;(1984)&quot; &quot;(2022)&quot; &quot;(1997)&quot; &quot;(2010)&quot; &quot;(2000)&quot; &quot;(2009)&quot; &quot;(1952)&quot; &quot;(2016)&quot;
 ##  [89] &quot;(1983)&quot; &quot;(1992)&quot; &quot;(2004)&quot; &quot;(1968)&quot; &quot;(1941)&quot; &quot;(1963)&quot; &quot;(1962)&quot; &quot;(1931)&quot;
 ##  [97] &quot;(2018)&quot; &quot;(1959)&quot; &quot;(2012)&quot; &quot;(1958)&quot; &quot;(2001)&quot; &quot;(1971)&quot; &quot;(1987)&quot; &quot;(1983)&quot;
-## [105] &quot;(1944)&quot; &quot;(1985)&quot; &quot;(1960)&quot; &quot;(1976)&quot; &quot;(1962)&quot; &quot;(2020)&quot; &quot;(1973)&quot; &quot;(1997)&quot;
-## [113] &quot;(2009)&quot; &quot;(1995)&quot; &quot;(1952)&quot; &quot;(2000)&quot; &quot;(1988)&quot; &quot;(1989)&quot; &quot;(2011)&quot; &quot;(1927)&quot;
+## [105] &quot;(1944)&quot; &quot;(1985)&quot; &quot;(1960)&quot; &quot;(1976)&quot; &quot;(1962)&quot; &quot;(1973)&quot; &quot;(1997)&quot; &quot;(2009)&quot;
+## [113] &quot;(2020)&quot; &quot;(1995)&quot; &quot;(1952)&quot; &quot;(2000)&quot; &quot;(1988)&quot; &quot;(1989)&quot; &quot;(2011)&quot; &quot;(1927)&quot;
 ## [121] &quot;(1948)&quot; &quot;(2010)&quot; &quot;(2019)&quot; &quot;(2007)&quot; &quot;(2005)&quot; &quot;(1965)&quot; &quot;(2016)&quot; &quot;(2004)&quot;
 ## [129] &quot;(1921)&quot; &quot;(1959)&quot; &quot;(2020)&quot; &quot;(1950)&quot; &quot;(2018)&quot; &quot;(2013)&quot; &quot;(1992)&quot; &quot;(1995)&quot;
 ## [137] &quot;(2006)&quot; &quot;(1961)&quot; &quot;(1985)&quot; &quot;(2001)&quot; &quot;(1999)&quot; &quot;(1975)&quot; &quot;(2007)&quot; &quot;(1998)&quot;
@@ -839,12 +773,12 @@ this in a table that I can do some analysis on.</p>
 ## [169] &quot;(2008)&quot; &quot;(1996)&quot; &quot;(1988)&quot; &quot;(2013)&quot; &quot;(2004)&quot; &quot;(1982)&quot; &quot;(1925)&quot; &quot;(2002)&quot;
 ## [177] &quot;(1954)&quot; &quot;(1997)&quot; &quot;(2011)&quot; &quot;(1949)&quot; &quot;(2014)&quot; &quot;(1959)&quot; &quot;(2013)&quot; &quot;(1926)&quot;
 ## [185] &quot;(1978)&quot; &quot;(1957)&quot; &quot;(1995)&quot; &quot;(1993)&quot; &quot;(1955)&quot; &quot;(1939)&quot; &quot;(2014)&quot; &quot;(2015)&quot;
-## [193] &quot;(1924)&quot; &quot;(2016)&quot; &quot;(2010)&quot; &quot;(1953)&quot; &quot;(2003)&quot; &quot;(1957)&quot; &quot;(1975)&quot; &quot;(1998)&quot;
+## [193] &quot;(1924)&quot; &quot;(2016)&quot; &quot;(2010)&quot; &quot;(2003)&quot; &quot;(1953)&quot; &quot;(1957)&quot; &quot;(1975)&quot; &quot;(1998)&quot;
 ## [201] &quot;(2019)&quot; &quot;(2015)&quot; &quot;(2014)&quot; &quot;(2001)&quot; &quot;(2009)&quot; &quot;(1975)&quot; &quot;(1928)&quot; &quot;(2004)&quot;
 ## [209] &quot;(1976)&quot; &quot;(1989)&quot; &quot;(1953)&quot; &quot;(1986)&quot; &quot;(2019)&quot; &quot;(1984)&quot; &quot;(1986)&quot; &quot;(2013)&quot;
 ## [217] &quot;(2007)&quot; &quot;(1939)&quot; &quot;(2017)&quot; &quot;(2015)&quot; &quot;(1976)&quot; &quot;(1993)&quot; &quot;(1973)&quot; &quot;(2007)&quot;
-## [225] &quot;(2009)&quot; &quot;(2004)&quot; &quot;(1975)&quot; &quot;(1946)&quot; &quot;(2004)&quot; &quot;(1940)&quot; &quot;(2021)&quot; &quot;(1940)&quot;
-## [233] &quot;(2005)&quot; &quot;(1967)&quot; &quot;(1942)&quot; &quot;(2000)&quot; &quot;(1966)&quot; &quot;(2003)&quot; &quot;(1965)&quot; &quot;(1979)&quot;
+## [225] &quot;(2009)&quot; &quot;(2004)&quot; &quot;(1975)&quot; &quot;(1946)&quot; &quot;(2004)&quot; &quot;(1940)&quot; &quot;(2021)&quot; &quot;(2005)&quot;
+## [233] &quot;(1940)&quot; &quot;(1967)&quot; &quot;(1942)&quot; &quot;(1966)&quot; &quot;(2003)&quot; &quot;(2000)&quot; &quot;(1965)&quot; &quot;(1979)&quot;
 ## [241] &quot;(1959)&quot; &quot;(1966)&quot; &quot;(1934)&quot; &quot;(1995)&quot; &quot;(1992)&quot; &quot;(1991)&quot; &quot;(2021)&quot; &quot;(1982)&quot;
 ## [249] &quot;(2011)&quot; &quot;(2016)&quot;</code></pre>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>rating <span class="ot">&lt;-</span>  page <span class="sc">%&gt;%</span> <span class="fu">html_nodes</span>(<span class="st">&quot;strong&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">html_text</span>()</span>
@@ -944,17 +878,17 @@ this in a table that I can do some analysis on.</p>
 ## 69                                   Dr. Fantástico (1964)    8.3
 ## 70                                          Coringa (2019)    8.3
 ## 71                      Homem-Aranha no Aranhaverso (2018)    8.3
-## 72                                           Batman (2022)    8.3
-## 73                                           Oldboy (2003)    8.3
-## 74                                  Coração Valente (1995)    8.3
-## 75                                        Toy Story (1995)    8.3
-## 76                                          Amadeus (1984)    8.3
-## 77                         Viva: A Vida é uma Festa (2017)    8.3
-## 78                              Bastardos Inglórios (2009)    8.3
-## 79                          O Barco: Inferno no Mar (1981)    8.3
-## 80                             Vingadores: Ultimato (2019)    8.3
-## 81                                Princesa Mononoke (1997)    8.3
-## 82                           Era uma Vez na América (1984)    8.3
+## 72                                           Oldboy (2003)    8.3
+## 73                                  Coração Valente (1995)    8.3
+## 74                                        Toy Story (1995)    8.3
+## 75                                          Amadeus (1984)    8.3
+## 76                         Viva: A Vida é uma Festa (2017)    8.3
+## 77                              Bastardos Inglórios (2009)    8.3
+## 78                          O Barco: Inferno no Mar (1981)    8.3
+## 79                             Vingadores: Ultimato (2019)    8.3
+## 80                                Princesa Mononoke (1997)    8.3
+## 81                           Era uma Vez na América (1984)    8.3
+## 82                                           Batman (2022)    8.3
 ## 83                                  Gênio Indomável (1997)    8.3
 ## 84                                      Toy Story 3 (2010)    8.3
 ## 85                            Réquiem para um Sonho (2000)    8.3
@@ -982,10 +916,10 @@ this in a table that I can do some analysis on.</p>
 ## 107                      Se Meu Apartamento Falasse (1960)    8.2
 ## 108                  Taxi Driver: Motorista de Táxi (1976)    8.2
 ## 109                              O Sol é para Todos (1962)    8.2
-## 110                                        Hamilton (2020)    8.2
-## 111                                 Golpe de Mestre (1973)    8.2
-## 112                    Los Angeles: Cidade Proibida (1997)    8.2
-## 113                             Up: Altas Aventuras (2009)    8.2
+## 110                                 Golpe de Mestre (1973)    8.2
+## 111                    Los Angeles: Cidade Proibida (1997)    8.2
+## 112                             Up: Altas Aventuras (2009)    8.2
+## 113                                        Hamilton (2020)    8.2
 ## 114                                Fogo Contra Fogo (1995)    8.2
 ## 115                                           Viver (1952)    8.2
 ## 116                      Snatch: Porcos e Diamantes (2000)    8.2
@@ -1068,8 +1002,8 @@ this in a table that I can do some analysis on.</p>
 ## 193                                Bancando o Águia (1924)    8.1
 ## 194                              Até o Último Homem (2016)    8.1
 ## 195                       Como Treinar o Seu Dragão (2010)    8.1
-## 196                               O Salário do Medo (1953)    8.1
-## 197                        Memórias de um Assassino (2003)    8.1
+## 196                        Memórias de um Assassino (2003)    8.1
+## 197                               O Salário do Medo (1953)    8.1
 ## 198                                   O Sétimo Selo (1957)    8.1
 ## 199                                    Barry Lyndon (1975)    8.1
 ## 200                               O Grande Lebowski (1998)    8.1
@@ -1104,13 +1038,13 @@ this in a table that I can do some analysis on.</p>
 ## 229                             Antes do Pôr-do-Sol (2004)    8.0
 ## 230                  Rebecca, a Mulher Inesquecível (1940)    8.0
 ## 231                                            Duna (2021)    8.0
-## 232                                As Vinhas da Ira (1940)    8.0
-## 233                             Meu Pai e Meu Filho (2005)    8.0
+## 232                             Meu Pai e Meu Filho (2005)    8.0
+## 233                                As Vinhas da Ira (1940)    8.0
 ## 234                              Rebeldia Indomável (1967)    8.0
 ## 235                                  Ser ou Não Ser (1942)    8.0
-## 236                                   Amores Brutos (2000)    8.0
-## 237                              A Batalha de Argel (1966)    8.0
-## 238   Piratas do Caribe: A Maldição do Pérola Negra (2003)    8.0
+## 236                              A Batalha de Argel (1966)    8.0
+## 237   Piratas do Caribe: A Maldição do Pérola Negra (2003)    8.0
+## 238                                   Amores Brutos (2000)    8.0
 ## 239                                A Noviça Rebelde (1965)    8.0
 ## 240                                 A Vida de Brian (1979)    8.0
 ## 241                              Os Incompreendidos (1959)    8.0
@@ -1201,17 +1135,17 @@ this in a table that I can do some analysis on.</p>
 ## 69                                   Dr. Fantástico 1964    8.3
 ## 70                                          Coringa 2019    8.3
 ## 71                      Homem-Aranha no Aranhaverso 2018    8.3
-## 72                                           Batman 2022    8.3
-## 73                                           Oldboy 2003    8.3
-## 74                                  Coração Valente 1995    8.3
-## 75                                        Toy Story 1995    8.3
-## 76                                          Amadeus 1984    8.3
-## 77                         Viva: A Vida é uma Festa 2017    8.3
-## 78                              Bastardos Inglórios 2009    8.3
-## 79                          O Barco: Inferno no Mar 1981    8.3
-## 80                             Vingadores: Ultimato 2019    8.3
-## 81                                Princesa Mononoke 1997    8.3
-## 82                           Era uma Vez na América 1984    8.3
+## 72                                           Oldboy 2003    8.3
+## 73                                  Coração Valente 1995    8.3
+## 74                                        Toy Story 1995    8.3
+## 75                                          Amadeus 1984    8.3
+## 76                         Viva: A Vida é uma Festa 2017    8.3
+## 77                              Bastardos Inglórios 2009    8.3
+## 78                          O Barco: Inferno no Mar 1981    8.3
+## 79                             Vingadores: Ultimato 2019    8.3
+## 80                                Princesa Mononoke 1997    8.3
+## 81                           Era uma Vez na América 1984    8.3
+## 82                                           Batman 2022    8.3
 ## 83                                  Gênio Indomável 1997    8.3
 ## 84                                      Toy Story 3 2010    8.3
 ## 85                            Réquiem para um Sonho 2000    8.3
@@ -1239,10 +1173,10 @@ this in a table that I can do some analysis on.</p>
 ## 107                      Se Meu Apartamento Falasse 1960    8.2
 ## 108                  Taxi Driver: Motorista de Táxi 1976    8.2
 ## 109                              O Sol é para Todos 1962    8.2
-## 110                                        Hamilton 2020    8.2
-## 111                                 Golpe de Mestre 1973    8.2
-## 112                    Los Angeles: Cidade Proibida 1997    8.2
-## 113                             Up: Altas Aventuras 2009    8.2
+## 110                                 Golpe de Mestre 1973    8.2
+## 111                    Los Angeles: Cidade Proibida 1997    8.2
+## 112                             Up: Altas Aventuras 2009    8.2
+## 113                                        Hamilton 2020    8.2
 ## 114                                Fogo Contra Fogo 1995    8.2
 ## 115                                           Viver 1952    8.2
 ## 116                      Snatch: Porcos e Diamantes 2000    8.2
@@ -1325,8 +1259,8 @@ this in a table that I can do some analysis on.</p>
 ## 193                                Bancando o Águia 1924    8.1
 ## 194                              Até o Último Homem 2016    8.1
 ## 195                       Como Treinar o Seu Dragão 2010    8.1
-## 196                               O Salário do Medo 1953    8.1
-## 197                        Memórias de um Assassino 2003    8.1
+## 196                        Memórias de um Assassino 2003    8.1
+## 197                               O Salário do Medo 1953    8.1
 ## 198                                   O Sétimo Selo 1957    8.1
 ## 199                                    Barry Lyndon 1975    8.1
 ## 200                               O Grande Lebowski 1998    8.1
@@ -1361,13 +1295,13 @@ this in a table that I can do some analysis on.</p>
 ## 229                             Antes do Pôr-do-Sol 2004    8.0
 ## 230                  Rebecca, a Mulher Inesquecível 1940    8.0
 ## 231                                            Duna 2021    8.0
-## 232                                As Vinhas da Ira 1940    8.0
-## 233                             Meu Pai e Meu Filho 2005    8.0
+## 232                             Meu Pai e Meu Filho 2005    8.0
+## 233                                As Vinhas da Ira 1940    8.0
 ## 234                              Rebeldia Indomável 1967    8.0
 ## 235                                  Ser ou Não Ser 1942    8.0
-## 236                                   Amores Brutos 2000    8.0
-## 237                              A Batalha de Argel 1966    8.0
-## 238   Piratas do Caribe: A Maldição do Pérola Negra 2003    8.0
+## 236                              A Batalha de Argel 1966    8.0
+## 237   Piratas do Caribe: A Maldição do Pérola Negra 2003    8.0
+## 238                                   Amores Brutos 2000    8.0
 ## 239                                A Noviça Rebelde 1965    8.0
 ## 240                                 A Vida de Brian 1979    8.0
 ## 241                              Os Incompreendidos 1959    8.0
@@ -1879,7 +1813,7 @@ within the supernode. Read each separately.</p>
 ## 4                            Actor | Thor: The Dark World
 ## 5                                   Actor | The Big Short
 ## 6                                 Actor | American Sniper
-## 7                                      Actress | Twilight
+## 7     Actress | The Twilight Saga: Breaking Dawn - Part 1
 ## 8                           Actress | The Legend of Korra
 ## 9                              Actor | The Man from Earth
 ## 10                         Actor | Star Trek: Generations
@@ -1915,7 +1849,7 @@ within the supernode. Read each separately.</p>
 ## 40                                     Actor | Black Rain
 ## 41                              Actor | Saved by the Bell
 ## 42                 Actress | Falling in Love at Christmas
-## 43                                       Self | BILD LIVE
+## 43                    Self | Zervakis &amp; Opdenhövel. Live.
 ## 44                                     Actor | Dad&#39;s Army
 ## 45                                      Actress | Respect
 ## 46                                   Actor | Grudge Match
@@ -2116,7 +2050,7 @@ within the supernode. Read each separately.</p>
 ## 40          Ken Takakura was a Japanese actor best known for his brooding style and the stoic, honorable presence he brought to his roles.Known as the &quot;Clint Eastwood&quot; of Japan, Takakura gained his streetwise swagger and tough guy persona watching yakuza turf battles over the lucrative black market and ...
 ## 41                                                                                                                                                     Joshua Hoffman was born on February 16, 1970 in Michigan, USA. He is an actor, known for Galera do Barulho (1989), Back in Business (1997) and Teech (1991).
 ## 42      Alicia Dea Josipovic can dance, act and sing. She was named after her &#39;Nonna&#39; Dea, an accomplished fashion designer and opera singer.At the age of five, she first began performing on stage as a dancer. Alicia danced competitively for eight years, winning numerous competitions. She also loved to ...
-## 43                                                                        Olena Volodymyrivna Zelenska was born on February 16, 1978 in Kryvyi Rik, USSR [now Ukraine]. She is known for her work on BILD LIVE (2021). She has been married to Volodymyr Zelenskyy since September 6, 2003. They have two children.
+## 43                                Olena Volodymyrivna Zelenska was born on February 16, 1978 in Kryvyi Rik, USSR [now Ukraine]. She is known for her work on Zervakis &amp; Opdenhövel. Live. (2021) and BILD LIVE (2021). She has been married to Volodymyr Zelenskyy since September 6, 2003. They have two children.
 ## 44    Ian Lavender attended Bournville Technical College in the West Midlands and then studied at the Bristol Old Vic Theatre School. He graduated in 1967. Acting on the stage at Canterbury followed and his first television work was the ATV play &quot;Flowers At My Feet&quot; in 1968. He then became the youngest ...
 ## 45   Hailey Kilgore is an American actress born in Humble, Texas and raised by her adoptive parents in Oregon. She started singing and performing at an early age. At the age of 9, she began singing the National Anthem for sporting events in the Portland area, including the Trailblazers, Winterhawks, and...
 ## 46                                 Barry Primus was born on February 16, 1938 in New York City, New York, USA. He is an actor and director, known for Ajuste de Contas (2013), As Duas Faces da Lei (2008) and 15 Minutos (2001). He has been married to Julie Arenal since December 23, 1960. They have one child.
@@ -2214,7 +2148,7 @@ within the supernode. Read each separately.</p>
 ## 138                                                                                                                                    Xiaotong Mao was born on February 16, 1988 in Tianjin, China. She is an actress, known for San shi er yi (2020), Wo de ji qi ren nan you (2019) and Jin Xiu Wei Yang (2016).
 ## 139                    Harry Goz was born on February 16, 1932 in St. Louis, Missouri, USA. He was an actor, known for Maratona da Morte (1976), Laboratório Submarino 2021 (2000) and Kennedy (1983). He was married to Margaret Avsharian. He died on September 6, 2003 in Manhasset, Long Island, New York, USA.
 ## 140   Thomas Hardmeier Cinematographer AFCThomas was born in Zurich, Switzerland. From 1986 until 1994, he worked as a First Assistant Camera. Since 1994 he works as a cinematographer mostly in France and internationally, in dramas and in commercials.He speaks French, German, and English, and has Swiss ...
-## 141                                                                                                                                                                                                                                       Was short-listed for the U.S. volleyball team at the 1964 Tokyo Olympics.
+## 141                                                                                                                                                                                                                                                               Graduated from UCLA with a degree in mathematics.
 ## 142   Michael Germant is an actor, writer and producer, as well as a member of SAG-AFTRA and UBCP/ACTRA. He is best known for Sobrenatural (2005) and Planeta dos Macacos: A Guerra (2017).He was born in Moscow and grew up in Montreal where he received a Bachelor&#39;s Degree in French Studies from Concordia ...
 ## 143    Cynthia Garrett was born on February 16th in San Francisco, California. She is married and has one son. Cynthia graduated from USC School of Law in Southern California and received a degree in comparative law from Oxford University in England. She rose rapidly as a television host &amp; personality, ...
 ## 144                                                Brad Simpson was born on February 16, 1973 in Washington, District of Columbia, USA. He is known for his work on Podres de Ricos (2018), American Crime Story (2016) and Guerra Mundial Z (2013). He has been married to Jocelyn Hayes since September 17, 2005.
@@ -2236,7 +2170,7 @@ within the supernode. Read each separately.</p>
 ## 160                                                                                                              Jonathan Ossoff was born on February 16, 1987 in Atlanta, Georgia, USA. He is a producer and writer, known for Africa Investigates (2011), The Battle for Africa (2014) and Sing, Freetown (2021).
 ## 161                 Jerry Lester was born on February 16, 1910 in Chicago, Illinois, USA. He was an actor, known for Um Trapalhão Mandando Brasa (1980), Desta Vez te Agarro (1980) and Par ou Ímpar (1978). He was married to Alice Elgie Wall and Ardelle Unger. He died on March 23, 1995 in Miami, Florida, ...
 ## 162     ANTONIO RIESTRA ASC, ACK, AEC Director of PhotographyCinematographer, father, cook, writer.Antonio started his career as a stills photographer and had his own B&amp;W lab at home, he got his first job as a field photographer working closely with First Nations in Mexico and then in Canada. His first ...
-## 163                                                                                                             Antonio Folletto was born on February 16, 1988 in Napoli, Campania, Italy. He is an actor, known for I bastardi di Pizzofalcone (2017), Thanks for Vaselina (2019) and Ho amici in paradiso (2016).
+## 163                                                                                                                Antonio Folletto was born on February 16, 1988 in Napoli, Campania, Italy. He is an actor, known for I bastardi di Pizzofalcone (2017), Thanks for Vaselina (2019) and Gomorra: La serie (2014).
 ## 164  Richard Williams is an American tennis coach, and father of Venus and Serena Williams.He took tennis lessons and decided his future daughters would be tennis professionals when he saw Virginia Ruzici playing on television. Williams says that he wrote up a 78-page plan, and started giving lessons to...
 ## 165  Valentino Rossi is an Italian professional motorcycle racer and multiple MotoGP World Champion. He is considered to be the greatest and one of the most successful motorcycle racers of all time, with nine Grand Prix World Championships to his name - seven of which are in the premier class.Following ...
 ## 166                                                                                                          Antonio Dechent was born on February 16, 1960 in Seville, Seville, Andalucía, Spain. He is an actor and writer, known for A puerta fría (2012), Intacto (2001) and Hombre muerto no sabe vivir (2021).
@@ -2253,7 +2187,7 @@ within the supernode. Read each separately.</p>
 ## 177  Jennifer started her career with the BBC as a presenter and went on to work in various films and TV. She also worked as a photographic model involved with London Fashion Week. It was during the filming of a series called The Caesars (1968) at Granada TV that she met Eddy Shah. Following the sale of...
 ## 178                                                           Mike Steen was born on February 16, 1928 in Monroe, Louisiana, USA. He was an actor, known for Uma Fenda no Mundo (1965), Doce Pássaro da Juventude (1962) and Esta Mulher é Proibida (1966). He died on May 8, 1983 in New York City, New York, USA.
 ## 179                                                                                                                                                                  Mimi Sommer was born on February 16, 1973 in Munich, Germany. She has been married to Rick Dohler since June 24, 1995. They have two children.
-## 180                 Albert Hackett was born on February 16, 1900 in New York City, New York, USA. He was a writer and actor, known for A Ceia dos Acusados (1934), Sete Noivas para Sete Irmãos (1954) and Desfile de Páscoa (1948). He was married to Gisella (Svetlik) Orkin and Frances Goodrich. He died on ...
+## 180                Albert Hackett was born on February 16, 1900 in New York City, New York, USA. He was a writer and actor, known for A Ceia dos Acusados (1934), Sete Noivas para Sete Irmãos (1954) and A Felicidade Não se Compra (1946). He was married to Gisella (Svetlik) Orkin and Frances Goodrich. He ...
 ## 181    Craig Ramsay is an internationally recognized fitness expert, exercise programmer and author known for his unique, effective and entertaining fitness methods.Craig paired up with celebrity beauty guru husband Brandon Liberati to create &quot;Fit and Phab&quot;, a one stop shop for all your beauty, fitness ...
 ## 182                                                                                                                                                      Ellen Chan was born on February 16, 1966 in Hong Kong, China. She is an actress, known for Wei qing (1993), Nan yu nu (1993) and Lung Fung cha lau (1990).
 ## 183                                 Paul Paddick was born on February 16, 1967 in Adelaide, South Australia. He is known for his work on Homem-Formiga (2015), E se Fosse Verdade (2005) and The Wiggles: Racing to the Rainbow (2006). He has been married to Charmaine Martin since 2004. They have two children.
@@ -2278,8 +2212,6 @@ within the supernode. Read each separately.</p>
 
 
 
-</div>
-</div>
 
 </div>
 
@@ -2317,35 +2249,6 @@ $(document).ready(function () {
 });
 </script>
 
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = false;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

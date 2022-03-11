@@ -5,7 +5,7 @@ left:
   - text: "Projects"
     menu:
        - text: "Google Data Analytics Certification Project"
-         href: ./Markdown_Cyclistic.html
+         href: ./Markdown_Cyclistic_Final.html
        - text: "Sentiment Analysis with Reddit Comments"
          href: ./Reddit_Sentiment_Analysis_2_23.html  
   - text: "Tutorials"

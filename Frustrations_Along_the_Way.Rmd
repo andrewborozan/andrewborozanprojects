@@ -27,7 +27,7 @@ In reflecting on these "mini-challenges" and frustrations, I realize they can be
 There are patterns evident that, while not monumental, like the enduring themes of good and evil and perseverance, are nevertheless real and impactful.
 Here are some of the themes and characteristics present in these common frustrations, these daily hurdles, that bother and wear down on the long quest from one career to another.
 
-### Expected to Know Everything 
+### Expected to Know Everything
 
 There was a lot to know as a teacher.
 Not only do you have to know your content well (I had to be an expert in every era as a history teacher, teaching content that spanned from the birth of humanity to current events. I was expected to know everything about the Third Crusade and Mao's Cultural Revolution concurrently....along with a million other things), you have to be knowledgeable of reading strategies, writing strategies, classroom management techniques, curriculum goals, grading policies and procedures (and the platforms in which to record grades, which seemed to change yearly), vertical alignment (what did the incoming grade 9 students already learn?) and horizontal alignment (what are the grade 9 students doing in their literature class and does anything we are teaching in here align with that material?), child protection procedures, school safety procedures...on and on.
@@ -44,29 +44,39 @@ I look at job postings and the requirements needed for the job and quickly start
 
 Excel?
 Ok, got that one down.
+
 Python or R?
 Yeah, I am pretty decent in R.
 Need to learn Python as it seems to be the preferred language.
+
 SQL?
 I know the basics.
 I prefer to use R - you can do all the same things (and more) and seems way more intuitive.
+
 Tableau, PowerBI, Shiny, or Looker?
 Tableau, I am ok with.
 I looked at PowerBI.
 I don't know what Shiny or Looker are.
+
 Azure?
 Huh?
+
 AWS?
 Nope.
+
 Java?
 No thanks, but I'll take a water.
+
 Access?
 I know it is a Microsoft thing.
+
 Agile/scrum process and product backlog grooming?
 Are those real things?
+
 Oracle?
 At Delphi?
 I've been there.
+
 Master degree in Math, Statistics, Economics, or Computer Science?
 Sorry, unfortunately mine is in "Theological Arts" - which I don't even know what that means; I took a lot of history and philosophy courses though.
 
@@ -108,7 +118,7 @@ And it seems like to get to that position, I have to do the very opposite and kn
 So this is the first minor (to major) frustration: as I learn all of this stuff, I don't really know what I am supposed to know.
 But I just keep my head down, keep doing courses on Coursera and hope somebody will take that as a positive signal of competence.
 
-### Too Much Information 
+### Too Much Information
 
 Related to the first frustration, when you try to learn everything there is simply too much information.
 The information nuclear bomb that is the internet probably stymies efforts to learn in a coordinated, linear fashion, as the internet encourages an addled, discontinuous attention.
@@ -168,7 +178,7 @@ I know that the internet has some built in features that prevent deep learning, 
 It would be preposterous to suggest that the internet is not primarily responsible for my ability to make this career shift; in fact, it is almost solely responsible.
 The point here is that the frustration I have had in this process is being buried in the amount of information, the uncurated nature of the presentation of this information, and the features embedded within the internet that actively discourage information from becoming genuine knowledge.
 
-### Job Postings and Applications 
+### Job Postings and Applications
 
 I have already hinted at some of the frustrations that lie in this area.
 The long list of requirements or experience is daunting and leads me to question at what level do I need to know each and every item on the list.
