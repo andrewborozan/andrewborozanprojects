@@ -223,5 +223,5 @@ lm(outcomes$outcome_assessments_type ~ outcomes$outcome_assessments_created_date
 
 
 
-
-
+webshot("https://andrewborozan.com/Reddit_Sentiment_Analysis_2_23.html", "r4.pdf", cliprect = "viewport", zoom = 2)
+rmdshot("Minerva Project.Rmd", "MinervaPDF.pdf")
