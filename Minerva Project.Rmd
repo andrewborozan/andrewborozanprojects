@@ -2,9 +2,7 @@
 title: "Minerva Project"
 author: "Andrew Borozan"
 date: "`r Sys.Date()`"
-output:
-  word_document: default
-  html_document: default
+output: html_document
 ---
 
 ```{r, include=FALSE}
