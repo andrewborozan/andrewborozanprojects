@@ -408,6 +408,7 @@ q4sentiment_comments %>% ggplot(aes(ave_sentiment)) + geom_histogram()+
 
 According to the sentiment analysis the responses to question 4, which addressed areas of improvement, were generally positive. In scrolling through the responses, some answers more directly offered suggestions for improvement and others were just general comments. There were a few comments noting the effectiveness of the professor. As was seen in the question about face-to-face sessions, some students commented on a need for restructuring these.
 
+
 ```{r Sentiment analysis for Question 6}
 comments_q6 <- survey_clean %>% select(q6) %>% drop_na() %>% 
   filter(nchar(q6) > 2)
@@ -423,7 +424,7 @@ q6sentiment_comments_tab <- q6sentiment_comments %>% rename("Please comment on y
          sd = percent(sd, accuracy = .1)) %>% 
   select(5, 4, 3, 2)
 
-reactable(q6sentiment_comments, wrap = TRUE, theme = fivethirtyeight(), striped = TRUE, fullWidth = TRUE, resizable = TRUE)
+reactable(q6sentiment_comments_tab, wrap = TRUE, theme = fivethirtyeight(), striped = TRUE, fullWidth = TRUE, resizable = TRUE)
 
 q6sentiment_comments %>% ggplot(aes(ave_sentiment)) + geom_histogram()+
    labs(x = "Sentiment Score", 
@@ -434,6 +435,8 @@ q6sentiment_comments %>% ggplot(aes(ave_sentiment)) + geom_histogram()+
 ```
 
 Question 6, which prompted the students to comment on the effectiveness of Forum, showed overall positive sentiment. According to this analysis, the students were favorable towards the Forum.
+
+While this sentiment analysis tool is generally reliable, there are times when it will not gauge accurately the overall sentiment of the response. For example in question 4, one student responded, "better communication with the professor, and not feeling scared to answer even if I'm confident with my answer." The response is discussing things to improve, and therefore slightly negative, but the sentiment score is positive. There, while this is an interesting tool, taking the time to look at individual responses might be more worthwhile. 
 
 # Course Learning Outcomes
 
