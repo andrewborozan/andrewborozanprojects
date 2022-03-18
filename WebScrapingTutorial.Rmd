@@ -5,6 +5,17 @@ date: "2/15/2022"
 output: html_document
 ---
 
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  out.width = "100%",
+  message=FALSE,
+  warning=FALSE,
+  eval=FALSE, 
+  include=FALSE
+)
+
+```
+
 # WEB SCRAPING: A MODERN DAY SUPERPOWER
 
 I didn't hear about web scraping until I entered the data analytics world. I thought gathering information consisted of clicking from page to page and reading every jot and tittle. I obviously had no idea how Google worked (and still don't to a very large extent). When I learned of web scraping, I considered it a modern day super power. "You mean I can take all the information on a website - or even multiple websites - and put it in a table for analysis? Impossible." It became one of the first things I wanted to learn how to do. 
@@ -15,11 +26,14 @@ After watching a few tutorials, and scouring the internet to fix a few problems 
 
 Whether this is best practice in the field or not, it is a quirk that I have: I like loading all the packages I even remotely might use, or sometimes packages I simply have heard of ("What does "modelr" do? I have no idea, but some guy mentioned it in a blog I was reading."). The pacman package is the best way to load multiple packages at once. I simply copy and paste this code at the start of most of my projects: 
 
-```{r}
+```{r include=FALSE}
 library(pacman)
 p_load(tidyverse, skimr, scales, rmarkdown, magrittr, lubridate, janitor, htmltab, ggrepel, 
        ggthemes, showtext, knitr, rvest, reactable)
 ```
+
+Just seeing if this will work.
+
 
 The two heavy hitters among this UPS truck of packages is tidyverse (if you are new to R you will live in the tidyverse multiverse (it is actually a network of packages) much of your R life) and the rvest package, which has a whole host of functions that let us steal stuff off the internet (mostly in the form of data. Admittedly not as good as money, or diamonds, or rare baseball cards, but some people have the additional super power of turning scraped data into that stuff. I am not there - yet - so, the "how to" for taking a data lump of coal and turning it into a diamond isn't part of this tutorial.).
 
@@ -39,32 +53,35 @@ Enter web scraping.
 In R, put the link 
 
 
-
-
 ```{r}
+
+```
+
+
+```{r eval=FALSE, include=FALSE}
 link <- "https://www.imdb.com/chart/top?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=470df400-70d9-4f35-bb05-8646a1195842&pf_rd_r=0GMNJA9F5185SGTK1E0Y&pf_rd_s=right-4&pf_rd_t=15506&pf_rd_i=moviemeter&ref_=chtmvm_ql_3"
 page <- read_html(link)
 ```
 
 Use selector extension tool to get html node that you want.
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 name <-  page %>% html_nodes(".titleColumn a") %>% html_text()
 name
 ```
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 year <-  page %>% html_nodes(".secondaryInfo") %>% html_text()
 year
 ```
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 rating <-  page %>% html_nodes("strong") %>% html_text()
 rating
 
 ```
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 top_movies_imdb <- data.frame(name, year, rating)
 top_movies_imdb
 ```
