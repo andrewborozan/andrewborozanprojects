@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Andrew Borozan" />
+
+<meta name="date" content="2022-03-17" />
+
+<title>Minerva Project</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">The Unlikely Analyst</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./Markdown_Cyclistic_Final.html">Google Data Analytics Certification Project</a>
+    </li>
+    <li>
+      <a href="./Reddit_Sentiment_Analysis_2_23.html">Sentiment Analysis with Reddit Comments</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./Reactable_Walkthru.html">Reactable Tutorial</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Blog
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./I_am_crazy.html">"I am crazy" and other thoughts that flitter through my head.</a>
+    </li>
+    <li>
+      <a href="./Frustrations_Along_the_Way.html">Frustrations Along the Way</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Just Following Along
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./TidyTuesday_Horror_Movies.html">Tidy Tuesday: Horror Movies</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/githubusername/mywebsite">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Minerva Project</h1>
+<h4 class="author">Andrew Borozan</h4>
+<h4 class="date">2022-03-17</h4>
+
+</div>
+
+
+<p>{r, include=FALSE} knitr::opts_chunk$set( out.width = “100%”,
+message=FALSE, warning=FALSE )</p>
+<p>Minerva Project Data Exploration</p>
+<p>In this project we will be examining survey data from students along
+with assessment data on students. We will develop insights and offer
+exploration for further study.</p>
+<p>First, we load in packages that may help us in our exploration of the
+data. Then, we will read in the data provided by Minerva.</p>
+<p>{r Setting up the Environment, message=FALSE, warning=FALSE}
+library(pacman) p_load(tidyverse, skimr, scales, rmarkdown, magrittr,
+lubridate, janitor, htmltab, ggrepel, viridis, ggthemes, knitr,
+reactable, stringr.plus, ggridges, readxl, reactablefmtr, showtext,
+ggpubr, sentimentr, tm, plotly, tinytex) options(scipen=999)
+theme_set(theme_light())</p>
+<p>{r Loading in Data, message=FALSE, warning=FALSE} survey &lt;-
+read_excel(path = “C:\Users\andre\Downloads\ERA Performance Assignment
+Data.xlsx”, sheet = “Student Course Survey”, trim_ws = TRUE) outcomes
+&lt;- read_excel(path = “C:\Users\andre\Downloads\ERA Performance
+Assignment Data.xlsx”, sheet = “Course Learning Outcomes”, trim_ws =
+TRUE)</p>
+<p>Student Course Survey</p>
+<p>Let’s look at the survey data first.</p>
+<p>{r Cleaning and Skimming, message=FALSE, warning=FALSE} #First, let’s
+clean the variable names.<br />
+survey &lt;- survey %&gt;% clean_names()</p>
+<p>#Let’s remove the first row, which contains each question. We will
+add the questions in manually in tables and charts below. survey_clean
+&lt;- survey %&gt;% slice(-1)</p>
+<p>#Let’s get a look at the overall structure of the data
+skim(survey_clean)</p>
+<p>The survey data includes a response to questions on a Likert scale
+and two free response questions (which typically had lower response
+rates - 44% and 55%). The questions are grouped by type:</p>
+<p>Time spent per week</p>
+<p>Agreeableness towards statements about the course</p>
+<p>Effectiveness of different elements of the course</p>
+<p>Effectiveness of processes within the course</p>
+<p>Free response questions addressed areas of improvement and overall
+effectiveness.</p>
+<p>The first question addresses the amount of time spent engaged with
+course material per week by the student.</p>
+<p>{r Time spent per week}</p>
+<p>font_add_google(“Exo”, “exo”)</p>
+<p>showtext_auto()</p>
+<p>#We can take a look in tabular format the time spent preparing each
+week survey_clean %&gt;% mutate(q1 = factor(x = q1, levels = c(“30
+minutes or less”, “1-2 hours”, “2-3 hours”, “3-4 hours”, “5 hours or
+more”))) %&gt;% count(q1) %&gt;% mutate(percent_respondents =
+percent(round(n/sum(n), digits = 4))) %&gt;% rename(“How much time per
+week have you typically spent throughout the semester preparing for this
+class?” = “q1”, “Number of Responses” = n, “Percent of Responses” =
+percent_respondents) %&gt;% reactable(theme = fivethirtyeight(), striped
+= TRUE)</p>
+<p>#And as a histogram survey_clean %&gt;% mutate(q1 = factor(x = q1,
+levels = c(“30 minutes or less”, “1-2 hours”, “2-3 hours”, “3-4 hours”,
+“5 hours or more”))) %&gt;% count(q1, sort = TRUE) %&gt;% ggplot(aes(q1,
+n, fill = q1)) + geom_histogram(stat = “identity”, show.legend = FALSE)+
+scale_fill_viridis(discrete = TRUE, option = “magma”, begin = .95, end =
+.5)+ scale_y_continuous(expand = c(0,0), limits = c(0, 40))+ labs(x =
+“Number of hours per week”, y = “Number of responses”, title = “How much
+time per week have you typically spent throughout the semester preparing
+for this class?”)+ theme(text = element_text(family = “exo”))</p>
+<p>A cursory glance suggests a roughly normal distribution. Many of the
+responses gravitated towards the 2-3 hour range. 83% of respondents said
+they spend between 1 and 4 hours a week.</p>
+<p>Next, to the first grouping of questions. The first set of questions
+used a 4 point Likert scale of agreeableness to a statement. We will
+look at each question and the number of responses for each point on the
+Likert scale.</p>
+<p>{r Agreeableness towards statements about the course, out.width=
+“100%”} # Question 2.1 in tabular format q2.1_tab &lt;- survey_clean
+%&gt;% select(starts_with(“q2”)) %&gt;% mutate(q2_1 = factor(q2_1,
+levels = c(“Disagree”, “Somewhat agree”, “Agree”, “Strongly agree”)))
+%&gt;% count(q2_1) %&gt;% mutate(Number_of_Responses = n,
+percent_respondents = percent(n/sum(n), accuracy = .1)) %&gt;%
+rename(“For this course, rate your level of agreement with the following
+statements: - I expect to be able to use what I have learned in this
+course in the future.” = “q2_1”, “Number of Responses” =
+“Number_of_Responses”, “Percent of Responses” = “percent_respondents”)
+%&gt;% select(-n) %&gt;% reactable(wrap = TRUE, theme =
+fivethirtyeight(), striped = TRUE, fullWidth = TRUE)</p>
+<p>#Question 2.1 in a histogram q2.1_hist &lt;- survey_clean %&gt;%
+select(starts_with(“q2”)) %&gt;% count(q2_1, sort = TRUE) %&gt;%
+mutate(percent_respondents = percent(n/sum(n), accuracy = .1), q2_1 =
+factor(q2_1, levels = c(“Disagree”, “Somewhat agree”, “Agree”, “Strongly
+agree”))) %&gt;% ggplot(aes(q2_1, n, fill = q2_1)) + geom_histogram(stat
+= “identity”, show.legend = FALSE)+ scale_fill_viridis(discrete = TRUE,
+option = “magma”, begin = .95, end = .5)+ labs(x = ““, y =”Number of
+responses”, title = “I expect to be able to use what I have learned in
+this course in the future.”)+ geom_text(aes(label =
+percent_respondents), color = “black”, size = 6, vjust = -.1, family =
+“exo”)+ scale_y_continuous(breaks = c(10, 20, 30, 40, 50, 60, 70),
+limits = c(0, 60), expand = c(0, 0))+ theme(text = element_text(family =
+“exo”, size = 20))</p>
+<div id="question-2.2-in-tabular-format" class="section level1">
+<h1>Question 2.2 in tabular format</h1>
+<p>q2.2_tab &lt;- survey_clean %&gt;% select(starts_with(“q2”)) %&gt;%
+mutate(q2_2 = factor(q2_2, levels = c(“Disagree”, “Somewhat agree”,
+“Agree”, “Strongly agree”))) %&gt;% count(q2_2) %&gt;%
+mutate(Number_of_Responses = n, percent_respondents = percent(n/sum(n),
+accuracy = .1)) %&gt;% rename(“For this course, rate your level of
+agreement with the following statements: - Course content was relevant
+to the topic and learning outcomes in this course.” = “q2_2”, “Number of
+Responses” = “Number_of_Responses”, “Percent of Responses” =
+“percent_respondents”) %&gt;% select(-n) %&gt;% reactable(wrap = TRUE,
+theme = fivethirtyeight(), striped = TRUE, fullWidth = TRUE)</p>
+</div>
+<div id="question-2.2-in-histogram" class="section level1">
+<h1>Question 2.2 in histogram</h1>
+<p>q2.2_hist &lt;- survey_clean %&gt;% select(starts_with(“q2”)) %&gt;%
+count(q2_2, sort = TRUE) %&gt;% mutate(percent_respondents =
+percent(n/sum(n), accuracy = .1), q2_2 = factor(q2_2, levels =
+c(“Disagree”, “Somewhat agree”, “Agree”, “Strongly agree”))) %&gt;%
+ggplot(aes(q2_2, n, fill = q2_2)) + geom_histogram(stat = “identity”,
+show.legend = FALSE)+ scale_fill_viridis(discrete = TRUE, option =
+“magma”, begin = .95, end = .5)+ labs(x = ““, y =”Number of responses”,
+title = “Course content was relevant to the topic and learning outcomes
+in this course.”)+ geom_text(aes(label = percent_respondents), color =
+“black”, size = 6, vjust = -.1, family = “exo”)+
+scale_y_continuous(breaks = c(10, 20, 30, 40, 50, 60, 70), limits =
+c(0,70), expand = c(0, 0))+ theme(text = element_text(family = “exo”,
+size = 20))</p>
+</div>
+<div id="question-2.3-in-tabular-format" class="section level1">
+<h1>Question 2.3 in tabular format</h1>
+<p>q2.3_tab &lt;- survey_clean %&gt;% select(starts_with(“q2”)) %&gt;%
+mutate(q2_3 = factor(q2_3, levels = c(“Disagree”, “Somewhat agree”,
+“Agree”, “Strongly agree”))) %&gt;% count(q2_3) %&gt;%
+mutate(Number_of_Responses = n, percent_respondents = percent(n/sum(n),
+accuracy = .1)) %&gt;% rename(“For this course, rate your level of
+agreement with the following statements: - Course assignments allowed me
+to demonstrate my understanding of what I have learned in the course.” =
+“q2_3”, “Number of Responses” = “Number_of_Responses”, “Percent of
+Responses” = “percent_respondents”) %&gt;% select(-n) %&gt;%
+reactable(wrap = TRUE, theme = fivethirtyeight(), striped = TRUE,
+fullWidth = TRUE)</p>
+</div>
+<div id="question-2.3-in-histogram" class="section level1">
+<h1>Question 2.3 in histogram</h1>
+<p>q2.3_hist &lt;- survey_clean %&gt;% select(starts_with(“q2”)) %&gt;%
+count(q2_3, sort = TRUE) %&gt;% mutate(percent_respondents =
+percent(n/sum(n), accuracy = .1), q2_3 = factor(q2_3, levels =
+c(“Disagree”, “Somewhat agree”, “Agree”, “Strongly agree”))) %&gt;%
+ggplot(aes(q2_3, n, fill = q2_3)) + geom_histogram(stat = “identity”,
+show.legend = FALSE)+ scale_fill_viridis(discrete = TRUE, option =
+“magma”, begin = .95, end = .5)+ labs(x = ““, y =”Number of responses”,
+title = “Course assignments allowed me to demonstrate my understanding
+of what I have learned in the course.”)+ geom_text(aes(label =
+percent_respondents), color = “black”, size = 6, vjust = -.1, family =
+“exo”)+ scale_y_continuous(breaks = c(10, 20, 30, 40, 50, 60), limits =
+c(0, 60), expand = c(0, 0))+ theme(text = element_text(family = “exo”,
+size = 20), plot.title = element_text(size = 17))</p>
+</div>
+<div id="question-2.4-in-tabular-format" class="section level1">
+<h1>Question 2.4 in tabular format</h1>
+<p>q2.4_tab &lt;- survey_clean %&gt;% select(starts_with(“q2”)) %&gt;%
+mutate(q2_4 = factor(q2_4, levels = c(“Disagree”, “Somewhat agree”,
+“Agree”, “Strongly agree”))) %&gt;% count(q2_4) %&gt;%
+mutate(Number_of_Responses = n, percent_respondents = percent(n/sum(n),
+accuracy = .1)) %&gt;% rename(“For this course, rate your level of
+agreement with the following statements: - The course stimulated new
+ways of applying the skills and knowledge I have learned.” = “q2_4”,
+“Number of Responses” = “Number_of_Responses”, “Percent of Responses” =
+“percent_respondents”) %&gt;% select(-n) %&gt;% reactable(wrap = TRUE,
+theme = fivethirtyeight(), striped = TRUE, fullWidth = TRUE)</p>
+</div>
+<div id="question-2.4-in-histogram" class="section level1">
+<h1>Question 2.4 in histogram</h1>
+<p>q2.4_hist &lt;- survey_clean %&gt;% select(starts_with(“q2”)) %&gt;%
+count(q2_4, sort = TRUE) %&gt;% mutate(percent_respondents =
+percent(n/sum(n), accuracy = .1), q2_4 = factor(q2_4, levels =
+c(“Disagree”, “Somewhat agree”, “Agree”, “Strongly agree”))) %&gt;%
+ggplot(aes(q2_4, n, fill = q2_4)) + geom_histogram(stat = “identity”,
+show.legend = FALSE)+ scale_fill_viridis(discrete = TRUE, option =
+“magma”, begin = .95, end = .5)+ labs(x = ““, y =”Number of responses”,
+title = “The course stimulated new ways of applying the skills and
+knowledge I have learned.”)+ geom_text(aes(label = percent_respondents),
+color = “black”, size = 6, vjust = -.1, family = “exo”)+
+scale_y_continuous(breaks = c(10, 20, 30, 40, 50, 60), limits = c(0,60),
+expand = c(0, 0))+ theme(text = element_text(family = “exo”, size =
+20))</p>
+<p>q2.1_tab q2.1_hist</p>
+<p>q2.2_tab q2.2_hist</p>
+<p>q2.3_tab q2.3_hist</p>
+<p>q2.4_tab q2.4_hist</p>
+<p>Students are generally favorable towards the program. For each of the
+questions at least 80% of the respondents either agree or strongly
+agree. From looking at the histograms one of the takeaways is that
+students feel less strongly about the fourth question “The course
+stimulated new ways of applying the skills and knowledge I have
+learned.” This would be a good issue to explore further. An additional
+insight is that the highest percentage of responses for “somewhat agree”
+reside in the third question - “Course assignments allowed me to
+demonstrate my understanding of what I have learned in the course.” 15%
+of respondents stated “Somewhat agree”, a higher clip than for the other
+questions in this section. This may also need to be explored
+further.</p>
+<p>Now moving on to the second set of questions which addresses
+effectiveness of different elements of the course. This set of questions
+is based on a 5 point Likert scale ranging from Not Effective at all to
+Extremely Effective.</p>
+<p>As with the last set of questions, let’s take a look at the responses
+to each question.</p>
+<p>{r Effectiveness of different elements of course, out.width=“100%”} #
+Making things a little easier, let’s factor each variable and arrange it
+in order of the Likert scale</p>
+<p>q3 &lt;- survey_clean %&gt;% select(starts_with(“q3”)) colq3 &lt;- q3
+%&gt;% colnames()</p>
+<p>q3 %&lt;&gt;% mutate_each_(funs(factor(., levels = c(“Not Effective
+at all”, “Slightly Effective”, “Somewhat Effective”, “Effective”,
+“Extremely Effective”))), colq3)</p>
+<p>refactor &lt;- function(x){ q3 %&gt;% mutate(x = factor(x, levels =
+c(“Not Effective at all”, “Slightly Effective”, “Somewhat Effective”,
+“Effective”, “Extremely Effective”))) }</p>
+<p>refactor(colq3[1]) refactor(colq3[2]) refactor(colq3[3])
+refactor(colq3[4]) refactor(colq3[5]) refactor(colq3[6])
+refactor(colq3[7])</p>
+<p>#We will create a function to make this go a little more smoothly
+questions_3 &lt;- c(“How effectively do the following support your
+learning in this class? - Assigned readings”, “How effectively do the
+following support your learning in this class? - Pre-class work”, “How
+effectively do the following support your learning in this class? -
+Polls”, “How effectively do the following support your learning in this
+class? - Verbal discussions”, “How effectively do the following support
+your learning in this class? - Completing interactive activities in
+breakout sessions”, “How effectively do the following support your
+learning in this class? - Assignments”, “How effectively do the
+following support your learning in this class? - Face-to-face
+sessions”)</p>
+<p>q3names &lt;- colnames(survey_clean %&gt;%
+select(starts_with(“q3”)))</p>
+<p>q3_tab &lt;- function(col, question){ return(survey_clean %&gt;%
+select(starts_with(“q3”)) %&gt;% count_(col) %&gt;%
+mutate(Number_of_Responses = n, percent_respondents = percent(n/sum(n),
+accuracy = .1)) %&gt;% rename_(.dots = setNames(col, question), “Number
+of Responses” = “Number_of_Responses”, “Percent of Responses” =
+“percent_respondents”) %&gt;% select(-n) %&gt;% reactable(wrap = TRUE,
+theme = fivethirtyeight(), striped = TRUE, fullWidth = TRUE)) }</p>
+<p>q3_hist &lt;- function(col, question, questiontext){ qtable &lt;- q3
+%&gt;% count_(col, sort = TRUE) %&gt;% mutate(Number_of_Responses = n,
+percent_respondents = percent(n/sum(n), accuracy = .1)) %&gt;%
+rename_(.dots = setNames(col, question)) %&gt;%<br />
+select(-n)</p>
+<p>qtable &lt;- as.data.frame(qtable)</p>
+<p>qtable %&gt;% ggplot(aes_string( x = {{question}}, y =
+“Number_of_Responses”, fill = {{question}}))+ geom_histogram(stat =
+“identity”, show.legend = FALSE)+ scale_x_discrete(limits = c(“Not
+Effective at all”, “Slightly Effective”, “Somewhat Effective”,
+“Effective”, “Extremely Effective”))+ scale_fill_viridis(discrete =
+TRUE, option = “magma”, begin = .95, end = .5)+ labs(x = ““, y =”Number
+of responses”, title = questiontext)+ geom_text(aes(label =
+percent_respondents), color = “black”, size = 6, vjust = -.1, family =
+“exo”)+ scale_y_continuous(breaks = c(10, 20, 30, 40, 50, 60, 70),
+limits = c(0,75), expand = c(0, 0))+ theme(text = element_text(family =
+“exo”, size = 20), plot.title = element_text(size = 20)) }</p>
+<p>q3tab_list &lt;- map2(q3names, questions_3, q3_tab) # maps two
+arguments to the function that calls for two arguments. pmap maps more
+than two (look at Wickham R for Data Science pg.334)</p>
+<p>q_s &lt;- c(“q3_1”, “q3_2”, “q3_3”, “q3_4”, “q3_5”, “q3_6”,
+“q3_7”)</p>
+<p>hist_3 &lt;- list(q3names, q_s, questions_3)</p>
+<p>q3hist_list &lt;- hist_3 %&gt;% pmap(q3_hist)</p>
+<p>q3tab_list[[1]] q3hist_list[[1]]</p>
+<p>q3tab_list[[2]] q3hist_list[[2]]</p>
+<p>q3tab_list[[3]] q3hist_list[[3]]</p>
+<p>q3tab_list[[4]] q3hist_list[[4]]</p>
+<p>q3tab_list[[5]] q3hist_list[[5]]</p>
+<p>q3tab_list[[6]] q3hist_list[[6]]</p>
+<p>q3tab_list[[7]] q3hist_list[[7]]</p>
+<p>A look at the charts suggests that students believe verbal
+discussions are extremely effective. Verbal discussions have the most
+positive response rate. While most elements of the course rated
+favorably, the response with the most variability over the Likert scale
+was the effectiveness of face to face sessions. One would imagine
+face-to-face session would have facilitated discussions, but the two do
+not seem to be linked somehow. This is something to explore further.</p>
+<p>Before moving to the free response questions we will take a look at
+the last set of questions that used the Likert scale. While on the
+surface it seems as if the same 5 point scale was used for the last set
+of questions, which deal with effectiveness of processes within the
+course, after looking at the responses, it is more likely that a 2 point
+scale was used: “Slightly Effective” and “Effective”.</p>
+<p>Completion rates were lower for this section: only 72% responded to
+each of these questions.</p>
+<p>The same approach used in the previous sections will be employed here
+to get a snapshot of the responses for each question in this section.
+However, the results are limited with the smaller response rate and
+structure of the questions (the 2 point scale as opposed to the 5 point
+scale). Non-responses are removed, however the percentage in the
+histograms do reflect the percentage of all students.</p>
+<p>{r Effectiveness of Forum} q5 &lt;- survey_clean %&gt;%
+select(starts_with(“q5”))</p>
+<p>colq5 &lt;- q5 %&gt;% colnames()</p>
+<p>q5 %&lt;&gt;% mutate_each_(funs(factor(., levels = c(“Slightly
+Effective”, “Effective”))), colq5)</p>
+<p>#Function to make this go a little more smoothly questions_5 &lt;-
+c(“Based on your experience so far, how effective is Forum for: -
+Interacting with the instructor”, “Based on your experience so far, how
+effective is Forum for: - Interacting with your peers”, “Based on your
+experience so far, how effective is Forum for: - Keeping you engaged in
+learning”, “Based on your experience so far, how effective is Forum for:
+- Providing opportunities to practice what you are learning”)</p>
+<p>q5names &lt;- colnames(survey_clean %&gt;%
+select(starts_with(“q5”)))</p>
+<p>q5_tab &lt;- function(col, question){ return(q5 %&gt;% count_(col,
+sort = TRUE) %&gt;% drop_na() %&gt;% mutate(Number_of_Responses = n,
+percent_respondents = percent(n/sum(n), accuracy = .1)) %&gt;%
+rename_(.dots = setNames(col, question), “Number of Responses” =
+“Number_of_Responses”, “Percent of Responses” = “percent_respondents”)
+%&gt;% select(-n) %&gt;% reactable(wrap = TRUE, theme =
+fivethirtyeight(), striped = TRUE, fullWidth = TRUE)) }</p>
+<p>q5_hist &lt;- function(col, question, questiontext){ qtable &lt;- q5
+%&gt;% count_(col, sort = TRUE) %&gt;% mutate(Number_of_Responses = n,
+percent_respondents = percent(n/sum(n), accuracy = .1)) %&gt;%
+rename_(.dots = setNames(col, question)) %&gt;%<br />
+select(-n)</p>
+<p>qtable &lt;- as.data.frame(qtable)</p>
+<p>qtable %&gt;% ggplot(aes_string( x = {{question}}, y =
+“Number_of_Responses”, fill = {{question}}))+ geom_histogram(stat =
+“identity”, show.legend = FALSE)+ scale_x_discrete(limits = c(“Slightly
+Effective”, “Effective”))+ scale_fill_viridis(discrete = TRUE, option =
+“magma”, begin = .6, end = .9)+ labs(x = ““, y =”Number of responses”,
+title = questiontext)+ geom_text(aes(label = percent_respondents), color
+= “black”, size = 6, vjust = -.1, family = “exo”)+
+scale_y_continuous(breaks = c(10, 20, 30, 40, 50), limits = c(0,50),
+expand = c(0, 0))+ theme(text = element_text(family = “exo”, size = 20),
+plot.title = element_text(size = 20)) }</p>
+<p>q5tab_list &lt;- map2(q5names, questions_5, q5_tab) # maps two
+arguments to the function that calls for two arguments. pmap maps more
+than two (look at Wickham R for Data Science pg.334)</p>
+<p>q_s &lt;- c(“q5_1”, “q5_2”, “q5_3”, “q5_4”)</p>
+<p>hist_5 &lt;- list(q5names, q_s, questions_5)</p>
+<p>q5hist_list &lt;- hist_5 %&gt;% pmap(q5_hist)</p>
+<p>q5tab_list[[1]] q5hist_list[[1]]</p>
+<p>q5tab_list[[2]] q5hist_list[[2]]</p>
+<p>q5tab_list[[3]] q5hist_list[[3]]</p>
+<p>q5tab_list[[4]] q5hist_list[[4]]</p>
+<p>There is little glean from these graphical representations. More data
+and more nuance would be needed.</p>
+<p>Finally, there were two free response questions included in the
+survey. We will run a quick sentiment analysis on the comments to see if
+the comments were more positive or negative in tone.</p>
+<p>{r Senitment analysis of Question 4} comments_q4 &lt;- survey_clean
+%&gt;% select(q4) %&gt;% drop_na() %&gt;% filter(nchar(q4) &gt; 2)</p>
+<p>commentsq4 &lt;- comments_q4$q4</p>
+<p>q4sentiment &lt;- sentiment_by(comments_q4$q4)</p>
+<p>q4sentiment_comments &lt;- cbind(q4sentiment, comments_q4)</p>
+<p>q4sentiment_comments_tab &lt;- q4sentiment_comments %&gt;% rename(“If
+any, what aspects of the course could be improved to better support your
+learning?” = “q4”) %&gt;% mutate(ave_sentiment = percent(ave_sentiment,
+accuracy = .1), sd = percent(sd, accuracy = .1)) %&gt;% select(5, 4, 3,
+2)</p>
+<p>reactable(q4sentiment_comments_tab, wrap = TRUE, theme =
+fivethirtyeight(), striped = TRUE, fullWidth = TRUE, resizable =
+TRUE)</p>
+<p>q4sentiment_comments %&gt;% ggplot(aes(ave_sentiment)) +
+geom_histogram()+ labs(x = “Sentiment Score”, y = “Frequency of Score”,
+title = “Overall Sentiment of Free Response Question 4”, subtitle = “If
+any, what aspects of the course could be improved to better support your
+learning?”)+ scale_y_continuous(expand = c(0, 0), limits = c(0, 10))</p>
+<p>According to the sentiment analysis the responses to question 4,
+which addressed areas of improvement, were generally positive. In
+scrolling through the responses, some answers more directly offered
+suggestions for improvement and others were just general comments. There
+were a few comments noting the effectiveness of the professor. As was
+seen in the question about face-to-face sessions, some students
+commented on a need for restructuring these.</p>
+<p>{r Sentiment analysis for Question 6} comments_q6 &lt;- survey_clean
+%&gt;% select(q6) %&gt;% drop_na() %&gt;% filter(nchar(q6) &gt; 2)</p>
+<p>commentsq6 &lt;- comments_q6$q6</p>
+<p>q6sentiment &lt;- sentiment_by(comments_q6$q6)</p>
+<p>q6sentiment_comments &lt;- cbind(q6sentiment, comments_q6)</p>
+<p>q6sentiment_comments_tab &lt;- q6sentiment_comments %&gt;%
+rename(“Please comment on your overall opinion of Forum’s effectiveness
+in supporting your learning.” = “q6”) %&gt;% mutate(ave_sentiment =
+percent(ave_sentiment, accuracy = .1), sd = percent(sd, accuracy = .1))
+%&gt;% select(5, 4, 3, 2)</p>
+<p>reactable(q6sentiment_comments, wrap = TRUE, theme =
+fivethirtyeight(), striped = TRUE, fullWidth = TRUE, resizable =
+TRUE)</p>
+<p>q6sentiment_comments %&gt;% ggplot(aes(ave_sentiment)) +
+geom_histogram()+ labs(x = “Sentiment Score”, y = “Frequency of Score”,
+title = “Overall Sentiment of Free Response Question 6”, subtitle =
+“Please comment on your overall opinion of Forum’s effectiveness in
+supporting your learning.”)+ scale_y_continuous(expand = c(0, 0), limits
+= c(0, 12))</p>
+<p>Question 6, which prompted the students to comment on the
+effectiveness of Forum, showed overall positive sentiment. According to
+this analysis, the students were favorable towards the Forum.</p>
+<p>Course Learning Outcomes</p>
+<p>Now we move to data on student learning. We can get a good overview
+of the data in the tables below.</p>
+<p>{r Overview of Data} #We clean the names of the variable first
+outcomes &lt;- outcomes %&gt;% clean_names()</p>
+</div>
+<div
+id="here-is-a-look-at-the-frequency-of-each-learning-outcome-is-measured"
+class="section level1">
+<h1>Here is a look at the frequency of each learning outcome is
+measured</h1>
+<p>outcomes %&gt;% count(learning_outcomes_name, sort = TRUE) %&gt;%
+reactable(theme = fivethirtyeight(), striped = TRUE, fullWidth =
+TRUE)</p>
+</div>
+<div
+id="here-is-a-look-at-the-frequency-of-each-assessment-type-is-measured"
+class="section level1">
+<h1>Here is a look at the frequency of each assessment type is
+measured</h1>
+<p>outcomes %&gt;% count(outcome_assessments_type, sort = TRUE) %&gt;%
+reactable(theme = fivethirtyeight(), striped = TRUE, fullWidth =
+TRUE)</p>
+<p>#How many students and how many assessments they have taken outcomes
+%&gt;% count(target_users_id, sort = TRUE) %&gt;% reactable(theme =
+fivethirtyeight(), striped = TRUE, compact = TRUE)</p>
+</div>
+<div id="assessments-given-for-each-class" class="section level1">
+<h1>Assessments given for each class</h1>
+<p>outcomes %&gt;% count(outcome_assessments_klass_id, sort = TRUE)
+%&gt;% reactable(theme = fivethirtyeight(), striped = TRUE, compact =
+TRUE)</p>
+</div>
+<div
+id="there-is-a-lack-of-robust-data-for-a-couple-of-columns-so-we-will-bypass-them-in-our-analysis.-assessment-ids-have-many-have-nas.-there-is-also-some-unclarity-even-in-the-data-dictionary-as-to-how-the-assignment-weights-work."
+class="section level1">
+<h1>There is a lack of robust data for a couple of columns so we will
+bypass them in our analysis. Assessment ids have many have NAs. There is
+also some unclarity (even in the data dictionary) as to how the
+assignment weights work.</h1>
+<p>Logic and bias are learning outcomes that were addressed frequently
+in assessments (possibly disproportionately so). We can see from this
+also that there were 147 students in the data set but 12 have taken 3 or
+fewer assessments.</p>
+<p>There is a lack of robust data for a couple of columns, so we will
+bypass them in our analysis. Assessment ids have many have NAs. There is
+also some unclarity (even in the data dictionary) as to how the
+assignment weights work.</p>
+<p>Scores Over Time</p>
+<p>The first aspect we will look at is the relationship between scores
+over time by learning outcome. We will do this in two different charts:
+one chart will overlay all learning outcomes, while the other will facet
+them to make them easier to read.</p>
+<p>{r Scores over time by learning outcomes, out.width= “100%”} # Line
+graph over time, avg. score on y-axis, line color by learning outcome
+type (for all students) showtext.auto() # All on one outcomes %&gt;%
+group_by(learning_outcomes_name, outcome_assessments_created_date)
+%&gt;% summarize(avg_score = mean(outcome_assessments_score, na.rm =
+TRUE)) %&gt;% ggplot(aes(outcome_assessments_created_date, avg_score,
+color = learning_outcomes_name)) + geom_line(size = 1.5)+<br />
+scale_color_viridis(name = “Learning Outcomes”, option = “magma”,
+discrete = TRUE, begin = .9, end = .1)+ labs(x = ““, y =”Average Score”,
+title = “Average score over time by learning outcomes”)+
+scale_y_continuous(breaks = c(1, 2, 3, 4), limits = c(0, 4.5))+
+theme(text = element_text(family = “exo”, size = 20), plot.title =
+element_text(size = 25))</p>
+</div>
+<div id="faceted" class="section level1">
+<h1>Faceted</h1>
+<p>outcomes %&gt;% group_by(learning_outcomes_name,
+outcome_assessments_created_date) %&gt;% summarize(avg_score =
+mean(outcome_assessments_score, na.rm = TRUE)) %&gt;%
+ggplot(aes(outcome_assessments_created_date, avg_score, color =
+learning_outcomes_name)) + geom_line(size = 1.5, show.legend =
+FALSE)+<br />
+scale_color_viridis(name = “Learning Outcomes”, option = “magma”,
+discrete = TRUE, begin = .9, end = .1)+ labs(x = ““, y =”Average Score”,
+title = “Average score over time by learning outcomes”)+ theme_light()+
+scale_y_continuous(breaks = c(1, 2, 3, 4), limits = c(0, 4.5))+
+facet_wrap(~ learning_outcomes_name)+ theme(text = element_text(family =
+“exo”, size = 20), plot.title = element_text(size = 20))</p>
+<p>A look at these charts show a peculiar pattern: There seems to be an
+upward tick in scores for almost all learning outcomes (logic and
+science of learning excluded) in the month of November. This is a
+curious finding that would need further exploration to identify the
+cause. Many of the scores came down from their peak in November into
+December.</p>
+<p>We can look at individual students’ scores in the same manner. For
+the student with the ID 15375:</p>
+<p>{r Student score by learning outcome over time} outcomes %&gt;%
+filter(target_users_id == 15375) %&gt;% group_by(learning_outcomes_name,
+outcome_assessments_created_date) %&gt;% summarize(avg_score =
+mean(outcome_assessments_score, na.rm = TRUE)) %&gt;%
+ggplot(aes(outcome_assessments_created_date, avg_score, color =
+learning_outcomes_name)) + geom_line(size = 1.5)+<br />
+scale_color_viridis(name = “Learning Outcomes”, option = “magma”,
+discrete = TRUE, begin = .9, end = .1)+ labs(x = ““, y =”Average Score”,
+title = “Average score over time by learning outcomes”)+
+scale_y_continuous(breaks = c(1, 2, 3, 4), limits = c(0, 4.5))+
+theme(text = element_text(family = “exo”, size = 20), plot.title =
+element_text(size = 20))</p>
+<p>outcomes %&gt;% filter(target_users_id == 15375) %&gt;%
+group_by(learning_outcomes_name, outcome_assessments_created_date)
+%&gt;% summarize(avg_score = mean(outcome_assessments_score, na.rm =
+TRUE)) %&gt;% ggplot(aes(outcome_assessments_created_date, avg_score,
+color = learning_outcomes_name)) + geom_line(size = 1.5, show.legend =
+FALSE)+<br />
+scale_color_viridis(name = “Learning Outcomes”, option = “magma”,
+discrete = TRUE, begin = .9, end = .1)+ labs(x = ““, y =”Average Score”,
+title = “Average score over time by learning outcomes”)+
+scale_y_continuous(breaks = c(1, 2, 3, 4), limits = c(0, 4.5))+
+facet_wrap(~ learning_outcomes_name)+ theme(text = element_text(family =
+“exo”, size = 20), plot.title = element_text(size = 20))</p>
+<p>Below is a function that can produce the same charts for the student
+ID that is entered. The example here is for student ID 15743.</p>
+<p>(There is a way to make this interactive with Shiny apps, but
+unfortunately that is a little beyond my skill set right now. It is one
+of the next things to learn! For now, here is the function in the code
+chunk below.)</p>
+<p>{r Function for student scores by learning outcome}
+student_outcome_scores &lt;- function(x){ outcomes %&gt;%
+filter(target_users_id == x) %&gt;% group_by(learning_outcomes_name,
+outcome_assessments_created_date) %&gt;% summarize(avg_score =
+mean(outcome_assessments_score, na.rm = TRUE)) %&gt;%
+ggplot(aes(outcome_assessments_created_date, avg_score, color =
+learning_outcomes_name)) + geom_line(size = 1.5)+<br />
+scale_color_viridis(name = “Learning Outcomes”, option = “magma”,
+discrete = TRUE, begin = .9, end = .1)+ labs(x = ““, y =”Average Score”,
+title = “Average score over time by learning outcomes”)+
+scale_y_continuous(breaks = c(1, 2, 3, 4), limits = c(0, 4.5))+
+theme(text = element_text(family = “exo”, size = 20), plot.title =
+element_text(size = 20)) }</p>
+<p>#Function in action student_outcome_scores(15743)</p>
+<p>student_outcome_scores_facet &lt;- function(x){ outcomes %&gt;%
+filter(target_users_id == x) %&gt;% group_by(learning_outcomes_name,
+outcome_assessments_created_date) %&gt;% summarize(avg_score =
+mean(outcome_assessments_score, na.rm = TRUE)) %&gt;%
+ggplot(aes(outcome_assessments_created_date, avg_score, color =
+learning_outcomes_name)) + geom_line(size = 1.5, show.legend =
+FALSE)+<br />
+scale_color_viridis(name = “Learning Outcomes”, option = “magma”,
+discrete = TRUE, begin = .9, end = .1)+ labs(x = ““, y =”Average Score”,
+title = “Average score over time by learning outcomes”)+
+scale_y_continuous(breaks = c(1, 2, 3, 4), limits = c(0, 4.5))+
+facet_wrap(~ learning_outcomes_name)+ theme(text = element_text(family =
+“exo”, size = 20), plot.title = element_text(size = 20)) }</p>
+<p>#Function in action student_outcome_scores_facet(15743)</p>
+<p>Next, we will take a look at scores over time by assessment type. It
+is similar to the concept above, but this time we will see the
+relationship between scores and assessment type. We can put this into
+one chart (no need to facet) because there are only five different
+assessment types.</p>
+<p>{r Scores over time by assessment type}</p>
+<p>outcomes %&gt;% group_by(outcome_assessments_type,
+outcome_assessments_created_date) %&gt;% summarize(avg_score =
+mean(outcome_assessments_score, na.rm = TRUE)) %&gt;%
+ggplot(aes(outcome_assessments_created_date, avg_score, color =
+outcome_assessments_type)) + geom_line(size = 1.5)+<br />
+scale_color_viridis(name = “Assessment Type”, option = “magma”, discrete
+= TRUE, begin = .9, end = .1)+ labs(x = ““, y =”Average Score”, title =
+“Average score over time by assessment type”)+ scale_y_continuous(breaks
+= c(1, 2, 3, 4), limits = c(0, 4.5))+ theme(text = element_text(family =
+“exo”, size = 20), plot.title = element_text(size = 20))</p>
+<p>From the plot we can see that if the assessment was of a “general”
+type, it tended to score relatively low. However, as seen earlier, there
+were far fewer “general” assessment types overall. It would be
+interesting to have more information on what consitutes a “general”
+assessment. It would also be interesting to see if scores for each type
+were due to student’s attitudes and efforts on the assessment type
+(e.g. student’s not appreciating or putting as much effort into
+pre-class assignments), or if they were due to teacher/assessor
+attitudes and/or predilections.</p>
+<p>As with the learning outcomes, we can zoom in and look at individual
+student scores by assessment type over time. Included in the chunk below
+is a function to search individual students. The first plot is for
+student ID 15375 and the second is for student ID 15743.</p>
+<p>{r Individual student scores over time by assessment type}</p>
+</div>
+<div id="shows-student-scores-over-time-by-assessment-type"
+class="section level1">
+<h1>Shows student scores over time by assessment type</h1>
+<p>outcomes %&gt;% filter(target_users_id == 15375) %&gt;%
+group_by(outcome_assessments_type, outcome_assessments_created_date)
+%&gt;% summarize(avg_score = mean(outcome_assessments_score, na.rm =
+TRUE)) %&gt;% ggplot(aes(outcome_assessments_created_date, avg_score,
+color = outcome_assessments_type)) + geom_line(size = 1.5)+<br />
+scale_color_viridis(name = “Assessment Type”, option = “magma”, discrete
+= TRUE, begin = .9, end = .1)+ labs(x = ““, y =”Average Score”, title =
+“Average score over time by assessment type”)+ scale_y_continuous(breaks
+= c(1, 2, 3, 4), limits = c(0, 4.5))+ theme(text = element_text(family =
+“exo”, size = 20), plot.title = element_text(size = 20))</p>
+</div>
+<div
+id="filter-by-student-as-function-so-all-you-have-to-do-is-put-in-target_user_id"
+class="section level1">
+<h1>Filter by student as function, so all you have to do is put in
+target_user_id</h1>
+<p>student_assessmenttype_scores &lt;- function(x){ outcomes %&gt;%
+filter(target_users_id == x) %&gt;% group_by(outcome_assessments_type,
+outcome_assessments_created_date) %&gt;% summarize(avg_score =
+mean(outcome_assessments_score, na.rm = TRUE)) %&gt;%
+ggplot(aes(outcome_assessments_created_date, avg_score, color =
+outcome_assessments_type)) + geom_line(size = 1.5)+<br />
+scale_color_viridis(name = “Assessment Type”, option = “magma”, discrete
+= TRUE, begin = .9, end = .1)+ labs(x = ““, y =”Average Score”, title =
+“Average score over time by assessment type”)+ scale_y_continuous(breaks
+= c(1, 2, 3, 4), limits = c(0, 4.5))+ theme(text = element_text(family =
+“exo”, size = 20), plot.title = element_text(size = 20)) }</p>
+</div>
+<div id="function-in-action" class="section level1">
+<h1>Function in action</h1>
+<p>student_assessmenttype_scores(15743)</p>
+<p>Combining both assessment type and learning outcome, we can take a
+look at the range, median, and quartiles of each assessment per learning
+outcome. First, we look at these in a traditional box plot. The learning
+outcomes have been grouped into eight categories. The top 7 - logic,
+bias, heuristics, science of learning, right problem, gap analysis, and
+break it down - all had close to at least 400 assessments to draw scores
+from (logic led the way with 1561). The rest had less than 300.
+Therefore, they were grouped into an “other” category.</p>
+<p>{r Box plot for assessment types by learning outcome} # boxplots
+showing range, quartiles, and median of scores by assessment type for
+each outcome outcomes %&gt;% mutate(learning_outcomes_name =
+fct_reorder(learning_outcomes_name, outcome_assessments_score, na.rm =
+TRUE), learning_outcomes_name = fct_lump_n(learning_outcomes_name, n =
+7)) %&gt;% ggplot(aes(outcome_assessments_type,
+outcome_assessments_score, fill = outcome_assessments_type)) +
+geom_boxplot(show.legend = FALSE)+ coord_flip() + labs(x = ““, y
+=”Scores”, title = “Scores by outcome and assessment type”)+
+scale_fill_viridis(discrete = TRUE, option = “magma”, begin = .9, end =
+.3)+ facet_wrap(~ learning_outcomes_name)</p>
+<p>For this purpose, it might be a little easier to draw conclusions
+from a ridgeline plot.</p>
+<p>{r Ridgeline plot for assessment types by learning outcome} outcomes
+%&gt;% mutate(learning_outcomes_name =
+fct_reorder(learning_outcomes_name, outcome_assessments_score, na.rm =
+TRUE), learning_outcomes_name = fct_lump_n(learning_outcomes_name, n =
+7)) %&gt;% ggplot(aes(outcome_assessments_score,
+outcome_assessments_type, fill = outcome_assessments_type)) +
+geom_density_ridges(show.legend = FALSE)+ scale_fill_viridis(discrete =
+TRUE, option = “magma”, begin = .9, end = .3)+ facet_wrap(~
+learning_outcomes_name)+ labs(x = “Scores”, y = ““, title =”Scores by
+outcome and assessment type”)+ theme( axis.line=element_line(), text =
+element_text(family = “exo”, size = 20))</p>
+<p>A few observations from the plots above. “Ridges” with high peaks
+suggest very low variability in score. Pre-class assignments in science
+of learning are notable: there is a large peak around 2. With large
+peaks, one wonders if students are aware of the expectations, if there
+is a default by the one assessing the work to gravitate towards a
+certain score, or if some other factor is at play. Other “ridges” are
+either bimodal (general assessments in break it down) or multimodal
+(much of the data presented here). It is interesting to see which
+assessments skew high or low. Videos skew high for each learning
+outcome, while pre-class assignments generally skew slightly lower.</p>
+<p>The next plot helps us get a look at how all scores are distributed
+over time by both assessment type and learning outcome. There is a lot
+going on in this plot, and it looks a little wild, but the advantages of
+this plot include being able to identify trends (demonstrated by the
+regression lines) and being able to see if the learning outcomes are all
+being addressed equally. The underlying data and how assessments are
+recorded (on the first of each month) make the plots look a little goofy
+(in column format as opposed to spread out over time), but the general
+idea remains. The plot is displayed both statically and as an
+interactive. (Note, there were no assignments given in September.)</p>
+<p>{r Scores over time by learning outcomes and assessment type,
+out.width=“100%”} #Plotly graphs of each assessment by type and outcome
+over time scores_by_assesstype &lt;- outcomes %&gt;%
+drop_na(outcome_assessments_score) %&gt;%
+ggplot(aes(outcome_assessments_created_date, outcome_assessments_score,
+label = target_users_id)) + geom_point() + geom_jitter(aes(color =
+learning_outcomes_name))+ geom_smooth(method = “lm”, color = “black”) +
+labs(x = ““, y =”Assessment Score”, title = “Scores over time by type
+and outcome”)+ scale_color_viridis(name = “Learning Outcome”, option =
+“magma”, discrete = TRUE, begin = .95, end = .2)+ facet_wrap(~
+outcome_assessments_type, scales = “free”)+ theme(panel.spacing =
+unit(1.5, “lines”), axis.line=element_line(), text = element_text(family
+= “exo”, size = 15))</p>
+<p>scores_by_assesstype</p>
+<p>#For interactive plot ggplotly(scores_by_assesstype,)</p>
+<p>From the plot we can see that all assessment types, except for
+general, had at least a slight upward trend. It is noticeable that logic
+seemed to be the theme during the month of October. More variation
+across time for each learning outcome might be a more desirable
+route.</p>
+<p>Looking at the data in this manner can highlight trends across
+assessment type and learning outcomes.</p>
+<p>One Final Table</p>
+<p>It might be helpful for teachers or administration to have a table
+which provides student score information and is easily searchable. Here
+is the beginning of such a table.</p>
+<p>{r} student_avg_by_month &lt;- outcomes %&gt;%
+drop_na(outcome_assessments_score) %&gt;% group_by(target_users_id,
+outcome_assessments_created_date) %&gt;% summarize(avg_score =
+round(mean(outcome_assessments_score), digits = 2)) %&gt;%
+spread(outcome_assessments_created_date, avg_score) %&gt;%
+rename(“September 2021” = “2021-09-01”, “October 2021” = “2021-10-01”,
+“November 2021” = “2021-11-01”, “December 2021” = “2021-12-01”) %&gt;%
+select(-“2022-01-01”)</p>
+<p>reactable(student_avg_by_month, wrap = TRUE, theme =
+fivethirtyeight(), striped = TRUE, fullWidth = TRUE, searchable = TRUE,
+sortable = TRUE, filterable = TRUE, pageSizeOptions = 25, highlight =
+TRUE, showSortIcon = TRUE)</p>
+<p>The table could be improved by parsing the scores even further by
+learning outcomes or types of assessment.</p>
+<p>Conclusions and Moving Forward</p>
+<p>In reflecting on the analysis throughout, some general trends came to
+light:</p>
+<p>The survey data suggests favorable attitudes by the students towards
+the course.</p>
+<p>The course learning outcomes data suggests some learning outcomes are
+more of a focus than others (logic being predominant).</p>
+<p>The course learning outcomes data suggests a slight upward trend in
+scores over time, although statistical tests would have to be performed
+to see if these are significant.</p>
+<p>Areas of further analysis:</p>
+<p>No exploration was done in regards to the Klass ID. Scores can be
+examined by the Klass ID to see if there are any trends on that
+level.</p>
+<p>Clarity and more rigorous collection methods in the area of
+assessment weighting might provide clues about patterns of scores for
+each assessment type (e.g. why do preclass assignments tend to have
+lower scores?).</p>
+<p>Statistical tests need to be run to compare the scores across each of
+these categories.</p>
+<p>Suggestions in light of the findings:</p>
+<p>As intimated earlier, some learning outcomes were addressed way more
+than others. Assessing each learning outcome an equal amount might be a
+better tactic. There were a couple of student comments that also
+suggested there could be more clarity about the learning outcomes. The
+learning outcomes are by nature abstract concepts/skills, and as such
+will invite at least slight variations in definition/understanding
+between individuals, but it might be desirable to be more clear in which
+tasks and content require which skill. Identifying which learning
+outcomes are working in concert on any given task, and being explicitly
+clear as to how, might help students start to identify the
+interconnectivity of these concepts for themselves.</p>
+<p>The survey data suggested that face-to-face procedures may need to be
+revisited and revised. Not knowing the current format and practices,
+suggestions here are limited. However, from reading the comments it
+seems like these sessions could be used to practice the learning
+outcomes in more “real-world” situations.</p>
+<p>More data regarding student progress is desired, though, the
+collection of this data should be as non-intrusive as possible. One does
+not want to create a culture of constant assessment. Novel ways to
+collect evidence, for instance through text mining/analytics, would
+allow the student to “act naturally” while evidence of their learning
+and understanding are being collected. In the survey data, verbal
+discussions rated very highly, however, these interactions are more
+difficult to assess. New technologies can help us gather, analyze, and
+evaluate understanding as demonstrated in verbal discussions, adding
+more data to provide a more comprehensive picture of student
+achievement.</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
