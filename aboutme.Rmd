@@ -3,6 +3,3 @@ title: "About This Site"
 output: html_document
 ---
 
-# Welcome to my Project Recepticle
-
-I used to be a teacher, and now I am trying to learn everything there is to know about data analytics...and I am drowning. Just having a day.
