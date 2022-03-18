@@ -673,7 +673,7 @@ ggplot(aes(outcome_assessments_created_date, outcome_assessments_score,
 
 scores_by_assesstype
 
-#For interactive plot
+#For interactive plot 
 ggplotly(scores_by_assesstype,)
 ```
 
