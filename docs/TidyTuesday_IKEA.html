@@ -11,7 +11,7 @@
 
 <meta name="author" content="Andrew Borozan" />
 
-<meta name="date" content="2022-03-17" />
+<meta name="date" content="2022-03-28" />
 
 <title>TidyTuesday_IKEA</title>
 
@@ -357,6 +357,9 @@ $(document).ready(function () {
     <li>
       <a href="./Reddit_Sentiment_Analysis_2_23.html">Sentiment Analysis with Reddit Comments</a>
     </li>
+    <li>
+      <a href="./Elo_rating.html">Accuracy of Elo Ratings</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -425,7 +428,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">TidyTuesday_IKEA</h1>
 <h4 class="author">Andrew Borozan</h4>
-<h4 class="date">2022-03-17</h4>
+<h4 class="date">2022-03-28</h4>
 
 </div>
 
@@ -445,13 +448,14 @@ $(document).ready(function () {
 <pre><code>## --- Download complete ---</code></pre>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ikea <span class="ot">&lt;-</span> ikea<span class="sc">$</span>ikea <span class="co">#it downloaded as a list with one item. The one item was the table. Just extract the one item and put it in an object.</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>ikea <span class="ot">&lt;-</span> ikea <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#What are the most common categories?</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ikea <span class="sc">%&gt;%</span> <span class="fu">count</span>(category, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">category =</span> <span class="fu">fct_reorder</span>(category, n)) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(category, n)) <span class="sc">+</span> <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>ikea <span class="ot">&lt;-</span> ikea <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_count</span>(category, <span class="at">name =</span> <span class="st">&quot;category_total&quot;</span>) </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#What are the most common categories?</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>ikea <span class="sc">%&gt;%</span> <span class="fu">count</span>(category, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">category =</span> <span class="fu">fct_reorder</span>(category, n)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(category, n)) <span class="sc">+</span> <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div>
 <p><img src="TidyTuesday_IKEA_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#How do category and price relate?</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Distribution of price by category</span></span>
@@ -470,7 +474,7 @@ $(document).ready(function () {
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># How many items per category?</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glue)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>ikea <span class="sc">%&gt;%</span> <span class="fu">add_count</span>(category, <span class="at">name =</span> <span class="st">&quot;category_total&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">category =</span> <span class="fu">glue</span>(<span class="st">&quot;{ category } ({ category_total })&quot;</span>), </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">category =</span> <span class="fu">glue</span>(<span class="st">&quot;{ category } ({ category_total })&quot;</span>), <span class="co">#Glue is like concatenate</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">category =</span> <span class="fu">fct_reorder</span>(category, price)) <span class="sc">%&gt;%</span> </span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(price, category)) <span class="sc">+</span></span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
@@ -501,14 +505,14 @@ $(document).ready(function () {
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ikea <span class="sc">%&gt;%</span> <span class="fu">add_count</span>(category, <span class="at">name =</span> <span class="st">&quot;category_total&quot;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">category =</span> <span class="fu">glue</span>(<span class="st">&quot;{ category } ({ category_total })&quot;</span>), </span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">category =</span> <span class="fu">fct_reorder</span>(category, price)) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(price_usd, category, <span class="at">fill =</span> other_colors)) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(price_usd, category, <span class="at">fill =</span> other_colors)) <span class="sc">+</span> <span class="co"># Can break up by color - recommended for &quot;yes/no&quot; or three variables at most. </span></span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density_ridges</span>(<span class="at">alpha =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="at">labels =</span> dollar)<span class="sc">+</span></span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>, <span class="at">option =</span> <span class="st">&quot;magma&quot;</span>, <span class="at">begin =</span> .<span class="dv">9</span>, <span class="at">end =</span> .<span class="dv">4</span>)</span></code></pre></div>
 <pre><code>## Picking joint bandwidth of 0.174</code></pre>
 <p><img src="TidyTuesday_IKEA_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>Looks like things that come in other colors are slightly cheaper.</p>
-<p>#Volume</p>
+<p>What is “name?” Looks like a series…</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ikea <span class="sc">%&gt;%</span> <span class="fu">count</span>(name, category, designer, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 1,451 x 4
 ##    name    category                         designer                           n
@@ -532,6 +536,8 @@ $(document).ready(function () {
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(n, name, <span class="at">fill =</span> category)) <span class="sc">+</span></span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()</span></code></pre></div>
 <p><img src="TidyTuesday_IKEA_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Let’s take the short description and manipulate it to look the way we
+want.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ikea <span class="sc">%&gt;%</span> <span class="fu">count</span>(short_description)</span></code></pre></div>
 <pre><code>## # A tibble: 1,706 x 2
 ##    short_description                                                           n
@@ -549,18 +555,19 @@ $(document).ready(function () {
 ## # ... with 1,696 more rows</code></pre>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s separate on the comma</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>ikea <span class="ot">&lt;-</span> ikea <span class="sc">%&gt;%</span> </span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">short_description =</span> <span class="fu">str_trim</span>(<span class="fu">str_replace_all</span>(short_description, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">s+&quot;</span>, <span class="st">&quot; &quot;</span>))) </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">short_description =</span> <span class="fu">str_trim</span>(<span class="fu">str_replace_all</span>(short_description, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">s+&quot;</span>, <span class="st">&quot; &quot;</span>))) <span class="co">#Removes blank spaces with regex - Dave comes back to this later though after somebody suggested to use STR_SQUISH (use this to clean columns!)</span></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>ikea <span class="sc">%&gt;%</span>  <span class="co">#Cleans up the strings, removes some whitespace</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>ikea <span class="sc">%&gt;%</span></span>
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">separate</span>(short_description, <span class="fu">c</span>(<span class="st">&quot;main_description&quot;</span>,<span class="st">&quot;cm_measure&quot;</span>), <span class="co">#separates text strings and puts them into these two columns </span></span>
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">sep =</span> <span class="st">&quot;, &quot;</span>, <span class="co"># separates by &quot;, &quot;</span></span>
 <span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">extra =</span> <span class="st">&quot;merge&quot;</span>, <span class="co">#merges any additional commas into the text in the second column</span></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill =</span> <span class="st">&quot;right&quot;</span>, </span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">remove =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span>  <span class="co">#if there is no separation, NA for the second column</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill =</span> <span class="st">&quot;right&quot;</span>, <span class="co">#if there is no separation, NA for the second column</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">remove =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span>  <span class="co"># Keeps all columns, even input column</span></span>
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">extract</span>(cm_measure, <span class="st">&quot;description_cm&quot;</span>, <span class="st">&quot;([</span><span class="sc">\\</span><span class="st">d</span><span class="sc">\\</span><span class="st">-xX]+) cm&quot;</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Dave did the extract - I have the code exactly as written and mine doesn&#39;t work...until I turned off magittr. It was using the magittr extract() instead of tidyr::extract()</span></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(category_and_description, category, main_description, <span class="at">sep =</span> <span class="st">&quot; - &quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(category_and_description, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># What extract does is takes a column (cm_measure), makes a new column (description_cm), then puts just the extracted material (in this case just the numbers + cm) from the old column.</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(category_and_description, category, main_description, <span class="at">sep =</span> <span class="st">&quot; - &quot;</span>) <span class="sc">%&gt;%</span> <span class="co"># pastes columns together</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(category_and_description, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 1,012 x 2
 ##    category_and_description                       n
 ##    &lt;chr&gt;                                      &lt;int&gt;
@@ -575,6 +582,71 @@ $(document).ready(function () {
 ##  9 Sofas &amp; armchairs - Corner sofa               33
 ## 10 Sofas &amp; armchairs - 3-seat sofa               32
 ## # ... with 1,002 more rows</code></pre>
+<p>##Volume</p>
+<p>What is the largest item by volume? What takes up the most space</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>ikea <span class="sc">%&gt;%</span> <span class="fu">select</span>(name, short_description, category, price_usd, depth, height, width) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">volume_m3 =</span> depth <span class="sc">*</span> height <span class="sc">*</span> width <span class="sc">/</span> <span class="dv">1000000</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(volume_m3)) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(volume_m3)) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_count</span>(category, <span class="at">name =</span> <span class="st">&quot;category_total&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">category =</span> <span class="fu">glue</span>(<span class="st">&quot;{ category } ({ category_total })&quot;</span>), </span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">category =</span> <span class="fu">fct_reorder</span>(category, volume_m3)) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(volume_m3, category)) <span class="sc">+</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>()</span></code></pre></div>
+<p><img src="TidyTuesday_IKEA_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>What is the highest price per cubic meter?</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>ikea <span class="sc">%&gt;%</span> <span class="fu">select</span>(name, short_description, category, price_usd, depth, height, width) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">volume_m3 =</span> depth <span class="sc">*</span> height <span class="sc">*</span> width <span class="sc">/</span> <span class="dv">1000000</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(volume_m3)) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">category =</span> <span class="fu">fct_lump</span>(category, <span class="dv">6</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(volume_m3)) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(volume_m3, price_usd, <span class="at">color =</span> category)) <span class="sc">+</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>)<span class="sc">+</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>()<span class="sc">+</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="co"># Need log scale for both because of the variability in both variables. </span></span></code></pre></div>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="TidyTuesday_IKEA_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What is the highest price per cubic meter?</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>ikea <span class="sc">%&gt;%</span> <span class="fu">select</span>(name, short_description, category, price_usd, depth, height, width) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">volume_m3 =</span> depth <span class="sc">*</span> height <span class="sc">*</span> width <span class="sc">/</span> <span class="dv">1000000</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(volume_m3)) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dollar_per_m3 =</span> price_usd <span class="sc">/</span> volume_m3) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(dollar_per_m3))</span></code></pre></div>
+<pre><code>## # A tibble: 1,899 x 9
+##    name       short_description  category price_usd depth height width volume_m3
+##    &lt;chr&gt;      &lt;chr&gt;              &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;
+##  1 STALLARP   Leg                Bookcas~     12.2      4     10     4  0.00016 
+##  2 STALLARP   Leg                Cabinet~     12.2      4     10     4  0.00016 
+##  3 STALLARP   Leg                TV &amp; me~     12.2      4     10     4  0.00016 
+##  4 SKÅDIS     Connector for ALG~ Bookcas~      1.62     2      4     5  0.00004 
+##  5 BROR       Hook for post, 7x~ Bookcas~      4.05     5      7     3  0.000105
+##  6 EKET       Suspension rail, ~ Bookcas~      4.05     1      4    29  0.000116
+##  7 EKET       Suspension rail, ~ Bookcas~      5.4      1      4    63  0.000252
+##  8 VALLENTUNA Back rest, 100x80~ Sofas &amp;~     86.4     13      4   100  0.0052  
+##  9 GODVIN     Leg                Tables ~      6.75     3     70     4  0.00084 
+## 10 BJÖRKSNÄS  Bedside table, 48~ Tables ~    107.      38      8    48  0.0146  
+## # ... with 1,889 more rows, and 1 more variable: dollar_per_m3 &lt;dbl&gt;</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>ikea <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(designer) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n_items =</span> <span class="fu">n</span>(),</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">n_names =</span> <span class="fu">n_distinct</span>(name),</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">n_category =</span> <span class="fu">n_distinct</span>(category)) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n_names))</span></code></pre></div>
+<pre><code>## # A tibble: 381 x 4
+##    designer                       n_items n_names n_category
+##    &lt;chr&gt;                            &lt;int&gt;   &lt;int&gt;      &lt;int&gt;
+##  1 IKEA of Sweden                     828     167         17
+##  2 K Hagberg/M Hagberg                122      30         14
+##  3 Ola Wihlborg                       134      24         10
+##  4 Jon Karlsson                       120      17         10
+##  5 Ebba Strandmark                     57      15         11
+##  6 Francis Cayouette                  151      15          7
+##  7 IKEA of Sweden/Ehlén Johansson      70      14          5
+##  8 Ehlén Johansson                    161      13          8
+##  9 Henrik Preutz                       70      13         11
+## 10 Nike Karlsson                       53      12          9
+## # ... with 371 more rows</code></pre>
 
 
 

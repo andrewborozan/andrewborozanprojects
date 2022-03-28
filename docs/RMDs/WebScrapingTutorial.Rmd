@@ -1,0 +1,203 @@
+---
+title: "Web Scraping Tutorial Part 1"
+author: "Andrew Borozan"
+date: "2/15/2022"
+output: html_document
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  out.width = "100%",
+  message=FALSE,
+  warning=FALSE,
+  eval=FALSE, 
+  include=FALSE
+)
+
+```
+
+# WEB SCRAPING: A MODERN DAY SUPERPOWER
+
+I didn't hear about web scraping until I entered the data analytics world. I thought gathering information consisted of clicking from page to page and reading every jot and tittle. I obviously had no idea how Google worked (and still don't to a very large extent). When I learned of web scraping, I considered it a modern day super power. "You mean I can take all the information on a website - or even multiple websites - and put it in a table for analysis? Impossible." It became one of the first things I wanted to learn how to do. 
+
+After watching a few tutorials, and scouring the internet to fix a few problems along the way, here is what I learned...
+
+# TOOLS YOU WILL NEED
+
+Whether this is best practice in the field or not, it is a quirk that I have: I like loading all the packages I even remotely might use, or sometimes packages I simply have heard of ("What does "modelr" do? I have no idea, but some guy mentioned it in a blog I was reading."). The pacman package is the best way to load multiple packages at once. I simply copy and paste this code at the start of most of my projects: 
+
+```{r include=FALSE}
+library(pacman)
+p_load(tidyverse, skimr, scales, rmarkdown, magrittr, lubridate, janitor, htmltab, ggrepel, 
+       ggthemes, showtext, knitr, rvest, reactable)
+```
+
+Just seeing if this will work.
+
+
+The two heavy hitters among this UPS truck of packages is tidyverse (if you are new to R you will live in the tidyverse multiverse (it is actually a network of packages) much of your R life) and the rvest package, which has a whole host of functions that let us steal stuff off the internet (mostly in the form of data. Admittedly not as good as money, or diamonds, or rare baseball cards, but some people have the additional super power of turning scraped data into that stuff. I am not there - yet - so, the "how to" for taking a data lump of coal and turning it into a diamond isn't part of this tutorial.).
+
+
+#IMDB: I am dat basic
+
+I watched a great tutorial (thank you [DataSlice](https://www.youtube.com/c/dataslice/videos)), and saw a couple of articles (for example this one from [Zenscrape](https://zenscrape.com/web-scraping-r/): this article is almost verbatim the DataSlice tutorial, leading to multiple theories: 1) Zenscrape is Dataslice, 2) Zenscrape watched Dataslice and said "Hey I can make a blog post version of this YouTube video", 3) This truly is the best method to do this stuff, and IMDB is the best website on which to demonstrate in a tutorial, and these two individuals arrived at these conclusions independently, 4) There is a rip in the fabric of space time and Dr. Strange is somehow involved and these are actually two tutorials from parallel universes that were never supposed to intersect, or something along those lines.) and it seems like industry standard for web scraping tutorials is using IMDB as an example. I want to be in the cool kid club, so that is where we will start in this tutorial as well. But for those looking for a little more excitement, something a little more risque than IMDB, we are going to get a little frisky and head over to Wikipedia for a second example. Because nothing says provocative more than Hari Seldon's dream come true (don't tell me you haven't read Foundation...like at least 5 times). 
+
+The first step is heading over to imdb.com and finding a "Top" something list that we can work with. I am going to head over to the "Most Popular Movies" tab and work from there:
+
+(Screenshot)
+
+Ideally, what I would like to from this website is the title of the movie, release year, rating, and blurb about the movie. I want all of this in a table that I can do some analysis on. 
+
+Enter web scraping. 
+
+In R, put the link 
+
+
+```{r}
+
+```
+
+
+```{r eval=FALSE, include=FALSE}
+link <- "https://www.imdb.com/chart/top?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=470df400-70d9-4f35-bb05-8646a1195842&pf_rd_r=0GMNJA9F5185SGTK1E0Y&pf_rd_s=right-4&pf_rd_t=15506&pf_rd_i=moviemeter&ref_=chtmvm_ql_3"
+page <- read_html(link)
+```
+
+Use selector extension tool to get html node that you want.
+
+```{r eval=FALSE, include=FALSE}
+name <-  page %>% html_nodes(".titleColumn a") %>% html_text()
+name
+```
+
+```{r eval=FALSE, include=FALSE}
+year <-  page %>% html_nodes(".secondaryInfo") %>% html_text()
+year
+```
+
+```{r eval=FALSE, include=FALSE}
+rating <-  page %>% html_nodes("strong") %>% html_text()
+rating
+
+```
+
+```{r eval=FALSE, include=FALSE}
+top_movies_imdb <- data.frame(name, year, rating)
+top_movies_imdb
+```
+
+Clean data frame:
+
+```{r}
+class(top_movies_imdb$year)
+
+top_movies_imdb_clean <- top_movies_imdb %>% mutate(year = as.numeric(str_sub(year,2,−2)), 
+                                                    rating = as.numeric(rating))
+top_movies_imdb_clean
+
+class(top_movies_imdb_clean$year)
+```
+
+On my own now:
+
+```{r}
+link_2 <- "https://rfortherestofus.com/resources/"
+new_page <- read_html(link_2)
+```
+
+```{r}
+video_names <- new_page %>% html_nodes(".text-blue-800") %>% html_text()
+video_names
+```
+
+```{r}
+indices <- seq.int(1, 24, by=2)
+video_names[-indices]
+```
+
+# Nested Links
+
+Scrape links, navigate to links, scrape even more data from links.
+
+Add primary cast members from each movie.
+
+```{r}
+link_3 <- "https://www.imdb.com/search/title/?genres=history&sort=user_rating,desc&title_type=feature&num_votes=25000,&pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=5aab685f-35eb-40f3-95f7-c53f09d542c3&pf_rd_r=ZXP3PF729N9DYJSW2MK6&pf_rd_s=right-6&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_gnr_11"
+page_3 <- read_html(link_3)
+```
+
+Create data frame for top history movies:
+
+```{r}
+movie_name <- page_3 %>% html_nodes(".lister-item-header a") %>% html_text()
+movie_name_link <- page_3 %>% html_nodes(".lister-item-header a") %>% html_attr("href") %>% 
+  paste("https://www.imdb.com", ., sep = "")
+release_year <- page_3 %>% html_nodes(".text-muted.unbold") %>% html_text()
+release_year
+rating <- page_3 %>% html_nodes(".certificate") %>% html_text()
+rating
+genre <- page_3 %>% html_nodes(".genre") %>% html_text()
+genre
+top_history <- data.frame(movie_name, release_year, genre)
+top_history <- top_history %>% mutate(release_year = as.numeric(str_sub(release_year, 2, -2))) %>% 
+  mutate(genre = trimws(str_replace_all(genre, "[\r\n]" , "")))
+top_history
+```
+
+```{r}
+get_cast <- function(movie_link){
+  movie_page <-  read_html(movie_link)
+  movie_cast <- movie_page %>% html_nodes(".primary_photo+ td") %>% html_text() %>% 
+  #paste(collapse = ".") - what this does is puts all of that into one string
+  paste(collapse = ".")
+  }
+
+# THis runs the function with each of the movie links being passed in and stores the output in cast. The USE.NAMES makes it so the links don't also get put into the object "cast".
+cast <- sapply(movie_name_link, FUN = get_cast, USE.NAMES = FALSE)
+cast
+#top_history <- add_column(cast)
+#top_history
+```
+
+# Session 3
+
+Create a for loop that scrapes all the websites you want to scrape.
+
+This solution accounts for missing information and includes it in the data frame as NA. Identify the "supernode" and read all of the subnodes within the supernode. Read each separately.
+
+```{r}
+movies <- data.frame()
+
+for (page_result in seq(from = 1, to = 151, by = 50)) {
+  link <- paste0("https://www.imdb.com/search/name/?birth_monthday=02-16&start=", page_result, "&ref_=rlm")
+  page <- read_html(link)
+  
+  super_node <- '.lister-item-content' 
+
+# read as vector of all blocks of supernode (imp: use html_nodes function)
+  super_node_read <- html_nodes(page, super_node)
+
+# define each node element that you want
+  name_css <- '.lister-item-header a'
+  known_for_css <- '.text-small'
+  blurb_css <- '.text-small+ p , .mode-detail:nth-child(42) p'
+
+
+# extract the output for each as cleaned text (imp: use html_node function)
+  name <- html_node(super_node_read, name_css) %>%
+  html_text() %>% trimws() %>% 
+  str_replace_all("[\t\n\r]" , "")
+
+  known_for <- html_node(super_node_read, known_for_css) %>%
+  html_text() %>% trimws() %>% 
+  str_replace_all("[\t\n\r]" , "")
+
+  blurb <- html_node(super_node_read, blurb_css) %>%
+  html_text() %>% trimws() %>% 
+  str_replace_all("[\t\n\r]" , "")
+
+  movies = rbind(movies, data.frame(name, known_for, blurb))
+}
+
+movies
+```

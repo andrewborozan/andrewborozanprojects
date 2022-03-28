@@ -1,0 +1,205 @@
+---
+title: "TidyTuesday_IKEA"
+author: "Andrew Borozan"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r}
+library(pacman)
+p_load(tidyverse, skimr, scales, rmarkdown, magrittr, lubridate, janitor, htmltab, ggrepel, viridis,
+       ggthemes, knitr, rvest, reactable, RSelenium, stringr.plus, htmltools, tidytuesdayR, ggridges, glue)
+options(scipen=999)
+theme_set(theme_classic())
+
+ikea <- tt_load("2020-11-03")
+
+ikea <- ikea$ikea #it downloaded as a list with one item. The one item was the table. Just extract the one item and put it in an object.
+
+ikea <- ikea %>% select(-1) %>% 
+  add_count(category, name = "category_total") 
+
+#What are the most common categories?
+ikea %>% count(category, sort = TRUE) %>% 
+  mutate(category = fct_reorder(category, n)) %>%
+  ggplot(aes(category, n)) + geom_col() +
+  coord_flip()
+
+```
+
+
+```{r}
+#How do category and price relate?
+#Distribution of price by category
+
+ikea %>% mutate(category = fct_reorder(category, price)) %>% 
+  ggplot(aes(price, category)) +
+  geom_boxplot() +
+  scale_x_log10() #Dave said whenever you have prices you probably want a log scale
+
+ikea %>% mutate(category = fct_reorder(category, price)) %>% 
+  ggplot(aes(price, category)) +
+  geom_boxplot() +
+  geom_jitter(width=0, height = .1, alpha = .23)+
+  scale_x_log10()
+
+
+# How many items per category?
+library(glue)
+ikea %>% add_count(category, name = "category_total") %>% 
+  mutate(category = glue("{ category } ({ category_total })"), #Glue is like concatenate
+           category = fct_reorder(category, price)) %>% 
+  ggplot(aes(price, category)) +
+  geom_boxplot() +
+  scale_x_log10()
+
+
+#Conversion rate Saudi to US$
+ikea <- ikea %>% mutate(price_usd = .27*price)
+
+ikea %>% add_count(category, name = "category_total") %>% 
+  mutate(category = glue("{ category } ({ category_total })"), 
+           category = fct_reorder(category, price)) %>% 
+  ggplot(aes(price_usd, category)) +
+  geom_boxplot() +
+  scale_x_log10(labels = dollar)
+```
+
+```{r}
+#Same data as ridges
+library(ggridges)
+
+ikea %>% add_count(category, name = "category_total") %>% 
+  mutate(category = glue("{ category } ({ category_total })"), 
+           category = fct_reorder(category, price)) %>% 
+  ggplot(aes(price_usd, category, fill = category)) +
+  geom_density_ridges(show.legend = FALSE) +
+  scale_x_log10(labels = dollar)+
+  scale_fill_viridis(discrete = TRUE)
+
+```
+
+
+```{r}
+ikea %>% add_count(category, name = "category_total") %>% 
+  mutate(category = glue("{ category } ({ category_total })"), 
+           category = fct_reorder(category, price)) %>% 
+  ggplot(aes(price_usd, category, fill = other_colors)) + # Can break up by color - recommended for "yes/no" or three variables at most. 
+  geom_density_ridges(alpha = .5) +
+  scale_x_log10(labels = dollar)+
+  scale_fill_viridis(discrete = TRUE, option = "magma", begin = .9, end = .4)
+
+```
+
+Looks like things that come in other colors are slightly cheaper.
+
+What is "name?" Looks like a series...
+```{r}
+ikea %>% count(name, category, designer, sort = TRUE)
+
+# Name is like series (think "Martha Stewart"). What does each series sell and how much?
+ikea %>% mutate(name = fct_lump(name, 20)) %>% 
+  filter(name != "Other") %>% 
+  count(name, category, sort =TRUE) %>% 
+  mutate(name = fct_reorder(name, n, sum)) %>% 
+  ggplot(aes(n, name, fill = category)) +
+  geom_col()
+  
+```
+
+Let's take the short description and manipulate it to look the way we want. 
+```{r}
+ikea %>% count(short_description)
+
+# Let's separate on the comma
+ikea <- ikea %>% 
+  mutate(short_description = str_trim(str_replace_all(short_description, "\\s+", " "))) #Removes blank spaces with regex - Dave comes back to this later though after somebody suggested to use STR_SQUISH (use this to clean columns!)
+
+ikea %>%
+ separate(short_description, c("main_description","cm_measure"), #separates text strings and puts them into these two columns 
+          sep = ", ", # separates by ", "
+          extra = "merge", #merges any additional commas into the text in the second column
+          fill = "right", #if there is no separation, NA for the second column
+          remove = FALSE) %>%  # Keeps all columns, even input column
+  tidyr::extract(cm_measure, "description_cm", "([\\d\\-xX]+) cm", remove = FALSE) %>% 
+# Dave did the extract - I have the code exactly as written and mine doesn't work...until I turned off magittr. It was using the magittr extract() instead of tidyr::extract()
+  # What extract does is takes a column (cm_measure), makes a new column (description_cm), then puts just the extracted material (in this case just the numbers + cm) from the old column.
+  unite(category_and_description, category, main_description, sep = " - ") %>% # pastes columns together
+  count(category_and_description, sort = TRUE)
+
+```
+
+
+
+##Volume
+
+What is the largest item by volume? What takes up the most space
+```{r}
+ikea %>% select(name, short_description, category, price_usd, depth, height, width) %>% 
+  mutate(volume_m3 = depth * height * width / 1000000) %>% 
+  filter(!is.na(volume_m3)) %>% 
+  arrange(desc(volume_m3)) %>% 
+  add_count(category, name = "category_total") %>% 
+  mutate(category = glue("{ category } ({ category_total })"), 
+           category = fct_reorder(category, volume_m3)) %>% 
+  ggplot(aes(volume_m3, category)) +
+  geom_boxplot() +
+  scale_x_log10()
+
+```
+
+
+
+What is the highest price per cubic meter?
+```{r}
+ikea %>% select(name, short_description, category, price_usd, depth, height, width) %>% 
+  mutate(volume_m3 = depth * height * width / 1000000) %>% 
+  filter(!is.na(volume_m3)) %>% 
+  mutate(category = fct_lump(category, 6)) %>% 
+  arrange(desc(volume_m3)) %>% 
+  ggplot(aes(volume_m3, price_usd, color = category)) +
+  geom_point()+
+  geom_smooth(method = "lm")+
+  scale_x_log10()+
+  scale_y_log10() # Need log scale for both because of the variability in both variables. 
+
+# What is the highest price per cubic meter?
+ikea %>% select(name, short_description, category, price_usd, depth, height, width) %>% 
+  mutate(volume_m3 = depth * height * width / 1000000) %>% 
+  filter(!is.na(volume_m3)) %>% 
+  mutate(dollar_per_m3 = price_usd / volume_m3) %>% 
+  arrange(desc(dollar_per_m3))
+```
+
+
+
+
+```{r}
+
+ikea %>% group_by(designer) %>% 
+  summarize(n_items = n(),
+            n_names = n_distinct(name),
+            n_category = n_distinct(category)) %>% 
+  arrange(desc(n_names))
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

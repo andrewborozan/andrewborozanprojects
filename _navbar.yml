@@ -24,6 +24,10 @@ left:
     menu: 
       - text: "Tidy Tuesday: Horror Movies"
         href: ./TidyTuesday_Horror_Movies.html
+      - text: "Riffomanas: Candy Crush"
+        href: ./Riffomanas_candycrush.html
+      - text: "Riffomanas: The data are?"
+        href: ./Riffomanas_thedataare.html
 right:
   - icon: fa-github fa-lg
     href: https://github.com/githubusername/mywebsite

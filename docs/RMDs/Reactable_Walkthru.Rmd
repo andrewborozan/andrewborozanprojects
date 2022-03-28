@@ -1,0 +1,238 @@
+---
+title: "Reactable Tutorial"
+author: "Andrew Borozan"
+date: "2/15/2022"
+output: 
+  html_document:
+    toc: FALSE
+---
+
+In this tutorial we are going to be less focused on the data and what information we can glean from it (main gist: baseball players make a lot of money...though as I create this the cantankerous labor negotiations delaying the 2022 season is ongoing and the players are getting hosed by the owners) and more focused on how to do something.
+
+The purpose of the tutorial is to explain how and why, so there will be a lot of comments in the code along the way. Hopefully by the end of this you will have picked up a skill (and some code) that you can apply to your own projects.
+
+First, let's load some packages. I tend to load anything that I even might use at any given time. The main packages for our purposes here however are tidyverse (as always), reactable (for making the styling tables), and I like using the viridis package (for choosing an aesthetically appealing color palette). There is another package we will load a little later, but I am keeping that one as a surprise.
+
+```{r}
+library(pacman)
+p_load(tidyverse, skimr, scales, rmarkdown, magrittr, lubridate, janitor, htmltab, ggrepel, viridis, ggthemes, knitr, reactable, stringr.plus, 
+       htmltools, readxl)
+```
+
+Now, let's bring in some data. We are going to be taking a look at MLB salaries and if the amount a team is paying a player is justified by their WAR.
+
+First, we are going to create a data frame that includes player salaries for the 2021 season (keeping it simple here and just going payroll salaries for each player).
+
+I made a little table in Excel after getting some data off the internet. Let's load that in:
+
+```{r Import and Clean Data, message=FALSE, warning=FALSE}
+# Use the "read_excel" function to "read" the excel sheet into an object
+raw_salaries <- read_excel("C:/Users/andre/OneDrive/Desktop/Github/andrewborozanprojects/andrewborozanprojects/Data/Baseball Salaries.xlsx", sheet = "Salaries")
+
+# It imported a first column with player ranks (which we don't need) and some blank columns so we clean it up a little...
+salaries <- raw_salaries %>% select(-1, -10:-20)
+
+#And we really only want the first 100 players so that our final table won't be too overwhelming.
+salaries <- salaries %>% slice(1:100)
+
+# Rename columns
+salaries <- salaries %>% rename(PER_TEAM_PAYROLL = Percentage, TEAM_PAYROLL = `Team Payroll`)
+
+# Round off the percentages (we will put them in percentage format later)
+salaries$PER_TEAM_PAYROLL <- round(salaries$PER_TEAM_PAYROLL, digits = 3)
+
+# Rearrange the column locations
+salaries <- salaries %>% select(1:4, "SALARY", "WAR", "TEAM_PAYROLL", "PER_TEAM_PAYROLL")
+
+
+# Let's see our cleaned up data...
+reactable(head(salaries, 20))
+```
+
+Looking pretty good. Column names are a little sloppy but we will fix that below. There are a couple of players that do not have a WAR to their name (most notably Justin Verlander) and this is due to injury or retirement reasons. NAs would mess with what we are about to do so we just drop them.
+
+```{r Drop NAs}
+salaries <- salaries %>% drop_na()
+```
+
+Now let's start beautifying this table with reactable. The first thing we are going to do is create a color palette that we can use as a "heat scale," with the lighter color being on the lower end and the darker color being on the higher end of the spectrum. The viridis package offers some predetermined color palettes that are quite appealing to the eye. We are going to manipulate one of the options - magma - so that the spectrum of colors is not too broad.
+
+```{r Creating a Color Palette}
+# We choose a color palette from viridis and manipulate it slightly. 
+color_palette <- viridis::viridis(option = "magma", # There are other predetermined palettes, but magma is a nice one for this purpose. I also like plasma, viridis, and mako. 
+                                  alpha = .95, # This makes the colors slightly more transparent/lighter
+                                  begin = 1, end = .72, #This starts our palette with the lightest color in the spectrum and ends it with a slightly darker one. Inverting it - going from .72 to 1 - would have the palette go from dark to light.
+                                  n = 20) # We want 20 different colors for our palette. Might be a little excessive but oh well...)
+
+# Let's take a look at the color palette we created...
+color_palette %>% scales::show_col()
+```
+
+That is a pretty good "heat scale," that will provide a helpful visual aid for interpreting the table.
+
+This next part is a little tricky because it is not enough that we have a sweet color palette. We need to create a function that takes in data and assigns them to these colors. We build the function first and then use it later to pass data through.
+
+```{r Creating a Function to Apply the Color Palette to our Data}
+# Function that puts a color to values in a scale (for more info on colorRamp visit https://rdrr.io/r/grDevices/colorRamp.html)
+
+make_color_pal <- function(colors, bias = 1) {
+  get_color <- colorRamp(colors, bias = bias)
+  function(x) rgb(get_color(x), maxColorValue = 255)
+}
+
+# We made our function, now we need to put our color palette into it. This creates a function that will pass data through and assign it a color in our palette. 
+our_colors <- make_color_pal(color_palette, bias = 2) #The higher the bias the more distinct difference in color near the high end of the spectrum. 
+
+# Let's test to see if this worked by putting in some data into our function. Let's just put in some sequenced numbers to our "our_colors" function and see what the spectrum looks like...
+
+seq(0.0, 0.75, length.out = 20) %>% 
+  our_colors() %>% 
+  scales::show_col()
+
+```
+
+Yep, that is what we are looking for. The data that goes into our function will now be coded with a color from our palette.
+
+Now comes the fun part. We will put our baseball salaries data into a reactable table that will color code some things for us. We want to see the heat scale for
+
+1.  Player salaries (darker means they make more)
+
+2.  Player WAR (darker means a higher war)
+
+3.  Percentage of Team Payroll (darker means a higher percentage)
+
+```{r Building a Reactable Table}
+#Let's make the mods...
+color_table <- salaries %>% reactable(
+  # Reactable typically spits out a table with 10 rows and then offers a page through option. We can get rid of the page through option and have all the data in one table by setting the pagination to FALSE. 100 rows is quite a lot and I probably would do about 50 and then add the pagination (which is an option here), but for the sake of the tutorial, I am going to get rid of the pagination and include all 100 rows in one shot. 
+  pagination = FALSE,
+  # compact allows for an overall smaller table width. To be honest, I have played with TRUE and FALSE here and don't notice a huge difference. 
+  compact = TRUE,
+  # border or no? Sure, looks nice with a border...
+  borderless = TRUE,
+  # Stripes make it slightly easier to read I think, but since we are going to turn the highlight option on, let's turn stripes off...
+  striped = FALSE,
+  # I thought fullWidth would be a good thing, but it just stretches out the table. A little more compaction is nice...
+  fullWidth = FALSE, 
+  # This part controls the layout of the values in the columns. There are lots of options in the colDef() function. We are going to keep it somewhat simple here and simply align the values in the center of the column and adjust the width of the column.
+  defaultColDef = colDef(
+    align = "center",
+    minWidth = 125
+  ), 
+  sortable = TRUE, #Can choose to sort by different columns
+  filterable = TRUE, #Can search for values in each column
+  highlight = TRUE, #Highlights the row as you hover
+  
+  # That stuff was the aesthetics for the entire table. Now we get to apply our color palette to individual columns.This part allows us to apply specific things to each column. Here are the steps: First, put all columns in a list. Second, call each column you want to manipulate by name and then apply layout you want for each column. Third, enter the function we made previously. The function takes the value of the column, normalizes it in relation to the other values in the column so that it can color scale it appropriately - then it runs it through the color function, and puts the color in the right cell
+  columns = list(
+    SALARY = colDef(
+      style = function(value) {
+        value
+        normalized_SALARY <- (value - min(salaries$SALARY)) / (max(salaries$SALARY) - min(salaries$SALARY))
+        color <- our_colors(normalized_SALARY)
+        list(background = color)
+      },
+      format = colFormat(prefix = "$", separators = TRUE, digits = 0),  
+      # Format the column with dollar sign using "prefix = "$"" - not "currency = "USD"" because you can't get rid of the decimal places with the currency option. Get rid of decimals with digits = 0, and add commas with separators = TRUE
+      minWidth = 150 # Make this column just a little wider to be able to see those big numbers
+    ),
+    WAR = colDef(
+      style = function(value) {
+        value
+        normalized_WAR <- (value - min(salaries$WAR)) / (max(salaries$WAR) - min(salaries$WAR))
+        color <- our_colors(normalized_WAR)
+        list(background = color)
+      }, 
+      minWidth = 75 # You can make this column smaller with such a small number
+    ), 
+    PER_TEAM_PAYROLL = colDef(
+      name = "% OF TEAM PAYROLL", #Rename the column to make it look a little nicer
+      style = function(value) {
+        value
+        normalized_per <- (value - min(salaries$PER_TEAM_PAYROLL)) / (max(salaries$PER_TEAM_PAYROLL) - min(salaries$PER_TEAM_PAYROLL))
+        color <- our_colors(normalized_per)
+        list(background = color)
+      }, 
+      format = colFormat(percent = TRUE), # Format column as a percentage
+      minWidth = 100
+      ),
+    TEAM_PAYROLL = colDef(
+      name = "TEAM PAYROLL", 
+      format = colFormat(prefix = "$", separators = TRUE, digits = 0),
+      minWidth = 150 # This is a bigger number as well so let's stretch out the column
+    )
+  )
+)
+
+color_table
+```
+
+Ok, that worked.
+
+While doing a bit of research on this I stumbled upon the package reactablefmtr which allows one to add special features, themes, and simplifies our code for adding column color scales. Let's try it out.
+
+```{r Building a Reactable Table Part 2}
+#Let's make some more aesthetic changes. Most of this is the same as above. Changes will be followed by comments. 
+
+#First, let's load the new fancy package reactablefmtr.
+library(reactablefmtr)
+
+
+color_table <- salaries %>% reactable(
+  pagination = FALSE,
+  compact = TRUE,
+  borderless = TRUE,
+  striped = FALSE,
+  fullWidth = FALSE, 
+  sortable = TRUE, 
+  filterable = TRUE, 
+  highlight = TRUE,
+  defaultColDef = colDef(
+    align = "center",
+    minWidth = 90 # Just a minor change to the columns here - position, age,  and team could be a little smaller
+  ), 
+ 
+  columns = list(
+    PLAYER = colDef(
+      minWidth = 150 # Some names are being wrapped so let's widen the column a little
+    ),
+    SALARY = colDef(
+      style = color_scales(data = salaries, colors = c(color_palette)), #Using color_scales() here to simplify the code from above. Need to specify the data frame and simply pass in our color palette to the color argument. color_scales() is pretty much our function but built into the new package. This is way easier than writing out the function ahead of time like before. 
+      format = colFormat(prefix = "$", separators = TRUE, digits = 0), 
+      minWidth = 150
+    ),
+    WAR = colDef(
+      style = color_scales(data = salaries, colors = c(color_palette))
+    ), 
+    PER_TEAM_PAYROLL = colDef(
+      name = "% OF TEAM PAYROLL",
+      style = color_scales(data = salaries, colors = c(color_palette)), 
+      format = colFormat(percent = TRUE),
+      minWidth = 100
+    ),
+    TEAM_PAYROLL = colDef(
+      name = "TEAM PAYROLL", 
+      minWidth = 150,
+      cell = data_bars(
+        salaries,
+        fill_color = c("#FCF6B8F2", "#FEA36FF2"), # Two colors from our color palette - the first lighter, the second darker
+        text_position = "inside-end", #This puts the number inside the bar. This helps keep the width of the column manageable.
+        number_fmt = scales::dollar_format(prefix = "$"))
+      #We are going to spice up the team salary column. We are going to add data bars that show both with bars and scaled color the payroll for each team in relation to all other teams in the league. 
+    )
+  ),
+theme = fivethirtyeight()#This changes the look of the table to mimic that of the tables on the website fivethirtyeight 
+)
+
+color_table
+```
+
+And there you have it. A pretty table with some fancy mods.
+
+Again, this tutorial was less about the analysis (we didn't really do any), and more about the aesthetics. Using reactable and reactablefmtr can make drab tables come alive.
+
+<br>
+
+<br>
+
+The idea for this tutorial came from Thomas Mock's Blog ["The Mockup Blog"](https://themockup.blog/posts/2020-05-13-reactable-tables-the-rest-of-the-owl/). I adopted but also adapted some of the code from Mock. The [Reactable Demo Cookbook](https://glin.github.io/reactable/articles/cookbook/cookbook.html#style-nested-rows) was also instrumental in providing what I needed. And after I found reactablefmtr, a whole new world opened up. Here were some of the websites that were indispensable in regards to that package: [kcuilla's GitHub](https://github.com/kcuilla/reactablefmtr) and [his themes page](https://kcuilla.github.io/reactablefmtr/articles/themes.html), and [the package documentation](chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/viewer.html?pdfurl=https%3A%2F%2Fcran.r-project.org%2Fweb%2Fpackages%2Freactablefmtr%2Freactablefmtr.pdf&clen=166664&chunk=true).

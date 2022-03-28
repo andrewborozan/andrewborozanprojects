@@ -1,0 +1,114 @@
+---
+title: "Descriptive_Statistics"
+author: "Andrew Borozan"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(pacman)
+p_load(tidyverse, skimr, scales, rmarkdown, magrittr, lubridate, janitor, ggrepel, ggthemes, showtext, knitr, reactable, palmerpenguins, car, broom, readxl, stringr, viridis, gghighlight)
+```
+
+Following along with a couple of different sources. Predominantly drawing from [statsandr.com](https://statsandr.com/blog/descriptive-statistics-in-r/).
+
+Main points from the introduction:
+
+-   Descriptive stats summarize and describe.
+
+-   Identifying:
+
+    -   Location measures - what is the central tendency? Around what point is the data gravitating?
+
+    -   Dispersion measures - how spread out is the data? How far do the spiral arms go in this galaxy?
+
+Looking at the iris data set:
+
+```{r}
+irisdat <- iris
+
+irisdat
+```
+
+Start with min() and max().
+
+```{r}
+min(irisdat$Sepal.Length)
+
+max(irisdat$Sepal.Length)
+```
+
+Or, range gives you both in one go:
+
+```{r}
+range(irisdat$Sepal.Length)
+```
+
+Mean and median:
+
+```{r}
+mean(irisdat$Sepal.Length, na.rm = TRUE, trim = .10)
+# Won't compute if there are NAs. Also, get a trimmed mean with trim = .1. This will help with removing outliers. 
+
+median(irisdat$Sepal.Length)
+
+# Or with quantile function
+quantile(irisdat$Sepal.Length, .5) 
+# Can play with the quantile number to get what you want
+quantile(irisdat$Sepal.Length, .9)
+
+# First and third quartile
+quantile(irisdat$Sepal.Length, .25)
+quantile(irisdat$Sepal.Length, .75)
+
+# And interquartile range
+IQR(irisdat$Sepal.Length)
+```
+
+Standard deviation and variance:
+
+```{r}
+sd(irisdat$Sepal.Length)
+
+var(irisdat$Sepal.Length)
+
+# To compute the sd for all variables, use lapply()
+lapply(irisdat[, 1:4], sd)
+```
+
+See it all at once with summary().
+
+```{r}
+summary(irisdat)
+
+# And by group
+irisdat %>% by(irisdat$Species, summary)
+```
+
+To see a whole slew of stats at once, use stat.desc() from pastecs.
+
+```{r}
+library(pastecs)
+stat.desc(irisdat, norm = TRUE)
+```
+
+```{r out.width="100%"}
+library(vcd)
+Arthritis
+
+Arthritis %>% count(Improved)
+
+plot(Arthritis$Improved, horiz = TRUE)
+
+Arthritis %>% count(Improved, Treatment)
+
+Arthritis %>% group_by(Treatment, Improved) %>% 
+  summarize(n = n()) %>%
+  ggplot(aes(Treatment, n, fill = Improved)) +
+  geom_col()
+
+```
