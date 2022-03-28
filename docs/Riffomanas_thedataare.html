@@ -479,7 +479,7 @@ practicing today.</p>
 ## #   `Location (Census Region)` &lt;chr&gt;</code></pre>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(comma)</span></code></pre></div>
 <pre><code>## spec_tbl_df [1,129 x 13] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
-##  $ RespondentID                                                                                                          : num [1:1129] 3292953864 3292950324 3292942669 3292932796 3292932522 ...
+##  $ RespondentID                                                                                                          : num [1:1129] 3.29e+09 3.29e+09 3.29e+09 3.29e+09 3.29e+09 ...
 ##  $ In your opinion, which sentence is more gramatically correct?                                                         : chr [1:1129] &quot;It&#39;s important for a person to be honest, kind and loyal.&quot; &quot;It&#39;s important for a person to be honest, kind, and loyal.&quot; &quot;It&#39;s important for a person to be honest, kind, and loyal.&quot; &quot;It&#39;s important for a person to be honest, kind, and loyal.&quot; ...
 ##  $ Prior to reading about it above, had you heard of the serial (or Oxford) comma?                                       : chr [1:1129] &quot;Yes&quot; &quot;No&quot; &quot;Yes&quot; &quot;Yes&quot; ...
 ##  $ How much, if at all, do you care about the use (or lack thereof) of the serial (or Oxford) comma in grammar?          : chr [1:1129] &quot;Some&quot; &quot;Not much&quot; &quot;Some&quot; &quot;Some&quot; ...
@@ -604,11 +604,29 @@ rename().</p>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>           dplyr<span class="sc">::</span><span class="fu">recode</span>(write_sentence, </span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;Some experts say it&#39;s important to drink milk, but the data are inconclusive.&quot;</span> <span class="ot">=</span> <span class="st">&quot;data are&quot;</span>,</span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;Some experts say it&#39;s important to drink milk, but the data is inconclusive.&quot;</span> <span class="ot">=</span> <span class="st">&quot;data is&quot;</span>),</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">care_about_data =</span> <span class="fu">as.factor</span>(care_about_data))</span></code></pre></div>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">care_about_data =</span> <span class="fu">as.factor</span>(care_about_data))</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>comma</span></code></pre></div>
+<pre><code>## # A tibble: 1,129 x 13
+##    respondent oxford_or_not heard_of_oxford care_about_oxford write_sentence
+##         &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;           &lt;fct&gt;             &lt;chr&gt;         
+##  1 3292953864 non_oxford    Yes             Some              data is       
+##  2 3292950324 oxford        No              Not much          data is       
+##  3 3292942669 oxford        Yes             Some              data is       
+##  4 3292932796 oxford        Yes             Some              data is       
+##  5 3292932522 non_oxford    No              Not much          data is       
+##  6 3292926586 oxford        No              A lot             data are      
+##  7 3292908135 oxford        Yes             A lot             data is       
+##  8 3292869879 oxford        Yes             A lot             data are      
+##  9 3292863455 oxford        Yes             A lot             data is       
+## 10 3292860428 non_oxford    No              Not at all        data are      
+## # ... with 1,119 more rows, and 8 more variables: data_sing_plural &lt;chr&gt;,
+## #   care_about_data &lt;fct&gt;, proper_grammar_importance &lt;chr&gt;, gender &lt;chr&gt;,
+## #   age &lt;chr&gt;, household_income &lt;chr&gt;, education &lt;chr&gt;, location &lt;chr&gt;</code></pre>
 <p>Extension exercise:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>comma <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>(oxford_or_not) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(oxford_or_not) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent =</span> <span class="fu">percent</span>(n<span class="sc">/</span><span class="fu">sum</span>(n)))</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>comma <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>(oxford_or_not) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(oxford_or_not) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent =</span> <span class="fu">percent</span>(n<span class="sc">/</span><span class="fu">sum</span>(n)))</span></code></pre></div>
 <pre><code>## # A tibble: 2 x 3
 ##   oxford_or_not     n percent
 ##   &lt;chr&gt;         &lt;int&gt; &lt;chr&gt;  
