@@ -7,7 +7,9 @@ left:
        - text: "Google Data Analytics Certification Project"
          href: ./Markdown_Cyclistic_Final.html
        - text: "Sentiment Analysis with Reddit Comments"
-         href: ./Reddit_Sentiment_Analysis_2_23.html  
+         href: ./Reddit_Sentiment_Analysis_2_23.html 
+       - text: "Accuracy of Elo Ratings"
+         href: ./Elo_rating.html
   - text: "Tutorials"
     menu:
        - text: "Reactable Tutorial"
