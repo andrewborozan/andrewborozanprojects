@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Andrew Borozan" />
+
+<meta name="date" content="2022-03-28" />
+
+<title>Frustrations Along the Way</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">The Unlikely Analyst</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./Markdown_Cyclistic_Final.html">Google Data Analytics Certification Project</a>
+    </li>
+    <li>
+      <a href="./Reddit_Sentiment_Analysis_2_23.html">Sentiment Analysis with Reddit Comments</a>
+    </li>
+    <li>
+      <a href="./Elo_rating.html">Accuracy of Elo Ratings</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./Reactable_Walkthru.html">Reactable Tutorial</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Blog
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./I_am_crazy.html">"I am crazy" and other thoughts that flitter through my head.</a>
+    </li>
+    <li>
+      <a href="./Frustrations_Along_the_Way.html">Frustrations Along the Way</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Just Following Along
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./TidyTuesday_Horror_Movies.html">Tidy Tuesday: Horror Movies</a>
+    </li>
+    <li>
+      <a href="./Riffomanas_candycrush.html">Riffomanas: Candy Crush</a>
+    </li>
+    <li>
+      <a href="./Riffomanas_thedataare.html">Riffomanas: The data are?</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/githubusername/mywebsite">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Frustrations Along the Way</h1>
+<h4 class="author">Andrew Borozan</h4>
+<h4 class="date">2022-03-28</h4>
+
+</div>
+
+
+<p>The “hero’s journey” stories always neglect to leave out the minor
+details and difficulties, and understandably so: nobody wants to watch a
+movie where Frodo is continually itching bug bites, or Batman is plagued
+by chaffing. Obstacles are present but they typically come in the grand,
+overarchingly thematic form; evil embodied, a treacherous landscape, or
+a malady to overcome. Minor annoyances are cast to the background, if
+they are there at all.</p>
+<p>But minor annoyances, miniature obstacles are very real in the
+inglorious, non-cinematic, real life hero journey. I don’t have a
+grotesque villain to vanquish; I am staring down a website that won’t
+work. I don’t have an undulous New Zealand landscape to traverse, I
+simply can’t figure out how to code something. These are rocks in the
+shoe that slow down the process. Yes, there is a grand narrative present
+in which I am making a heroic effort to change careers, and there is an
+ultimate and final goal of breaking into a new industry. And there are
+massive, sweeping themes like perseverance and courage and all the other
+qualities that attend the hero’s journey narrative. But I am finding
+that I don’t really focus on that stuff as much; I am typically not
+thinking about the grand themes in a hero’s journey narrative. My
+attention is consumed more by the day-to-day challenges, the smaller
+scale difficulties and frustrations that make this journey
+laborious.</p>
+<p>In reflecting on these “mini-challenges” and frustrations, I realize
+they can be categorized and abstracted. There are patterns evident that,
+while not monumental, like the enduring themes of good and evil and
+perseverance, are nevertheless real and impactful. Here are some of the
+themes and characteristics present in these common frustrations, these
+daily hurdles, that bother and wear down on the long quest from one
+career to another.</p>
+<div id="expected-to-know-everything" class="section level3">
+<h3>Expected to Know Everything</h3>
+<p>There was a lot to know as a teacher. Not only do you have to know
+your content well (I had to be an expert in every era as a history
+teacher, teaching content that spanned from the birth of humanity to
+current events. I was expected to know everything about the Third
+Crusade and Mao’s Cultural Revolution concurrently….along with a million
+other things), you have to be knowledgeable of reading strategies,
+writing strategies, classroom management techniques, curriculum goals,
+grading policies and procedures (and the platforms in which to record
+grades, which seemed to change yearly), vertical alignment (what did the
+incoming grade 9 students already learn?) and horizontal alignment (what
+are the grade 9 students doing in their literature class and does
+anything we are teaching in here align with that material?), child
+protection procedures, school safety procedures…on and on. This is only
+a peek at all the stuff you need to know as a teacher.</p>
+<p>I didn’t know all of this stuff before I started teaching though. I
+learned much of it on the job (I didn’t know anything about the Russian
+Revolution before I started teaching it…now I am very knowledgeable on
+the topic). There was an understanding that you have some background
+knowledge and skill and that a lot of the first couple of years was
+learning the ropes. That is why there were mentor programs for new
+teachers in the schools I was in; lots of learning happened on the job.
+The first couple years of teaching was Hobbesian - solitary, poor,
+nasty, brutish, and…well, not too short I guess - but there was the
+understanding that you didn’t start a finished product.</p>
+<p>From the outside looking in, the field of data analytics seems
+less…let’s say “forgiving”. I look at job postings and the requirements
+needed for the job and quickly start to despair.</p>
+<p>Excel? Ok, got that one down.</p>
+<p>Python or R? Yeah, I am pretty decent in R. Need to learn Python as
+it seems to be the preferred language.</p>
+<p>SQL? I know the basics. I prefer to use R - you can do all the same
+things (and more) and seems way more intuitive.</p>
+<p>Tableau, PowerBI, Shiny, or Looker? Tableau, I am ok with. I looked
+at PowerBI. I don’t know what Shiny or Looker are.</p>
+<p>Azure? Huh? Blue?</p>
+<p>AWS? Nope.</p>
+<p>Java? No thanks, but I’ll take a water.</p>
+<p>Access? I know it is a Microsoft thing.</p>
+<p>Agile/scrum process and product backlog grooming? Are those real
+things?</p>
+<p>Oracle? At Delphi? I’ve been there.</p>
+<p>Master degree in Math, Statistics, Economics, or Computer Science?
+Sorry, unfortunately mine is in “Theological Arts” - which I don’t even
+know what that means; I took a lot of history and philosophy courses
+though.</p>
+<p>These, and about 80 other acronyms, are all listed for entry level
+positions. I feel like I have to know everything about everything in the
+field before I can even apply to a bottom of the totem pole
+position.</p>
+<p>And so I try to learn it all. I take courses on Coursera and do some
+of the tracks on DataCamp. I watch endless YouTube videos and read
+articles until my eyes bleed. A lot of times you need to know one thing
+to know another thing. For example, I had to figure out how to use
+GitHub to host this site…but I needed to become familiar with RMarkdown
+first…and GitKraken to push my changes in R to my GitHub repository…but
+then learned GitHub Desktop could do the same thing GitKraken can do
+(and was a little easier)….but I can also push my changes right in
+RStudio to my GitHub repository…but I just learned GitHub Desktop so
+I’ll just stick with that for now.</p>
+<p>Or I have to learn how to navigate SQL Server, so I watch an hour
+long YouTube video on that. But then I am taking a class on Coursera and
+they want me to integrate something with Microsoft Access, so I go over
+to Microsoft and watch their videos and read their articles for Access.
+But then the next class I take is on Udemy and they are working with
+PostgreSQL and so I have to download that and learn that interface. I
+have to know 5 different SQL platforms…and at the end of it I still
+don’t feel like I am an expert at SQL or any particular platform.</p>
+<p>I’ll spend a month neck deep in SQL only to turn my attention to
+Tableau for a month and then head over to R and play around in there for
+a month, only to return to SQL and realize that while some of the basics
+concepts I have retained (and even understand better thanks to working
+in R), I have forgotten a lot because I haven’t touched it in a couple
+of months.</p>
+<p>The point here is that when you have to seemingly know everything…you
+end up not knowing very much. I have a passing knowledge of many things
+- I know what some things look like - but I am not an expert in any.
+Jack of all trades, master of none.</p>
+<p>And it feels like that isn’t true to the scene on the job anyway (of
+course, I wouldn’t know yet): are you going to be working with 4
+different languages and 8 different platforms all the time? You have to
+be an expert in all of these things? Seems like a lot.</p>
+<p>I want to learn as much as I can, I really like this stuff, but one
+gets overwhelmed trying to break into the field after seeing the laundry
+list of requirements and expertise needed to even gain entry. Is there
+learning/training on the job, or do I just have to be a GI out of the
+box?</p>
+<p>I am encouraged by this however: I have a family member, one of those
+“Christmas Cousins” that you see about twice a year around Christmas and
+one other holiday (take your pick between Easter and Thanksgiving), who
+is in the field. He is currently getting his masters in data science and
+we have been talking a little bit about my transition into the field. He
+said, “It is probably a little overwhelming huh?” That’s an
+understatement. He continued, “Don’t worry about it. I have a professor
+right now, a PhD in this stuff and he said even he can’t keep up with
+everything. New platforms, new skills, it is impossible to be good at
+all of it.” I was encouraged by this, and others who have said that once
+you get a position you will be working primarily with a couple of
+platforms.</p>
+<p>But I am not in that position yet. And it seems like to get to that
+position, I have to do the very opposite and know everything about
+everything.</p>
+<p>So this is the first minor (to major) frustration: as I learn all of
+this stuff, I don’t really know what I am supposed to know. But I just
+keep my head down, keep doing courses on Coursera and hope somebody will
+take that as a positive signal of competence.</p>
+</div>
+<div id="too-much-information" class="section level3">
+<h3>Too Much Information</h3>
+<p>Related to the first frustration, when you try to learn everything
+there is simply too much information. The information nuclear bomb that
+is the internet probably stymies efforts to learn in a coordinated,
+linear fashion, as the internet encourages an addled, discontinuous
+attention. It isn’t only the copious amount of information on the
+internet (yes, that is obviously a problem), it is the uncurated nature
+of it. The internet is all information at once, not the slow,
+methodical, linear drip our brains were designed for.</p>
+<p>This has given me a different perspective on formal education. For
+all of the problems with any and all education systems, one thing
+education at least attempts to do is present information in a
+coordinated and logical manner. While standards and benchmarks may be
+too rigid or ill-conceived (soon, math standards for 2nd graders will be
+requiring pre-calc) at least the idea behind them stems from a belief
+that learning happens somewhat (but not entirely) methodically.
+Education, then, is in the curation business. This allows for a much
+more manageable learning environment…</p>
+<p>…as opposed to the internet which is a disorganized mess of
+information. Even when certain sites attempt curation - building out
+sections for different topics or tracks or programs - you are only a
+click away from a whole stream of other content that may or may not be
+related. DataCamp does a really good job with their site. There is a
+Python section and an R section. There are tutorials over here and
+projects over there. But even with the best of intentions to stick with
+one track or project and see it through, I find myself wandering to
+another site, and getting lost in that content, to return (or not) to
+whatever I started on DataCamp later. It usually starts in a harmless
+manner: I have a question about a certain thing, so I stumble over to
+Google and search away. I fall down the rabbit hole of this particular
+topic only to latch onto another question and a tutorial on someone’s
+YouTube channel. It seems like I am latching on to whatever courier
+happens to be passing by at the time and riding with them until I see
+another courier to hook onto. One imagines Y.T. in Snow Crash pooning
+passing cars, only, I never get to my final destination of learning the
+material I set out to learn.</p>
+<p>Because of the nature of the internet and our patterned behavior of
+interaction with it, information seems to rarely crystallize into
+knowledge. We need the slow drip of the old way of doing things, like
+reading a book, instead of the fire hose of the internet. Nicholas Carr
+in his book “The Shallows” makes this very point:</p>
+<blockquote>
+<p>“Imagine filling a bathtub with a thimble; that’s the challenge
+involved in transferring information from working memory into long-term
+memory. By regulating the velocity and intensity of information flow,
+media exert a strong influence on this process. When we read a book, the
+information faucet provides a steady drip, which we can control by the
+pace of our reading. Through our single-minded concentration on the
+text, we can transfer all or most of the information, thimbleful by
+thimbleful, into long-term memory and forge the rich associations
+essential to the creation of schemas. With the Net, we face many
+information faucets, all going full blast. Our little thimble overflows
+as we rush from one faucet to the next. We’re able to transfer only a
+small portion of the information to long-term memory, and what we do
+transfer is a jumble of drops from different faucets, not a continuous,
+coherent stream from one source.</p>
+<p>The information flowing into our working memory at any given moment
+is called our “cognitive load.” When the load exceeds our mind’s ability
+to store and process the information—when the water overflows the
+thimble—we’re unable to retain the information or to draw connections
+with the information already stored in our long-term memory. We can’t
+translate the new information into schemas. Our ability to learn
+suffers, and our understanding remains shallow. Because our ability to
+maintain our attention also depends on our working memory—“we have to
+remember what it is we are to concentrate on,” as Torkel Klingberg
+says—a high cognitive load amplifies the distractedness we experience.
+When our brain is overtaxed, we find “distractions more distracting.”
+(Some studies link attention deficit disorder, or ADD, to the
+overloading of working memory.) Experiments indicate that as we reach
+the limits of our working memory, it becomes harder to distinguish
+relevant information from irrelevant information, signal from noise. We
+become mindless consumers of data.”</p>
+<p>Carr, Nicholas. The Shallows: What the Internet Is Doing to Our
+Brains (pp. 124-125). W. W. Norton &amp; Company. Kindle Edition.</p>
+</blockquote>
+<p>The whole book paints a rather damning picture of the nature of
+information and knowledge in the age of the internet. And in my attempt
+to learn this virgin material, I have to agree with many of Carr’s
+conclusions. While I am learning a wide breadth of material, I am only
+learning it on a surface level. The internet is preventing me from
+having truly deep knowledge and understanding of some of this stuff.</p>
+<p>Which is a cop out of course. I am responsible for my own learning
+and while the method of procuring information does influence my ability
+to learn, I can use other strategies to learn the material more deeply.
+So, I have used other strategies. Repetition is one. Writing things out
+by hand is another. Trial and error yet another. I know that the
+internet has some built in features that prevent deep learning, so I
+purposefully combat those features to make sure I have a solid knowledge
+and understanding of what I am learning.</p>
+<p>It would be preposterous to suggest that the internet is not
+primarily responsible for my ability to make this career shift; in fact,
+it is almost solely responsible. The point here is that the frustration
+I have had in this process is being buried in the amount of information,
+the uncurated nature of the presentation of this information, and the
+features embedded within the internet that actively discourage
+information from becoming genuine knowledge.</p>
+</div>
+<div id="job-postings-and-applications" class="section level3">
+<h3>Job Postings and Applications</h3>
+<p>I have already hinted at some of the frustrations that lie in this
+area. The long list of requirements or experience is daunting and leads
+me to question at what level do I need to know each and every item on
+the list. Is it enough to know joins in SQL or do I need to know OLAP
+operators as well? I can read Python scripts but I am not very good at
+writing them as of yet; does that mean I “know” Python? I can make some
+really cool dashboards in Tableau…with the help of some online
+tutorials. I might estimate my ability in each one of these areas as
+being too low (or too high) for the position, when in reality they might
+be looking for someone who simply knows the interface. Well, yeah, I do;
+why didn’t you just say that in the job posting then? And circling back
+to another point made on this topic already; where does learning on the
+job come in? I plan on continually taking online courses as I work to
+learn this stuff at an even deeper level. Does that count for
+anything?</p>
+<p>It is really discouraging to read a job posting for an entry level
+position that says “3-5 years experience required.” How is this an entry
+level position then? I start to fill out job applications and the
+dreaded “How many years of experience” question pops up. There is
+usually a dropdown menu or a checkbox to click. As soon as I select the
+“0 years” I feel like filling out the rest of the application is
+useless. After that one click my application gets selectively removed by
+the AI and cast into the void.</p>
+<p>The application process is also made more complicated by websites
+that don’t work. In the past two days, I have attempted to fill out two
+job applications…only to have the site have an issue. One got halfway
+through and then just had half a page cut off and I couldn’t move on
+until filling out that missing half a page. Another got about 80% and
+when you clicked through to the next page it went nowhere. Rocks in the
+shoe. Big ones.</p>
+<p>These frustrations are by no means confined to job searching in the
+field of data analytics: I had the same frustrations and feelings in
+education as well. Same issues, same puzzled responses. It seems to be
+simply the nature of trying to find a job in any industry. Finding a job
+has probably never been easier with sites like LinkedIn, Indeed,
+ZipRecruiter, etc. but there are new complications and complexities that
+have arisen in this new environment as well. We didn’t eliminate all the
+viruses and bacteria, we just created new strains.</p>
+<p><br></p>
+<p><br></p>
+<p>A career switch is a hero’s journey. At the end of this tale I will
+tower over a slayed Thanos on top of Mount Doom and have a new job in
+hand. But on the way to that fulfilling end, there will be these bumps
+in the road, frustrations that pester. Naming them is part of the
+process of conquering them.</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

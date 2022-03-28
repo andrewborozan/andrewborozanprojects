@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Andrew Borozan" />
+
+
+<title>Reactable Tutorial</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/core-js-2.5.3/shim.min.js"></script>
+<script src="site_libs/react-17.0.0/react.min.js"></script>
+<script src="site_libs/react-17.0.0/react-dom.min.js"></script>
+<script src="site_libs/reactwidget-1.0.0/react-tools.js"></script>
+<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="site_libs/reactable-binding-0.2.3/reactable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">The Unlikely Analyst</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./Markdown_Cyclistic_Final.html">Google Data Analytics Certification Project</a>
+    </li>
+    <li>
+      <a href="./Reddit_Sentiment_Analysis_2_23.html">Sentiment Analysis with Reddit Comments</a>
+    </li>
+    <li>
+      <a href="./Elo_rating.html">Accuracy of Elo Ratings</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./Reactable_Walkthru.html">Reactable Tutorial</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Blog
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./I_am_crazy.html">"I am crazy" and other thoughts that flitter through my head.</a>
+    </li>
+    <li>
+      <a href="./Frustrations_Along_the_Way.html">Frustrations Along the Way</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Just Following Along
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./TidyTuesday_Horror_Movies.html">Tidy Tuesday: Horror Movies</a>
+    </li>
+    <li>
+      <a href="./Riffomanas_candycrush.html">Riffomanas: Candy Crush</a>
+    </li>
+    <li>
+      <a href="./Riffomanas_thedataare.html">Riffomanas: The data are?</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/githubusername/mywebsite">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Reactable Tutorial</h1>
+<h4 class="author">Andrew Borozan</h4>
+<h4 class="date">2/15/2022</h4>
+
+</div>
+
+
+<p>In this tutorial we are going to be less focused on the data and what
+information we can glean from it (main gist: baseball players make a lot
+of money…though as I create this the cantankerous labor negotiations
+delaying the 2022 season is ongoing and the players are getting hosed by
+the owners) and more focused on how to do something.</p>
+<p>The purpose of the tutorial is to explain how and why, so there will
+be a lot of comments in the code along the way. Hopefully by the end of
+this you will have picked up a skill (and some code) that you can apply
+to your own projects.</p>
+<p>First, let’s load some packages. I tend to load anything that I even
+might use at any given time. The main packages for our purposes here
+however are tidyverse (as always), reactable (for making the styling
+tables), and I like using the viridis package (for choosing an
+aesthetically appealing color palette). There is another package we will
+load a little later, but I am keeping that one as a surprise.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pacman)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">p_load</span>(tidyverse, skimr, scales, rmarkdown, magrittr, lubridate, janitor, htmltab, ggrepel, viridis, ggthemes, knitr, reactable, stringr.plus, </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>       htmltools, readxl)</span></code></pre></div>
+<p>Now, let’s bring in some data. We are going to be taking a look at
+MLB salaries and if the amount a team is paying a player is justified by
+their WAR.</p>
+<p>First, we are going to create a data frame that includes player
+salaries for the 2021 season (keeping it simple here and just going
+payroll salaries for each player).</p>
+<p>I made a little table in Excel after getting some data off the
+internet. Let’s load that in:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the &quot;read_excel&quot; function to &quot;read&quot; the excel sheet into an object</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>raw_salaries <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;C:/Users/andre/OneDrive/Desktop/Github/andrewborozanprojects/andrewborozanprojects/Data/Baseball Salaries.xlsx&quot;</span>, <span class="at">sheet =</span> <span class="st">&quot;Salaries&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># It imported a first column with player ranks (which we don&#39;t need) and some blank columns so we clean it up a little...</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>salaries <span class="ot">&lt;-</span> raw_salaries <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">10</span><span class="sc">:-</span><span class="dv">20</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#And we really only want the first 100 players so that our final table won&#39;t be too overwhelming.</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>salaries <span class="ot">&lt;-</span> salaries <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename columns</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>salaries <span class="ot">&lt;-</span> salaries <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">PER_TEAM_PAYROLL =</span> Percentage, <span class="at">TEAM_PAYROLL =</span> <span class="st">`</span><span class="at">Team Payroll</span><span class="st">`</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Round off the percentages (we will put them in percentage format later)</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>salaries<span class="sc">$</span>PER_TEAM_PAYROLL <span class="ot">&lt;-</span> <span class="fu">round</span>(salaries<span class="sc">$</span>PER_TEAM_PAYROLL, <span class="at">digits =</span> <span class="dv">3</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Rearrange the column locations</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>salaries <span class="ot">&lt;-</span> salaries <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="st">&quot;SALARY&quot;</span>, <span class="st">&quot;WAR&quot;</span>, <span class="st">&quot;TEAM_PAYROLL&quot;</span>, <span class="st">&quot;PER_TEAM_PAYROLL&quot;</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s see our cleaned up data...</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(<span class="fu">head</span>(salaries, <span class="dv">20</span>))</span></code></pre></div>
+<div id="htmlwidget-8fdf6248fce96228734c" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-8fdf6248fce96228734c">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"PLAYER":["Mike Trout","Gerrit Cole","Jacob deGrom","Nolan Arenado","Stephen Strasburg","Zack Greinke","Max Scherzer","Justin Verlander","Manny Machado","David Price","Trevor Bauer","Clayton Kershaw","Miguel Cabrera","Chris Sale","Jose Altuve","Giancarlo Stanton","Anthony Rendon","Bryce Harper","Paul Goldschmidt","Joey Votto"],"TEAM":["LAA","NYY","NYM","STL","WSH","HOU","LAD","HOU","SD","LAD","LAD","LAD","DET","BOS","HOU","NYY","LAA","PHI","STL","CIN"],"POS":["CF","SP","SP","3B","SP","SP","SP","SP","3B","SP","SP","SP","DH","SP","2B","DH","3B","RF","1B","1B"],"AGE":[29,30,33,30,32,37,36,38,28,35,30,33,38,32,31,31,31,28,33,37],"SALARY":[37166667,36000000,36000000,35025000,35000000,35000000,34603480,33000000,32000000,32000000,31333333,31000000,30000000,30000000,29000000,29000000,28071428,28038462,26000000,25000000],"WAR":[2.3,5.3,5.4,4,0.1,1.3,4.7,"NA",4.4,0.9,1.5,3.6,-0.7,0.8,5.2,2.6,0.7,6.6,4.9,3.6],"TEAM_PAYROLL":[180349558,205669863,201189189,171469994,144390775,194472041,271200832,194472041,179764272,271200832,271200832,271200832,86348945,188228055,194472041,205669863,180349558,189852734,171469994,125902769],"PER_TEAM_PAYROLL":[0.206,0.175,0.179,0.204,0.242,0.18,0.128,0.17,0.178,0.118,0.116,0.114,0.347,0.159,0.149,0.141,0.156,0.148,0.152,0.199]},"columns":[{"accessor":"PLAYER","name":"PLAYER","type":"character"},{"accessor":"TEAM","name":"TEAM","type":"character"},{"accessor":"POS","name":"POS","type":"character"},{"accessor":"AGE","name":"AGE","type":"numeric"},{"accessor":"SALARY","name":"SALARY","type":"numeric"},{"accessor":"WAR","name":"WAR","type":"numeric"},{"accessor":"TEAM_PAYROLL","name":"TEAM_PAYROLL","type":"numeric"},{"accessor":"PER_TEAM_PAYROLL","name":"PER_TEAM_PAYROLL","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"223c48d5cb1188fe6709b729d9e427f9","key":"223c48d5cb1188fe6709b729d9e427f9"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<p>Looking pretty good. Column names are a little sloppy but we will fix
+that below. There are a couple of players that do not have a WAR to
+their name (most notably Justin Verlander) and this is due to injury or
+retirement reasons. NAs would mess with what we are about to do so we
+just drop them.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>salaries <span class="ot">&lt;-</span> salaries <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>()</span></code></pre></div>
+<p>Now let’s start beautifying this table with reactable. The first
+thing we are going to do is create a color palette that we can use as a
+“heat scale,” with the lighter color being on the lower end and the
+darker color being on the higher end of the spectrum. The viridis
+package offers some predetermined color palettes that are quite
+appealing to the eye. We are going to manipulate one of the options -
+magma - so that the spectrum of colors is not too broad.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We choose a color palette from viridis and manipulate it slightly. </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>color_palette <span class="ot">&lt;-</span> viridis<span class="sc">::</span><span class="fu">viridis</span>(<span class="at">option =</span> <span class="st">&quot;magma&quot;</span>, <span class="co"># There are other predetermined palettes, but magma is a nice one for this purpose. I also like plasma, viridis, and mako. </span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">alpha =</span> .<span class="dv">95</span>, <span class="co"># This makes the colors slightly more transparent/lighter</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">begin =</span> <span class="dv">1</span>, <span class="at">end =</span> .<span class="dv">72</span>, <span class="co">#This starts our palette with the lightest color in the spectrum and ends it with a slightly darker one. Inverting it - going from .72 to 1 - would have the palette go from dark to light.</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">n =</span> <span class="dv">20</span>) <span class="co"># We want 20 different colors for our palette. Might be a little excessive but oh well...)</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s take a look at the color palette we created...</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>color_palette <span class="sc">%&gt;%</span> scales<span class="sc">::</span><span class="fu">show_col</span>()</span></code></pre></div>
+<p><img src="Reactable_Walkthru_files/figure-html/Creating%20a%20Color%20Palette-1.png" width="672" /></p>
+<p>That is a pretty good “heat scale,” that will provide a helpful
+visual aid for interpreting the table.</p>
+<p>This next part is a little tricky because it is not enough that we
+have a sweet color palette. We need to create a function that takes in
+data and assigns them to these colors. We build the function first and
+then use it later to pass data through.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function that puts a color to values in a scale (for more info on colorRamp visit https://rdrr.io/r/grDevices/colorRamp.html)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>make_color_pal <span class="ot">&lt;-</span> <span class="cf">function</span>(colors, <span class="at">bias =</span> <span class="dv">1</span>) {</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  get_color <span class="ot">&lt;-</span> <span class="fu">colorRamp</span>(colors, <span class="at">bias =</span> bias)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(x) <span class="fu">rgb</span>(<span class="fu">get_color</span>(x), <span class="at">maxColorValue =</span> <span class="dv">255</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># We made our function, now we need to put our color palette into it. This creates a function that will pass data through and assign it a color in our palette. </span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>our_colors <span class="ot">&lt;-</span> <span class="fu">make_color_pal</span>(color_palette, <span class="at">bias =</span> <span class="dv">2</span>) <span class="co">#The higher the bias the more distinct difference in color near the high end of the spectrum. </span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s test to see if this worked by putting in some data into our function. Let&#39;s just put in some sequenced numbers to our &quot;our_colors&quot; function and see what the spectrum looks like...</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="fl">0.0</span>, <span class="fl">0.75</span>, <span class="at">length.out =</span> <span class="dv">20</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">our_colors</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  scales<span class="sc">::</span><span class="fu">show_col</span>()</span></code></pre></div>
+<p><img src="Reactable_Walkthru_files/figure-html/Creating%20a%20Function%20to%20Apply%20the%20Color%20Palette%20to%20our%20Data-1.png" width="672" /></p>
+<p>Yep, that is what we are looking for. The data that goes into our
+function will now be coded with a color from our palette.</p>
+<p>Now comes the fun part. We will put our baseball salaries data into a
+reactable table that will color code some things for us. We want to see
+the heat scale for</p>
+<ol style="list-style-type: decimal">
+<li><p>Player salaries (darker means they make more)</p></li>
+<li><p>Player WAR (darker means a higher war)</p></li>
+<li><p>Percentage of Team Payroll (darker means a higher
+percentage)</p></li>
+</ol>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Let&#39;s make the mods...</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>color_table <span class="ot">&lt;-</span> salaries <span class="sc">%&gt;%</span> <span class="fu">reactable</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Reactable typically spits out a table with 10 rows and then offers a page through option. We can get rid of the page through option and have all the data in one table by setting the pagination to FALSE. 100 rows is quite a lot and I probably would do about 50 and then add the pagination (which is an option here), but for the sake of the tutorial, I am going to get rid of the pagination and include all 100 rows in one shot. </span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">pagination =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># compact allows for an overall smaller table width. To be honest, I have played with TRUE and FALSE here and don&#39;t notice a huge difference. </span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">compact =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># border or no? Sure, looks nice with a border...</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">borderless =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Stripes make it slightly easier to read I think, but since we are going to turn the highlight option on, let&#39;s turn stripes off...</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">striped =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># I thought fullWidth would be a good thing, but it just stretches out the table. A little more compaction is nice...</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">fullWidth =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># This part controls the layout of the values in the columns. There are lots of options in the colDef() function. We are going to keep it somewhat simple here and simply align the values in the center of the column and adjust the width of the column.</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">defaultColDef =</span> <span class="fu">colDef</span>(</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">&quot;center&quot;</span>,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">minWidth =</span> <span class="dv">125</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  ), </span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">sortable =</span> <span class="cn">TRUE</span>, <span class="co">#Can choose to sort by different columns</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">filterable =</span> <span class="cn">TRUE</span>, <span class="co">#Can search for values in each column</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">highlight =</span> <span class="cn">TRUE</span>, <span class="co">#Highlights the row as you hover</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># That stuff was the aesthetics for the entire table. Now we get to apply our color palette to individual columns.This part allows us to apply specific things to each column. Here are the steps: First, put all columns in a list. Second, call each column you want to manipulate by name and then apply layout you want for each column. Third, enter the function we made previously. The function takes the value of the column, normalizes it in relation to the other values in the column so that it can color scale it appropriately - then it runs it through the color function, and puts the color in the right cell</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">columns =</span> <span class="fu">list</span>(</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">SALARY =</span> <span class="fu">colDef</span>(</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">style =</span> <span class="cf">function</span>(value) {</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        value</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>        normalized_SALARY <span class="ot">&lt;-</span> (value <span class="sc">-</span> <span class="fu">min</span>(salaries<span class="sc">$</span>SALARY)) <span class="sc">/</span> (<span class="fu">max</span>(salaries<span class="sc">$</span>SALARY) <span class="sc">-</span> <span class="fu">min</span>(salaries<span class="sc">$</span>SALARY))</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        color <span class="ot">&lt;-</span> <span class="fu">our_colors</span>(normalized_SALARY)</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>        <span class="fu">list</span>(<span class="at">background =</span> color)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>      },</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">format =</span> <span class="fu">colFormat</span>(<span class="at">prefix =</span> <span class="st">&quot;$&quot;</span>, <span class="at">separators =</span> <span class="cn">TRUE</span>, <span class="at">digits =</span> <span class="dv">0</span>),  </span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Format the column with dollar sign using &quot;prefix = &quot;$&quot;&quot; - not &quot;currency = &quot;USD&quot;&quot; because you can&#39;t get rid of the decimal places with the currency option. Get rid of decimals with digits = 0, and add commas with separators = TRUE</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">minWidth =</span> <span class="dv">150</span> <span class="co"># Make this column just a little wider to be able to see those big numbers</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">WAR =</span> <span class="fu">colDef</span>(</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">style =</span> <span class="cf">function</span>(value) {</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>        value</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>        normalized_WAR <span class="ot">&lt;-</span> (value <span class="sc">-</span> <span class="fu">min</span>(salaries<span class="sc">$</span>WAR)) <span class="sc">/</span> (<span class="fu">max</span>(salaries<span class="sc">$</span>WAR) <span class="sc">-</span> <span class="fu">min</span>(salaries<span class="sc">$</span>WAR))</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>        color <span class="ot">&lt;-</span> <span class="fu">our_colors</span>(normalized_WAR)</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>        <span class="fu">list</span>(<span class="at">background =</span> color)</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>      }, </span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">minWidth =</span> <span class="dv">75</span> <span class="co"># You can make this column smaller with such a small number</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>    ), </span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">PER_TEAM_PAYROLL =</span> <span class="fu">colDef</span>(</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>      <span class="at">name =</span> <span class="st">&quot;% OF TEAM PAYROLL&quot;</span>, <span class="co">#Rename the column to make it look a little nicer</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>      <span class="at">style =</span> <span class="cf">function</span>(value) {</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>        value</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>        normalized_per <span class="ot">&lt;-</span> (value <span class="sc">-</span> <span class="fu">min</span>(salaries<span class="sc">$</span>PER_TEAM_PAYROLL)) <span class="sc">/</span> (<span class="fu">max</span>(salaries<span class="sc">$</span>PER_TEAM_PAYROLL) <span class="sc">-</span> <span class="fu">min</span>(salaries<span class="sc">$</span>PER_TEAM_PAYROLL))</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>        color <span class="ot">&lt;-</span> <span class="fu">our_colors</span>(normalized_per)</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>        <span class="fu">list</span>(<span class="at">background =</span> color)</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>      }, </span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>      <span class="at">format =</span> <span class="fu">colFormat</span>(<span class="at">percent =</span> <span class="cn">TRUE</span>), <span class="co"># Format column as a percentage</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>      <span class="at">minWidth =</span> <span class="dv">100</span></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">TEAM_PAYROLL =</span> <span class="fu">colDef</span>(</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>      <span class="at">name =</span> <span class="st">&quot;TEAM PAYROLL&quot;</span>, </span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>      <span class="at">format =</span> <span class="fu">colFormat</span>(<span class="at">prefix =</span> <span class="st">&quot;$&quot;</span>, <span class="at">separators =</span> <span class="cn">TRUE</span>, <span class="at">digits =</span> <span class="dv">0</span>),</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>      <span class="at">minWidth =</span> <span class="dv">150</span> <span class="co"># This is a bigger number as well so let&#39;s stretch out the column</span></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>color_table</span></code></pre></div>
+<div id="htmlwidget-79cb1f24babdd601a763" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-79cb1f24babdd601a763">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"PLAYER":["Mike Trout","Gerrit Cole","Jacob deGrom","Nolan Arenado","Stephen Strasburg","Zack Greinke","Max Scherzer","Manny Machado","David Price","Trevor Bauer","Clayton Kershaw","Miguel Cabrera","Chris Sale","Jose Altuve","Giancarlo Stanton","Anthony Rendon","Bryce Harper","Paul Goldschmidt","Joey Votto","Patrick Corbin","George Springer","Jason Heyward","Justin Upton","Zack Wheeler","Wil Myers","Mookie Betts","Freddie Freeman","Francisco Lindor","Buster Posey","Yu Darvish","Charlie Blackmon","Johnny Cueto","Eric Hosmer","Josh Donaldson","Andrew McCutchen","J.T. Realmuto","Hyun-Jin Ryu","Xander Bogaerts","Kenley Jansen","Kris Bryant","J.D. Martinez","Madison Bumgarner","Kevin Gausman","Marcus Stroman","Evan Longoria","Matt Carpenter","Trevor Story","Kyle Seager","Yasmani Grandal","Marcus Semien","Dallas Keuchel","A.J. Pollock","Jose Abreu","Brandon Belt","Aroldis Chapman","Nathan Eovaldi","Miles Mikolas","Dexter Fowler","Anthony Rizzo","Yusei Kikuchi","Cody Bellinger","Lorenzo Cain","Craig Kimbrel","Michael Brantley","Marcell Ozuna","Danny Duffy","Brandon Crawford","Alex Cobb","D.J. LeMahieu","Charlie Morton","Jean Segura","Salvador Perez","Nick Castellanos","Mike Moustakas","Kyle Hendricks","Christian Yelich","Corey Seager","Nelson Cruz","Zack Britton","Will Smith","Trea Turner","Didi Gregorius","Alex Bregman","Starling Marte","Rougned Odor","Aaron Nola","Michael Conforto","Andrew Miller","Carlos Carrasco","Justin Turner","Carlos Martinez","Carlos Correa","Jeurys Familia","Kevin Kiermaier","Javier Baez","Kyle Gibson","Liam Hendriks","Blake Snell"],"TEAM":["LAA","NYY","NYM","STL","WSH","HOU","LAD","SD","LAD","LAD","LAD","DET","BOS","HOU","NYY","LAA","PHI","STL","CIN","WSH","TOR","CHC","LAA","PHI","SD","LAD","ATL","NYM","SF","SD","COL","SF","SD","MIN","PHI","PHI","TOR","BOS","LAD","SF","BOS","ARI","SF","NYM","SF","STL","COL","SEA","CHW","TOR","CHW","LAD","CHW","SF","NYY","BOS","STL","LAA","NYY","SEA","LAD","MIL","CHW","HOU","ATL","LAD","SF","LAA","NYY","ATL","PHI","KC","CIN","CIN","CHC","MIL","LAD","TB","NYY","ATL","LAD","PHI","HOU","OAK","NYY","PHI","NYM","STL","NYM","LAD","STL","HOU","NYM","TB","NYM","PHI","CHW","SD"],"POS":["CF","SP","SP","3B","SP","SP","SP","3B","SP","SP","SP","DH","SP","2B","DH","3B","RF","1B","1B","SP","CF","RF","LF","SP","LF","RF","1B","SS","C","SP","RF","SP","1B","3B","LF","C","SP","SS","RP","3B","DH","SP","SP","SP","3B","3B","SS","3B","C","SS","SP","LF","1B","1B","RP/CL","SP","SP","RF","1B","SP","CF","CF","RP","LF","LF","SP","SS","SP","3B","SP","SS","C","RF","3B","SP","LF","SS","DH","RP","RP/CL","SS","SS","3B","CF","2B","SP","RF","RP","SP","3B","SP","SS","RP","CF","SS","SP","RP/CL","SP"],"AGE":[29,30,33,30,32,37,36,28,35,30,33,38,32,31,31,31,28,33,37,31,31,31,33,31,30,28,31,27,34,34,35,35,31,35,34,30,34,28,33,29,33,31,30,30,35,35,28,33,32,30,33,33,34,33,33,31,32,35,31,30,25,35,33,34,30,32,34,33,32,37,31,31,29,32,31,29,27,40,33,31,28,31,27,32,27,28,28,36,34,36,29,26,31,31,28,33,32,28],"SALARY":[37166667,36000000,36000000,35025000,35000000,35000000,34603480,32000000,32000000,31333333,31000000,30000000,30000000,29000000,29000000,28071428,28038462,26000000,25000000,24416666,23666666,23500000,23000000,22500000,22500000,22500000,22409375,22300000,22202777,22000000,21333333,21000000,21000000,21000000,20000000,20000000,20000000,20000000,20000000,19500000,19350000,19000000,18900000,18900000,18500000,18500000,18500000,18500000,18250000,18000000,18000000,18000000,17666666,17200000,17200000,17000000,16750000,16500000,16500000,16500000,16100000,16000000,16000000,16000000,16000000,15500000,15200000,15000000,15000000,15000000,14850000,14200000,14075000,14000000,14000000,14000000,13750000,13000000,13000000,13000000,13000000,12750000,12666666,12500000,12333333,12250000,12250000,12000000,12000000,12000000,11700000,11700000,11666668,11666666,11650000,11500000,11333333,11100000],"WAR":[2.3,5.3,5.4,4,0.1,1.3,4.7,4.4,0.9,1.5,3.6,-0.7,0.8,5.2,2.6,0.7,6.6,4.9,3.6,0.2,2.4,0.3,0.3,7.3,1.4,3.9,4.5,2.7,4.9,2.8,1.5,1.5,0,2.2,1.2,4.4,2.4,5.2,1.8,3.6,2.9,1.9,5,3.5,1.7,-0.3,3.5,2.5,3.7,6.6,0.6,3,2.9,3.3,0.6,5.6,0.4,-0.1,1.6,1.1,-0.8,1.8,2.2,2.1,-0.3,1.6,5.5,2.5,2.4,4.5,2.5,3.4,4.2,-0.4,1.2,1.5,3.7,2,-0.2,4.6,6.9,0,2,5.5,0.6,4.8,0.8,-0.1,-0.1,4,0.5,5.8,0,2.5,3.6,3,2.7,2.1],"TEAM_PAYROLL":[180349558,205669863,201189189,171469994,144390775,194472041,271200832,179764272,271200832,271200832,271200832,86348945,188228055,194472041,205669863,180349558,189852734,171469994,125902769,144390775,150140253,144607670,180349558,189852734,179764272,271200832,153112625,201189189,171890308,179764272,116408966,171890308,179764272,120084606,189852734,189852734,150140253,188228055,271200832,171890308,188228055,91232929,171890308,201189189,171890308,171469994,116408966,83837448,140926169,150140253,140926169,271200832,140926169,171890308,205669863,188228055,171469994,180349558,205669863,83837448,271200832,99377415,140926169,194472041,153112625,271200832,171890308,180349558,205669863,153112625,189852734,86565788,125902769,125902769,144607670,99377415,271200832,70836327,205669863,153112625,271200832,189852734,194472041,90900598,205669863,189852734,201189189,171469994,201189189,271200832,171469994,194472041,201189189,70836327,201189189,189852734,140926169,179764272],"PER_TEAM_PAYROLL":[0.206,0.175,0.179,0.204,0.242,0.18,0.128,0.178,0.118,0.116,0.114,0.347,0.159,0.149,0.141,0.156,0.148,0.152,0.199,0.169,0.158,0.163,0.128,0.119,0.125,0.083,0.146,0.111,0.129,0.122,0.183,0.122,0.117,0.175,0.105,0.105,0.133,0.106,0.074,0.113,0.103,0.208,0.11,0.094,0.108,0.108,0.159,0.221,0.13,0.12,0.128,0.066,0.125,0.1,0.084,0.09,0.098,0.091,0.08,0.197,0.059,0.161,0.114,0.082,0.104,0.057,0.088,0.083,0.073,0.098,0.078,0.164,0.112,0.111,0.097,0.141,0.051,0.184,0.063,0.085,0.048,0.067,0.065,0.138,0.06,0.065,0.061,0.07,0.06,0.044,0.068,0.06,0.058,0.165,0.058,0.061,0.08,0.062]},"columns":[{"accessor":"PLAYER","name":"PLAYER","type":"character","minWidth":125,"align":"center"},{"accessor":"TEAM","name":"TEAM","type":"character","minWidth":125,"align":"center"},{"accessor":"POS","name":"POS","type":"character","minWidth":125,"align":"center"},{"accessor":"AGE","name":"AGE","type":"numeric","minWidth":125,"align":"center"},{"accessor":"SALARY","name":"SALARY","type":"numeric","minWidth":150,"align":"center","format":{"cell":{"prefix":"$","digits":0,"separators":true},"aggregated":{"prefix":"$","digits":0,"separators":true}},"style":[{"background":"#F9795D"},{"background":"#F97C5D"},{"background":"#F97C5D"},{"background":"#F97E5D"},{"background":"#F97E5D"},{"background":"#F97E5D"},{"background":"#F97F5D"},{"background":"#FA8660"},{"background":"#FA8660"},{"background":"#FB8861"},{"background":"#FB8962"},{"background":"#FB8C63"},{"background":"#FB8C63"},{"background":"#FC8F65"},{"background":"#FC8F65"},{"background":"#FC9266"},{"background":"#FC9266"},{"background":"#FD9969"},{"background":"#FD9C6B"},{"background":"#FD9F6C"},{"background":"#FDA16E"},{"background":"#FDA26E"},{"background":"#FEA46F"},{"background":"#FEA671"},{"background":"#FEA671"},{"background":"#FEA671"},{"background":"#FEA671"},{"background":"#FEA671"},{"background":"#FEA772"},{"background":"#FEA872"},{"background":"#FEAA74"},{"background":"#FEAC75"},{"background":"#FEAC75"},{"background":"#FEAC75"},{"background":"#FEB078"},{"background":"#FEB078"},{"background":"#FEB078"},{"background":"#FEB078"},{"background":"#FEB078"},{"background":"#FEB27A"},{"background":"#FEB37A"},{"background":"#FEB47B"},{"background":"#FEB57C"},{"background":"#FEB57C"},{"background":"#FEB77D"},{"background":"#FEB77D"},{"background":"#FEB77D"},{"background":"#FEB77D"},{"background":"#FEB87E"},{"background":"#FEB97F"},{"background":"#FEB97F"},{"background":"#FEB97F"},{"background":"#FEBB80"},{"background":"#FEBD82"},{"background":"#FEBD82"},{"background":"#FEBE83"},{"background":"#FEC084"},{"background":"#FEC186"},{"background":"#FEC186"},{"background":"#FEC186"},{"background":"#FEC388"},{"background":"#FEC488"},{"background":"#FEC488"},{"background":"#FEC488"},{"background":"#FEC488"},{"background":"#FEC78B"},{"background":"#FEC98C"},{"background":"#FECA8D"},{"background":"#FECA8D"},{"background":"#FECA8D"},{"background":"#FECB8E"},{"background":"#FED092"},{"background":"#FED193"},{"background":"#FED194"},{"background":"#FED194"},{"background":"#FED194"},{"background":"#FED395"},{"background":"#FDD99B"},{"background":"#FDD99B"},{"background":"#FDD99B"},{"background":"#FDD99B"},{"background":"#FDDB9D"},{"background":"#FDDC9E"},{"background":"#FDDEA0"},{"background":"#FDE1A2"},{"background":"#FDE2A3"},{"background":"#FDE2A3"},{"background":"#FDE5A6"},{"background":"#FDE5A6"},{"background":"#FDE5A6"},{"background":"#FCE8AA"},{"background":"#FCE8AA"},{"background":"#FCE9AB"},{"background":"#FCE9AB"},{"background":"#FCE9AB"},{"background":"#FCECAE"},{"background":"#FCF0B2"},{"background":"#FCFDBF"}]},{"accessor":"WAR","name":"WAR","type":"numeric","minWidth":75,"align":"center","style":[{"background":"#FEAB75"},{"background":"#FB8A62"},{"background":"#FB8962"},{"background":"#FD9769"},{"background":"#FED194"},{"background":"#FEBA80"},{"background":"#FC9065"},{"background":"#FC9367"},{"background":"#FEC185"},{"background":"#FEB77D"},{"background":"#FD9B6A"},{"background":"#FCEEB0"},{"background":"#FEC287"},{"background":"#FB8B62"},{"background":"#FEA772"},{"background":"#FEC488"},{"background":"#F97E5D"},{"background":"#FC8E64"},{"background":"#FD9B6A"},{"background":"#FECF92"},{"background":"#FEAA74"},{"background":"#FECC8F"},{"background":"#FECC8F"},{"background":"#F9795D"},{"background":"#FEB87E"},{"background":"#FD9869"},{"background":"#FC9266"},{"background":"#FEA671"},{"background":"#FC8E64"},{"background":"#FEA570"},{"background":"#FEB77D"},{"background":"#FEB77D"},{"background":"#FDD496"},{"background":"#FEAD76"},{"background":"#FEBC81"},{"background":"#FC9367"},{"background":"#FEAA74"},{"background":"#FB8B62"},{"background":"#FEB27A"},{"background":"#FD9B6A"},{"background":"#FEA46F"},{"background":"#FEB179"},{"background":"#FB8D63"},{"background":"#FD9D6B"},{"background":"#FEB47B"},{"background":"#FDDC9E"},{"background":"#FD9D6B"},{"background":"#FEA973"},{"background":"#FD9A6A"},{"background":"#F97E5D"},{"background":"#FEC68A"},{"background":"#FDA26E"},{"background":"#FEA46F"},{"background":"#FD9F6C"},{"background":"#FEC68A"},{"background":"#FB8761"},{"background":"#FECA8E"},{"background":"#FDD698"},{"background":"#FEB57C"},{"background":"#FEBD82"},{"background":"#FCFDBF"},{"background":"#FEB27A"},{"background":"#FEAD76"},{"background":"#FEAE77"},{"background":"#FDDC9E"},{"background":"#FEB57C"},{"background":"#FB8861"},{"background":"#FEA973"},{"background":"#FEAA74"},{"background":"#FC9266"},{"background":"#FEA973"},{"background":"#FD9E6C"},{"background":"#FD9568"},{"background":"#FDE0A1"},{"background":"#FEBC81"},{"background":"#FEB77D"},{"background":"#FD9A6A"},{"background":"#FEAF78"},{"background":"#FDD99B"},{"background":"#FC9165"},{"background":"#F97C5D"},{"background":"#FDD496"},{"background":"#FEAF78"},{"background":"#FB8861"},{"background":"#FEC68A"},{"background":"#FC8F64"},{"background":"#FEC287"},{"background":"#FDD698"},{"background":"#FDD698"},{"background":"#FD9769"},{"background":"#FEC88C"},{"background":"#FA8560"},{"background":"#FDD496"},{"background":"#FEA973"},{"background":"#FD9B6A"},{"background":"#FDA26E"},{"background":"#FEA671"},{"background":"#FEAE77"}]},{"accessor":"TEAM_PAYROLL","name":"TEAM PAYROLL","type":"numeric","minWidth":150,"align":"center","format":{"cell":{"prefix":"$","digits":0,"separators":true},"aggregated":{"prefix":"$","digits":0,"separators":true}}},{"accessor":"PER_TEAM_PAYROLL","name":"% OF TEAM PAYROLL","type":"numeric","minWidth":100,"align":"center","format":{"cell":{"percent":true},"aggregated":{"percent":true}},"style":[{"background":"#FD9C6B"},{"background":"#FEA671"},{"background":"#FEA570"},{"background":"#FD9D6B"},{"background":"#FC9266"},{"background":"#FEA470"},{"background":"#FEB77D"},{"background":"#FEA570"},{"background":"#FEBC81"},{"background":"#FEBD82"},{"background":"#FEBE83"},{"background":"#F9795D"},{"background":"#FEAC75"},{"background":"#FEAF78"},{"background":"#FEB27A"},{"background":"#FEAD76"},{"background":"#FEB078"},{"background":"#FEAE77"},{"background":"#FD9E6C"},{"background":"#FEA873"},{"background":"#FEAC75"},{"background":"#FEAA74"},{"background":"#FEB77D"},{"background":"#FEBB81"},{"background":"#FEB97F"},{"background":"#FECE91"},{"background":"#FEB078"},{"background":"#FEBF84"},{"background":"#FEB77D"},{"background":"#FEBA80"},{"background":"#FEA36F"},{"background":"#FEBA80"},{"background":"#FEBC82"},{"background":"#FEA671"},{"background":"#FEC286"},{"background":"#FEC286"},{"background":"#FEB57C"},{"background":"#FEC186"},{"background":"#FDD496"},{"background":"#FEBE83"},{"background":"#FEC387"},{"background":"#FD9C6B"},{"background":"#FEBF84"},{"background":"#FEC88B"},{"background":"#FEC085"},{"background":"#FEC085"},{"background":"#FEAC75"},{"background":"#FD9869"},{"background":"#FEB77D"},{"background":"#FEBB80"},{"background":"#FEB77D"},{"background":"#FDD99B"},{"background":"#FEB97F"},{"background":"#FEC489"},{"background":"#FECD90"},{"background":"#FECA8D"},{"background":"#FEC589"},{"background":"#FEC98D"},{"background":"#FED092"},{"background":"#FD9F6D"},{"background":"#FDE0A1"},{"background":"#FEAB75"},{"background":"#FEBE83"},{"background":"#FECF91"},{"background":"#FEC287"},{"background":"#FDE2A3"},{"background":"#FECB8E"},{"background":"#FECE91"},{"background":"#FDD496"},{"background":"#FEC589"},{"background":"#FED193"},{"background":"#FEAA74"},{"background":"#FEBE83"},{"background":"#FEBF84"},{"background":"#FEC68A"},{"background":"#FEB27A"},{"background":"#FCE8AA"},{"background":"#FEA36F"},{"background":"#FDDC9D"},{"background":"#FECD90"},{"background":"#FCEDAF"},{"background":"#FDD89A"},{"background":"#FDD99B"},{"background":"#FEB47B"},{"background":"#FDDFA0"},{"background":"#FDD99B"},{"background":"#FDDE9F"},{"background":"#FDD698"},{"background":"#FDDFA0"},{"background":"#FCFDBF"},{"background":"#FDD89A"},{"background":"#FDDFA0"},{"background":"#FDE1A2"},{"background":"#FEA973"},{"background":"#FDE1A2"},{"background":"#FDDE9F"},{"background":"#FED092"},{"background":"#FDDD9E"}]}],"filterable":true,"defaultPageSize":98,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"borderless":true,"compact":true,"inline":true,"dataKey":"d6777455863e71efb5ba4a29f28d33eb","key":"d6777455863e71efb5ba4a29f28d33eb"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<p>Ok, that worked.</p>
+<p>While doing a bit of research on this I stumbled upon the package
+reactablefmtr which allows one to add special features, themes, and
+simplifies our code for adding column color scales. Let’s try it
+out.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Let&#39;s make some more aesthetic changes. Most of this is the same as above. Changes will be followed by comments. </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#First, let&#39;s load the new fancy package reactablefmtr.</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reactablefmtr)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>color_table <span class="ot">&lt;-</span> salaries <span class="sc">%&gt;%</span> <span class="fu">reactable</span>(</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">pagination =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">compact =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">borderless =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">striped =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">fullWidth =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">sortable =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">filterable =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">highlight =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">defaultColDef =</span> <span class="fu">colDef</span>(</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">&quot;center&quot;</span>,</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">minWidth =</span> <span class="dv">90</span> <span class="co"># Just a minor change to the columns here - position, age,  and team could be a little smaller</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  ), </span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">columns =</span> <span class="fu">list</span>(</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">PLAYER =</span> <span class="fu">colDef</span>(</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">minWidth =</span> <span class="dv">150</span> <span class="co"># Some names are being wrapped so let&#39;s widen the column a little</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">SALARY =</span> <span class="fu">colDef</span>(</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">style =</span> <span class="fu">color_scales</span>(<span class="at">data =</span> salaries, <span class="at">colors =</span> <span class="fu">c</span>(color_palette)), <span class="co">#Using color_scales() here to simplify the code from above. Need to specify the data frame and simply pass in our color palette to the color argument. color_scales() is pretty much our function but built into the new package. This is way easier than writing out the function ahead of time like before. </span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">format =</span> <span class="fu">colFormat</span>(<span class="at">prefix =</span> <span class="st">&quot;$&quot;</span>, <span class="at">separators =</span> <span class="cn">TRUE</span>, <span class="at">digits =</span> <span class="dv">0</span>), </span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">minWidth =</span> <span class="dv">150</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">WAR =</span> <span class="fu">colDef</span>(</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">style =</span> <span class="fu">color_scales</span>(<span class="at">data =</span> salaries, <span class="at">colors =</span> <span class="fu">c</span>(color_palette))</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    ), </span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">PER_TEAM_PAYROLL =</span> <span class="fu">colDef</span>(</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">name =</span> <span class="st">&quot;% OF TEAM PAYROLL&quot;</span>,</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">style =</span> <span class="fu">color_scales</span>(<span class="at">data =</span> salaries, <span class="at">colors =</span> <span class="fu">c</span>(color_palette)), </span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">format =</span> <span class="fu">colFormat</span>(<span class="at">percent =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>      <span class="at">minWidth =</span> <span class="dv">100</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">TEAM_PAYROLL =</span> <span class="fu">colDef</span>(</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">name =</span> <span class="st">&quot;TEAM PAYROLL&quot;</span>, </span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">minWidth =</span> <span class="dv">150</span>,</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">cell =</span> <span class="fu">data_bars</span>(</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>        salaries,</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill_color =</span> <span class="fu">c</span>(<span class="st">&quot;#FCF6B8F2&quot;</span>, <span class="st">&quot;#FEA36FF2&quot;</span>), <span class="co"># Two colors from our color palette - the first lighter, the second darker</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>        <span class="at">text_position =</span> <span class="st">&quot;inside-end&quot;</span>, <span class="co">#This puts the number inside the bar. This helps keep the width of the column manageable.</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>        <span class="at">number_fmt =</span> scales<span class="sc">::</span><span class="fu">dollar_format</span>(<span class="at">prefix =</span> <span class="st">&quot;$&quot;</span>))</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>      <span class="co">#We are going to spice up the team salary column. We are going to add data bars that show both with bars and scaled color the payroll for each team in relation to all other teams in the league. </span></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="at">theme =</span> <span class="fu">fivethirtyeight</span>()<span class="co">#This changes the look of the table to mimic that of the tables on the website fivethirtyeight </span></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>color_table</span></code></pre></div>
+<div id="htmlwidget-9583cd2af94bcb667c7d" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-9583cd2af94bcb667c7d">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"PLAYER":["Mike Trout","Gerrit Cole","Jacob deGrom","Nolan Arenado","Stephen Strasburg","Zack Greinke","Max Scherzer","Manny Machado","David Price","Trevor Bauer","Clayton Kershaw","Miguel Cabrera","Chris Sale","Jose Altuve","Giancarlo Stanton","Anthony Rendon","Bryce Harper","Paul Goldschmidt","Joey Votto","Patrick Corbin","George Springer","Jason Heyward","Justin Upton","Zack Wheeler","Wil Myers","Mookie Betts","Freddie Freeman","Francisco Lindor","Buster Posey","Yu Darvish","Charlie Blackmon","Johnny Cueto","Eric Hosmer","Josh Donaldson","Andrew McCutchen","J.T. Realmuto","Hyun-Jin Ryu","Xander Bogaerts","Kenley Jansen","Kris Bryant","J.D. Martinez","Madison Bumgarner","Kevin Gausman","Marcus Stroman","Evan Longoria","Matt Carpenter","Trevor Story","Kyle Seager","Yasmani Grandal","Marcus Semien","Dallas Keuchel","A.J. Pollock","Jose Abreu","Brandon Belt","Aroldis Chapman","Nathan Eovaldi","Miles Mikolas","Dexter Fowler","Anthony Rizzo","Yusei Kikuchi","Cody Bellinger","Lorenzo Cain","Craig Kimbrel","Michael Brantley","Marcell Ozuna","Danny Duffy","Brandon Crawford","Alex Cobb","D.J. LeMahieu","Charlie Morton","Jean Segura","Salvador Perez","Nick Castellanos","Mike Moustakas","Kyle Hendricks","Christian Yelich","Corey Seager","Nelson Cruz","Zack Britton","Will Smith","Trea Turner","Didi Gregorius","Alex Bregman","Starling Marte","Rougned Odor","Aaron Nola","Michael Conforto","Andrew Miller","Carlos Carrasco","Justin Turner","Carlos Martinez","Carlos Correa","Jeurys Familia","Kevin Kiermaier","Javier Baez","Kyle Gibson","Liam Hendriks","Blake Snell"],"TEAM":["LAA","NYY","NYM","STL","WSH","HOU","LAD","SD","LAD","LAD","LAD","DET","BOS","HOU","NYY","LAA","PHI","STL","CIN","WSH","TOR","CHC","LAA","PHI","SD","LAD","ATL","NYM","SF","SD","COL","SF","SD","MIN","PHI","PHI","TOR","BOS","LAD","SF","BOS","ARI","SF","NYM","SF","STL","COL","SEA","CHW","TOR","CHW","LAD","CHW","SF","NYY","BOS","STL","LAA","NYY","SEA","LAD","MIL","CHW","HOU","ATL","LAD","SF","LAA","NYY","ATL","PHI","KC","CIN","CIN","CHC","MIL","LAD","TB","NYY","ATL","LAD","PHI","HOU","OAK","NYY","PHI","NYM","STL","NYM","LAD","STL","HOU","NYM","TB","NYM","PHI","CHW","SD"],"POS":["CF","SP","SP","3B","SP","SP","SP","3B","SP","SP","SP","DH","SP","2B","DH","3B","RF","1B","1B","SP","CF","RF","LF","SP","LF","RF","1B","SS","C","SP","RF","SP","1B","3B","LF","C","SP","SS","RP","3B","DH","SP","SP","SP","3B","3B","SS","3B","C","SS","SP","LF","1B","1B","RP/CL","SP","SP","RF","1B","SP","CF","CF","RP","LF","LF","SP","SS","SP","3B","SP","SS","C","RF","3B","SP","LF","SS","DH","RP","RP/CL","SS","SS","3B","CF","2B","SP","RF","RP","SP","3B","SP","SS","RP","CF","SS","SP","RP/CL","SP"],"AGE":[29,30,33,30,32,37,36,28,35,30,33,38,32,31,31,31,28,33,37,31,31,31,33,31,30,28,31,27,34,34,35,35,31,35,34,30,34,28,33,29,33,31,30,30,35,35,28,33,32,30,33,33,34,33,33,31,32,35,31,30,25,35,33,34,30,32,34,33,32,37,31,31,29,32,31,29,27,40,33,31,28,31,27,32,27,28,28,36,34,36,29,26,31,31,28,33,32,28],"SALARY":[37166667,36000000,36000000,35025000,35000000,35000000,34603480,32000000,32000000,31333333,31000000,30000000,30000000,29000000,29000000,28071428,28038462,26000000,25000000,24416666,23666666,23500000,23000000,22500000,22500000,22500000,22409375,22300000,22202777,22000000,21333333,21000000,21000000,21000000,20000000,20000000,20000000,20000000,20000000,19500000,19350000,19000000,18900000,18900000,18500000,18500000,18500000,18500000,18250000,18000000,18000000,18000000,17666666,17200000,17200000,17000000,16750000,16500000,16500000,16500000,16100000,16000000,16000000,16000000,16000000,15500000,15200000,15000000,15000000,15000000,14850000,14200000,14075000,14000000,14000000,14000000,13750000,13000000,13000000,13000000,13000000,12750000,12666666,12500000,12333333,12250000,12250000,12000000,12000000,12000000,11700000,11700000,11666668,11666666,11650000,11500000,11333333,11100000],"WAR":[2.3,5.3,5.4,4,0.1,1.3,4.7,4.4,0.9,1.5,3.6,-0.7,0.8,5.2,2.6,0.7,6.6,4.9,3.6,0.2,2.4,0.3,0.3,7.3,1.4,3.9,4.5,2.7,4.9,2.8,1.5,1.5,0,2.2,1.2,4.4,2.4,5.2,1.8,3.6,2.9,1.9,5,3.5,1.7,-0.3,3.5,2.5,3.7,6.6,0.6,3,2.9,3.3,0.6,5.6,0.4,-0.1,1.6,1.1,-0.8,1.8,2.2,2.1,-0.3,1.6,5.5,2.5,2.4,4.5,2.5,3.4,4.2,-0.4,1.2,1.5,3.7,2,-0.2,4.6,6.9,0,2,5.5,0.6,4.8,0.8,-0.1,-0.1,4,0.5,5.8,0,2.5,3.6,3,2.7,2.1],"TEAM_PAYROLL":[180349558,205669863,201189189,171469994,144390775,194472041,271200832,179764272,271200832,271200832,271200832,86348945,188228055,194472041,205669863,180349558,189852734,171469994,125902769,144390775,150140253,144607670,180349558,189852734,179764272,271200832,153112625,201189189,171890308,179764272,116408966,171890308,179764272,120084606,189852734,189852734,150140253,188228055,271200832,171890308,188228055,91232929,171890308,201189189,171890308,171469994,116408966,83837448,140926169,150140253,140926169,271200832,140926169,171890308,205669863,188228055,171469994,180349558,205669863,83837448,271200832,99377415,140926169,194472041,153112625,271200832,171890308,180349558,205669863,153112625,189852734,86565788,125902769,125902769,144607670,99377415,271200832,70836327,205669863,153112625,271200832,189852734,194472041,90900598,205669863,189852734,201189189,171469994,201189189,271200832,171469994,194472041,201189189,70836327,201189189,189852734,140926169,179764272],"PER_TEAM_PAYROLL":[0.206,0.175,0.179,0.204,0.242,0.18,0.128,0.178,0.118,0.116,0.114,0.347,0.159,0.149,0.141,0.156,0.148,0.152,0.199,0.169,0.158,0.163,0.128,0.119,0.125,0.083,0.146,0.111,0.129,0.122,0.183,0.122,0.117,0.175,0.105,0.105,0.133,0.106,0.074,0.113,0.103,0.208,0.11,0.094,0.108,0.108,0.159,0.221,0.13,0.12,0.128,0.066,0.125,0.1,0.084,0.09,0.098,0.091,0.08,0.197,0.059,0.161,0.114,0.082,0.104,0.057,0.088,0.083,0.073,0.098,0.078,0.164,0.112,0.111,0.097,0.141,0.051,0.184,0.063,0.085,0.048,0.067,0.065,0.138,0.06,0.065,0.061,0.07,0.06,0.044,0.068,0.06,0.058,0.165,0.058,0.061,0.08,0.062]},"columns":[{"accessor":"PLAYER","name":"PLAYER","type":"character","minWidth":150,"align":"center"},{"accessor":"TEAM","name":"TEAM","type":"character","minWidth":90,"align":"center"},{"accessor":"POS","name":"POS","type":"character","minWidth":90,"align":"center"},{"accessor":"AGE","name":"AGE","type":"numeric","minWidth":90,"align":"center"},{"accessor":"SALARY","name":"SALARY","type":"numeric","minWidth":150,"align":"center","format":{"cell":{"prefix":"$","digits":0,"separators":true},"aggregated":{"prefix":"$","digits":0,"separators":true}},"style":[{"background":"#F9795DFF","color":"black","fontWeight":"normal"},{"background":"#F97E5DFF","color":"black","fontWeight":"normal"},{"background":"#F97E5DFF","color":"black","fontWeight":"normal"},{"background":"#FA835FFF","color":"black","fontWeight":"normal"},{"background":"#FA845FFF","color":"black","fontWeight":"normal"},{"background":"#FA845FFF","color":"black","fontWeight":"normal"},{"background":"#FA8660FF","color":"black","fontWeight":"normal"},{"background":"#FC9367FF","color":"black","fontWeight":"normal"},{"background":"#FC9367FF","color":"black","fontWeight":"normal"},{"background":"#FD9668FF","color":"black","fontWeight":"normal"},{"background":"#FD9869FF","color":"black","fontWeight":"normal"},{"background":"#FD9D6BFF","color":"black","fontWeight":"normal"},{"background":"#FD9D6BFF","color":"black","fontWeight":"normal"},{"background":"#FDA26EFF","color":"black","fontWeight":"normal"},{"background":"#FDA26EFF","color":"black","fontWeight":"normal"},{"background":"#FEA772FF","color":"black","fontWeight":"normal"},{"background":"#FEA772FF","color":"black","fontWeight":"normal"},{"background":"#FEB179FF","color":"black","fontWeight":"normal"},{"background":"#FEB77DFF","color":"black","fontWeight":"normal"},{"background":"#FEBA7FFF","color":"black","fontWeight":"normal"},{"background":"#FEBD83FF","color":"black","fontWeight":"normal"},{"background":"#FEBE83FF","color":"black","fontWeight":"normal"},{"background":"#FEC185FF","color":"black","fontWeight":"normal"},{"background":"#FEC388FF","color":"black","fontWeight":"normal"},{"background":"#FEC388FF","color":"black","fontWeight":"normal"},{"background":"#FEC388FF","color":"black","fontWeight":"normal"},{"background":"#FEC488FF","color":"black","fontWeight":"normal"},{"background":"#FEC489FF","color":"black","fontWeight":"normal"},{"background":"#FEC589FF","color":"black","fontWeight":"normal"},{"background":"#FEC68AFF","color":"black","fontWeight":"normal"},{"background":"#FEC98DFF","color":"black","fontWeight":"normal"},{"background":"#FECB8EFF","color":"black","fontWeight":"normal"},{"background":"#FECB8EFF","color":"black","fontWeight":"normal"},{"background":"#FECB8EFF","color":"black","fontWeight":"normal"},{"background":"#FED093FF","color":"black","fontWeight":"normal"},{"background":"#FED093FF","color":"black","fontWeight":"normal"},{"background":"#FED093FF","color":"black","fontWeight":"normal"},{"background":"#FED093FF","color":"black","fontWeight":"normal"},{"background":"#FED093FF","color":"black","fontWeight":"normal"},{"background":"#FED395FF","color":"black","fontWeight":"normal"},{"background":"#FED395FF","color":"black","fontWeight":"normal"},{"background":"#FDD597FF","color":"black","fontWeight":"normal"},{"background":"#FDD597FF","color":"black","fontWeight":"normal"},{"background":"#FDD597FF","color":"black","fontWeight":"normal"},{"background":"#FDD799FF","color":"black","fontWeight":"normal"},{"background":"#FDD799FF","color":"black","fontWeight":"normal"},{"background":"#FDD799FF","color":"black","fontWeight":"normal"},{"background":"#FDD799FF","color":"black","fontWeight":"normal"},{"background":"#FDD89AFF","color":"black","fontWeight":"normal"},{"background":"#FDD99BFF","color":"black","fontWeight":"normal"},{"background":"#FDD99BFF","color":"black","fontWeight":"normal"},{"background":"#FDD99BFF","color":"black","fontWeight":"normal"},{"background":"#FDDB9DFF","color":"black","fontWeight":"normal"},{"background":"#FDDE9FFF","color":"black","fontWeight":"normal"},{"background":"#FDDE9FFF","color":"black","fontWeight":"normal"},{"background":"#FDDFA0FF","color":"black","fontWeight":"normal"},{"background":"#FDE1A2FF","color":"black","fontWeight":"normal"},{"background":"#FDE2A3FF","color":"black","fontWeight":"normal"},{"background":"#FDE2A3FF","color":"black","fontWeight":"normal"},{"background":"#FDE2A3FF","color":"black","fontWeight":"normal"},{"background":"#FDE4A5FF","color":"black","fontWeight":"normal"},{"background":"#FDE4A5FF","color":"black","fontWeight":"normal"},{"background":"#FDE4A5FF","color":"black","fontWeight":"normal"},{"background":"#FDE4A5FF","color":"black","fontWeight":"normal"},{"background":"#FDE4A5FF","color":"black","fontWeight":"normal"},{"background":"#FDE6A8FF","color":"black","fontWeight":"normal"},{"background":"#FCE8AAFF","color":"black","fontWeight":"normal"},{"background":"#FCE9ABFF","color":"black","fontWeight":"normal"},{"background":"#FCE9ABFF","color":"black","fontWeight":"normal"},{"background":"#FCE9ABFF","color":"black","fontWeight":"normal"},{"background":"#FCE9ABFF","color":"black","fontWeight":"normal"},{"background":"#FCEDAFFF","color":"black","fontWeight":"normal"},{"background":"#FCEDAFFF","color":"black","fontWeight":"normal"},{"background":"#FCEEB0FF","color":"black","fontWeight":"normal"},{"background":"#FCEEB0FF","color":"black","fontWeight":"normal"},{"background":"#FCEEB0FF","color":"black","fontWeight":"normal"},{"background":"#FCEFB1FF","color":"black","fontWeight":"normal"},{"background":"#FCF3B5FF","color":"black","fontWeight":"normal"},{"background":"#FCF3B5FF","color":"black","fontWeight":"normal"},{"background":"#FCF3B5FF","color":"black","fontWeight":"normal"},{"background":"#FCF3B5FF","color":"black","fontWeight":"normal"},{"background":"#FCF4B6FF","color":"black","fontWeight":"normal"},{"background":"#FCF5B7FF","color":"black","fontWeight":"normal"},{"background":"#FCF5B7FF","color":"black","fontWeight":"normal"},{"background":"#FCF6B8FF","color":"black","fontWeight":"normal"},{"background":"#FCF7B9FF","color":"black","fontWeight":"normal"},{"background":"#FCF7B9FF","color":"black","fontWeight":"normal"},{"background":"#FCF8BAFF","color":"black","fontWeight":"normal"},{"background":"#FCF8BAFF","color":"black","fontWeight":"normal"},{"background":"#FCF8BAFF","color":"black","fontWeight":"normal"},{"background":"#FCF9BBFF","color":"black","fontWeight":"normal"},{"background":"#FCF9BBFF","color":"black","fontWeight":"normal"},{"background":"#FCFABCFF","color":"black","fontWeight":"normal"},{"background":"#FCFABCFF","color":"black","fontWeight":"normal"},{"background":"#FCFABCFF","color":"black","fontWeight":"normal"},{"background":"#FCFABCFF","color":"black","fontWeight":"normal"},{"background":"#FCFBBDFF","color":"black","fontWeight":"normal"},{"background":"#FCFDBFFF","color":"black","fontWeight":"normal"}]},{"accessor":"WAR","name":"WAR","type":"numeric","minWidth":90,"align":"center","style":[{"background":"#FECB8EFF","color":"black","fontWeight":"normal"},{"background":"#FD996AFF","color":"black","fontWeight":"normal"},{"background":"#FD9869FF","color":"black","fontWeight":"normal"},{"background":"#FEAF77FF","color":"black","fontWeight":"normal"},{"background":"#FCEEB0FF","color":"black","fontWeight":"normal"},{"background":"#FDDA9CFF","color":"black","fontWeight":"normal"},{"background":"#FEA36FFF","color":"black","fontWeight":"normal"},{"background":"#FEA873FF","color":"black","fontWeight":"normal"},{"background":"#FDE2A3FF","color":"black","fontWeight":"normal"},{"background":"#FDD799FF","color":"black","fontWeight":"normal"},{"background":"#FEB57CFF","color":"black","fontWeight":"normal"},{"background":"#FCFBBDFF","color":"black","fontWeight":"normal"},{"background":"#FDE3A4FF","color":"black","fontWeight":"normal"},{"background":"#FD9B6AFF","color":"black","fontWeight":"normal"},{"background":"#FEC68AFF","color":"black","fontWeight":"normal"},{"background":"#FDE4A6FF","color":"black","fontWeight":"normal"},{"background":"#FA845FFF","color":"black","fontWeight":"normal"},{"background":"#FDA06DFF","color":"black","fontWeight":"normal"},{"background":"#FEB57CFF","color":"black","fontWeight":"normal"},{"background":"#FCECAEFF","color":"black","fontWeight":"normal"},{"background":"#FEC98CFF","color":"black","fontWeight":"normal"},{"background":"#FCEAACFF","color":"black","fontWeight":"normal"},{"background":"#FCEAACFF","color":"black","fontWeight":"normal"},{"background":"#F9795DFF","color":"black","fontWeight":"normal"},{"background":"#FDD99BFF","color":"black","fontWeight":"normal"},{"background":"#FEB078FF","color":"black","fontWeight":"normal"},{"background":"#FEA671FF","color":"black","fontWeight":"normal"},{"background":"#FEC488FF","color":"black","fontWeight":"normal"},{"background":"#FDA06DFF","color":"black","fontWeight":"normal"},{"background":"#FEC287FF","color":"black","fontWeight":"normal"},{"background":"#FDD799FF","color":"black","fontWeight":"normal"},{"background":"#FDD799FF","color":"black","fontWeight":"normal"},{"background":"#FCEFB1FF","color":"black","fontWeight":"normal"},{"background":"#FECC8FFF","color":"black","fontWeight":"normal"},{"background":"#FDDC9EFF","color":"black","fontWeight":"normal"},{"background":"#FEA873FF","color":"black","fontWeight":"normal"},{"background":"#FEC98CFF","color":"black","fontWeight":"normal"},{"background":"#FD9B6AFF","color":"black","fontWeight":"normal"},{"background":"#FED395FF","color":"black","fontWeight":"normal"},{"background":"#FEB57CFF","color":"black","fontWeight":"normal"},{"background":"#FEC185FF","color":"black","fontWeight":"normal"},{"background":"#FED193FF","color":"black","fontWeight":"normal"},{"background":"#FD9E6CFF","color":"black","fontWeight":"normal"},{"background":"#FEB77DFF","color":"black","fontWeight":"normal"},{"background":"#FDD496FF","color":"black","fontWeight":"normal"},{"background":"#FCF4B6FF","color":"black","fontWeight":"normal"},{"background":"#FEB77DFF","color":"black","fontWeight":"normal"},{"background":"#FEC78BFF","color":"black","fontWeight":"normal"},{"background":"#FEB47BFF","color":"black","fontWeight":"normal"},{"background":"#FA845FFF","color":"black","fontWeight":"normal"},{"background":"#FDE6A8FF","color":"black","fontWeight":"normal"},{"background":"#FEBF84FF","color":"black","fontWeight":"normal"},{"background":"#FEC185FF","color":"black","fontWeight":"normal"},{"background":"#FEBA80FF","color":"black","fontWeight":"normal"},{"background":"#FDE6A8FF","color":"black","fontWeight":"normal"},{"background":"#FC9467FF","color":"black","fontWeight":"normal"},{"background":"#FCE9ABFF","color":"black","fontWeight":"normal"},{"background":"#FCF1B3FF","color":"black","fontWeight":"normal"},{"background":"#FDD698FF","color":"black","fontWeight":"normal"},{"background":"#FDDE9FFF","color":"black","fontWeight":"normal"},{"background":"#FCFDBFFF","color":"black","fontWeight":"normal"},{"background":"#FED395FF","color":"black","fontWeight":"normal"},{"background":"#FECC8FFF","color":"black","fontWeight":"normal"},{"background":"#FECE91FF","color":"black","fontWeight":"normal"},{"background":"#FCF4B6FF","color":"black","fontWeight":"normal"},{"background":"#FDD698FF","color":"black","fontWeight":"normal"},{"background":"#FD9668FF","color":"black","fontWeight":"normal"},{"background":"#FEC78BFF","color":"black","fontWeight":"normal"},{"background":"#FEC98CFF","color":"black","fontWeight":"normal"},{"background":"#FEA671FF","color":"black","fontWeight":"normal"},{"background":"#FEC78BFF","color":"black","fontWeight":"normal"},{"background":"#FEB97EFF","color":"black","fontWeight":"normal"},{"background":"#FEAB75FF","color":"black","fontWeight":"normal"},{"background":"#FCF6B8FF","color":"black","fontWeight":"normal"},{"background":"#FDDC9EFF","color":"black","fontWeight":"normal"},{"background":"#FDD799FF","color":"black","fontWeight":"normal"},{"background":"#FEB47BFF","color":"black","fontWeight":"normal"},{"background":"#FED092FF","color":"black","fontWeight":"normal"},{"background":"#FCF3B5FF","color":"black","fontWeight":"normal"},{"background":"#FEA570FF","color":"black","fontWeight":"normal"},{"background":"#F97F5DFF","color":"black","fontWeight":"normal"},{"background":"#FCEFB1FF","color":"black","fontWeight":"normal"},{"background":"#FED092FF","color":"black","fontWeight":"normal"},{"background":"#FD9668FF","color":"black","fontWeight":"normal"},{"background":"#FDE6A8FF","color":"black","fontWeight":"normal"},{"background":"#FDA26EFF","color":"black","fontWeight":"normal"},{"background":"#FDE3A4FF","color":"black","fontWeight":"normal"},{"background":"#FCF1B3FF","color":"black","fontWeight":"normal"},{"background":"#FCF1B3FF","color":"black","fontWeight":"normal"},{"background":"#FEAF77FF","color":"black","fontWeight":"normal"},{"background":"#FDE7A9FF","color":"black","fontWeight":"normal"},{"background":"#FC9166FF","color":"black","fontWeight":"normal"},{"background":"#FCEFB1FF","color":"black","fontWeight":"normal"},{"background":"#FEC78BFF","color":"black","fontWeight":"normal"},{"background":"#FEB57CFF","color":"black","fontWeight":"normal"},{"background":"#FEBF84FF","color":"black","fontWeight":"normal"},{"background":"#FEC488FF","color":"black","fontWeight":"normal"},{"background":"#FECE91FF","color":"black","fontWeight":"normal"}]},{"accessor":"TEAM_PAYROLL","name":"TEAM PAYROLL","type":"numeric","minWidth":150,"align":"center","cell":[{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC890FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"66.5003704708399%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$180,349,558"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDBE86FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"75.8367374772656%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$205,669,863"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC088FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"74.1845766166381%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$201,189,189"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDCC93FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"63.2262049992531%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$171,469,994"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCD79DFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"53.2412728733811%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$144,390,775"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC28AFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"71.7077597313566%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$194,472,041"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FEA36FFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"100%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$271,200,832"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC890FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"66.2845577110914%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$179,764,272"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FEA36FFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"100%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$271,200,832"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FEA36FFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"100%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$271,200,832"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FEA36FFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"100%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$271,200,832"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCEFB2FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"31.8394838110231%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$86,348,945"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC58DFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"69.405412074842%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$188,228,055"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC28AFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"71.7077597313566%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$194,472,041"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDBE86FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"75.8367374772656%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$205,669,863"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC890FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"66.5003704708399%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$180,349,558"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC48CFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"70.0044806647201%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$189,852,734"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDCC93FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"63.2262049992531%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$171,469,994"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCDFA3FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"46.4241824302368%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$125,902,769"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCD79DFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"53.2412728733811%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$144,390,775"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCD59BFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"55.3612803813227%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$150,140,253"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCD79DFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"53.3212486604761%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$144,607,670"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC890FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"66.5003704708399%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$180,349,558"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC48CFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"70.0044806647201%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$189,852,734"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC890FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"66.2845577110914%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$179,764,272"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FEA36FFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"100%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$271,200,832"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCD39AFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"56.4572843935818%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$153,112,625"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC088FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"74.1845766166381%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$201,189,189"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDCC93FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"63.3811875621385%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$171,890,308"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC890FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"66.2845577110914%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$179,764,272"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCE3A7FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"42.9235283466977%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$116,408,966"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDCC93FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"63.3811875621385%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$171,890,308"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC890FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"66.2845577110914%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$179,764,272"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCE1A6FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"44.2788486725586%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$120,084,606"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC48CFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"70.0044806647201%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$189,852,734"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC48CFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"70.0044806647201%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$189,852,734"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCD59BFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"55.3612803813227%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$150,140,253"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC58DFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"69.405412074842%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$188,228,055"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FEA36FFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"100%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$271,200,832"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDCC93FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"63.3811875621385%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$171,890,308"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC58DFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"69.405412074842%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$188,228,055"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCEDB0FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"33.6403573422666%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$91,232,929"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDCC93FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"63.3811875621385%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$171,890,308"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC088FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"74.1845766166381%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$201,189,189"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDCC93FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"63.3811875621385%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$171,890,308"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDCC93FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"63.2262049992531%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$171,469,994"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCE3A7FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"42.9235283466977%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$116,408,966"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCF0B3FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"30.9134184367104%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$83,837,448"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCD89EFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"51.9637672055519%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$140,926,169"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCD59BFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"55.3612803813227%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$150,140,253"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCD89EFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"51.9637672055519%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$140,926,169"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FEA36FFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"100%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$271,200,832"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCD89EFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"51.9637672055519%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$140,926,169"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDCC93FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"63.3811875621385%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$171,890,308"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDBE86FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"75.8367374772656%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$205,669,863"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC58DFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"69.405412074842%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$188,228,055"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDCC93FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"63.2262049992531%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$171,469,994"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC890FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"66.5003704708399%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$180,349,558"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDBE86FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"75.8367374772656%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$205,669,863"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCF0B3FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"30.9134184367104%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$83,837,448"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FEA36FFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"100%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$271,200,832"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCEAADFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"36.6434771852027%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$99,377,415"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCD89EFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"51.9637672055519%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$140,926,169"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC28AFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"71.7077597313566%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$194,472,041"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCD39AFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"56.4572843935818%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$153,112,625"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FEA36FFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"100%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$271,200,832"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDCC93FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"63.3811875621385%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$171,890,308"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC890FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"66.5003704708399%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$180,349,558"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDBE86FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"75.8367374772656%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$205,669,863"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCD39AFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"56.4572843935818%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$153,112,625"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC48CFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"70.0044806647201%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$189,852,734"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCEFB2FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"31.9194404241356%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$86,565,788"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCDFA3FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"46.4241824302368%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$125,902,769"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCDFA3FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"46.4241824302368%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$125,902,769"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCD79DFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"53.3212486604761%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$144,607,670"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCEAADFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"36.6434771852027%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$99,377,415"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FEA36FFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"100%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$271,200,832"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCF6B8FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"26.1195094711214%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$70,836,327"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDBE86FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"75.8367374772656%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$205,669,863"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCD39AFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"56.4572843935818%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$153,112,625"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FEA36FFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"100%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$271,200,832"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC48CFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"70.0044806647201%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$189,852,734"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC28AFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"71.7077597313566%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$194,472,041"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCEDB0FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"33.5178167889986%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$90,900,598"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDBE86FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"75.8367374772656%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$205,669,863"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC48CFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"70.0044806647201%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$189,852,734"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC088FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"74.1845766166381%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$201,189,189"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDCC93FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"63.2262049992531%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$171,469,994"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC088FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"74.1845766166381%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$201,189,189"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FEA36FFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"100%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$271,200,832"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDCC93FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"63.2262049992531%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$171,469,994"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC28AFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"71.7077597313566%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$194,472,041"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC088FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"74.1845766166381%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$201,189,189"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCF6B8FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"26.1195094711214%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$70,836,327"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC088FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"74.1845766166381%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$201,189,189"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC48CFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"70.0044806647201%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$189,852,734"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FCD89EFF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"51.9637672055519%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$140,926,169"]}]}]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{"style":{"flexGrow":1,"background":"transparent"}},"children":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":[{"name":"div","attribs":{"style":{"textAlign":"right","background":"#FDC890FF","backgroundImage":null,"color":"black","fontWeight":"normal","width":"66.2845577110914%","height":19,"transition":"width 1s","textOverflow":"ellipsis","whiteSpace":"nowrap","marginRight":"7px"}},"children":["$179,764,272"]}]}]}]}]},{"accessor":"PER_TEAM_PAYROLL","name":"% OF TEAM PAYROLL","type":"numeric","minWidth":100,"align":"center","format":{"cell":{"percent":true},"aggregated":{"percent":true}},"style":[{"background":"#FEB67DFF","color":"black","fontWeight":"normal"},{"background":"#FEC488FF","color":"black","fontWeight":"normal"},{"background":"#FEC287FF","color":"black","fontWeight":"normal"},{"background":"#FEB77DFF","color":"black","fontWeight":"normal"},{"background":"#FEA771FF","color":"black","fontWeight":"normal"},{"background":"#FEC286FF","color":"black","fontWeight":"normal"},{"background":"#FDD89AFF","color":"black","fontWeight":"normal"},{"background":"#FEC387FF","color":"black","fontWeight":"normal"},{"background":"#FDDC9EFF","color":"black","fontWeight":"normal"},{"background":"#FDDD9FFF","color":"black","fontWeight":"normal"},{"background":"#FDDEA0FF","color":"black","fontWeight":"normal"},{"background":"#F9795DFF","color":"black","fontWeight":"normal"},{"background":"#FECB8EFF","color":"black","fontWeight":"normal"},{"background":"#FECF92FF","color":"black","fontWeight":"normal"},{"background":"#FED395FF","color":"black","fontWeight":"normal"},{"background":"#FECC8FFF","color":"black","fontWeight":"normal"},{"background":"#FED092FF","color":"black","fontWeight":"normal"},{"background":"#FECE91FF","color":"black","fontWeight":"normal"},{"background":"#FEB97FFF","color":"black","fontWeight":"normal"},{"background":"#FEC78AFF","color":"black","fontWeight":"normal"},{"background":"#FECB8FFF","color":"black","fontWeight":"normal"},{"background":"#FEC98DFF","color":"black","fontWeight":"normal"},{"background":"#FDD89AFF","color":"black","fontWeight":"normal"},{"background":"#FDDC9EFF","color":"black","fontWeight":"normal"},{"background":"#FDD99BFF","color":"black","fontWeight":"normal"},{"background":"#FCEBADFF","color":"black","fontWeight":"normal"},{"background":"#FED193FF","color":"black","fontWeight":"normal"},{"background":"#FDE0A1FF","color":"black","fontWeight":"normal"},{"background":"#FDD89AFF","color":"black","fontWeight":"normal"},{"background":"#FDDA9CFF","color":"black","fontWeight":"normal"},{"background":"#FEC085FF","color":"black","fontWeight":"normal"},{"background":"#FDDA9CFF","color":"black","fontWeight":"normal"},{"background":"#FDDD9EFF","color":"black","fontWeight":"normal"},{"background":"#FEC488FF","color":"black","fontWeight":"normal"},{"background":"#FDE3A4FF","color":"black","fontWeight":"normal"},{"background":"#FDE3A4FF","color":"black","fontWeight":"normal"},{"background":"#FDD698FF","color":"black","fontWeight":"normal"},{"background":"#FDE2A3FF","color":"black","fontWeight":"normal"},{"background":"#FCEFB1FF","color":"black","fontWeight":"normal"},{"background":"#FDDFA0FF","color":"black","fontWeight":"normal"},{"background":"#FDE3A5FF","color":"black","fontWeight":"normal"},{"background":"#FEB67CFF","color":"black","fontWeight":"normal"},{"background":"#FDE0A2FF","color":"black","fontWeight":"normal"},{"background":"#FDE7A9FF","color":"black","fontWeight":"normal"},{"background":"#FDE1A2FF","color":"black","fontWeight":"normal"},{"background":"#FDE1A2FF","color":"black","fontWeight":"normal"},{"background":"#FECB8EFF","color":"black","fontWeight":"normal"},{"background":"#FEB078FF","color":"black","fontWeight":"normal"},{"background":"#FDD799FF","color":"black","fontWeight":"normal"},{"background":"#FDDB9DFF","color":"black","fontWeight":"normal"},{"background":"#FDD89AFF","color":"black","fontWeight":"normal"},{"background":"#FCF3B5FF","color":"black","fontWeight":"normal"},{"background":"#FDD99BFF","color":"black","fontWeight":"normal"},{"background":"#FDE4A6FF","color":"black","fontWeight":"normal"},{"background":"#FCEBADFF","color":"black","fontWeight":"normal"},{"background":"#FCE8AAFF","color":"black","fontWeight":"normal"},{"background":"#FDE5A7FF","color":"black","fontWeight":"normal"},{"background":"#FCE8AAFF","color":"black","fontWeight":"normal"},{"background":"#FCEDAFFF","color":"black","fontWeight":"normal"},{"background":"#FEBA80FF","color":"black","fontWeight":"normal"},{"background":"#FCF6B8FF","color":"black","fontWeight":"normal"},{"background":"#FECA8DFF","color":"black","fontWeight":"normal"},{"background":"#FDDEA0FF","color":"black","fontWeight":"normal"},{"background":"#FCECAEFF","color":"black","fontWeight":"normal"},{"background":"#FDE3A4FF","color":"black","fontWeight":"normal"},{"background":"#FCF7B9FF","color":"black","fontWeight":"normal"},{"background":"#FCE9ABFF","color":"black","fontWeight":"normal"},{"background":"#FCEBADFF","color":"black","fontWeight":"normal"},{"background":"#FCF0B2FF","color":"black","fontWeight":"normal"},{"background":"#FDE5A7FF","color":"black","fontWeight":"normal"},{"background":"#FCEEB0FF","color":"black","fontWeight":"normal"},{"background":"#FEC98CFF","color":"black","fontWeight":"normal"},{"background":"#FDDFA1FF","color":"black","fontWeight":"normal"},{"background":"#FDE0A1FF","color":"black","fontWeight":"normal"},{"background":"#FDE6A7FF","color":"black","fontWeight":"normal"},{"background":"#FED395FF","color":"black","fontWeight":"normal"},{"background":"#FCF9BBFF","color":"black","fontWeight":"normal"},{"background":"#FEC085FF","color":"black","fontWeight":"normal"},{"background":"#FCF4B6FF","color":"black","fontWeight":"normal"},{"background":"#FCEBADFF","color":"black","fontWeight":"normal"},{"background":"#FCFBBDFF","color":"black","fontWeight":"normal"},{"background":"#FCF2B4FF","color":"black","fontWeight":"normal"},{"background":"#FCF3B5FF","color":"black","fontWeight":"normal"},{"background":"#FDD496FF","color":"black","fontWeight":"normal"},{"background":"#FCF5B7FF","color":"black","fontWeight":"normal"},{"background":"#FCF3B5FF","color":"black","fontWeight":"normal"},{"background":"#FCF5B7FF","color":"black","fontWeight":"normal"},{"background":"#FCF1B3FF","color":"black","fontWeight":"normal"},{"background":"#FCF5B7FF","color":"black","fontWeight":"normal"},{"background":"#FCFDBFFF","color":"black","fontWeight":"normal"},{"background":"#FCF2B4FF","color":"black","fontWeight":"normal"},{"background":"#FCF5B7FF","color":"black","fontWeight":"normal"},{"background":"#FCF6B8FF","color":"black","fontWeight":"normal"},{"background":"#FEC88CFF","color":"black","fontWeight":"normal"},{"background":"#FCF6B8FF","color":"black","fontWeight":"normal"},{"background":"#FCF5B7FF","color":"black","fontWeight":"normal"},{"background":"#FCEDAFFF","color":"black","fontWeight":"normal"},{"background":"#FCF5B7FF","color":"black","fontWeight":"normal"}]}],"filterable":true,"defaultPageSize":98,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"borderless":true,"compact":true,"inline":true,"theme":{"color":"#222222","backgroundColor":"#ffffff","borderColor":"#dddddd","borderWidth":"1px","stripedColor":"#dddddd","highlightColor":"#f0f0f0","cellPadding":5,"tableStyle":{"fontFamily":"Helvetica","fontSize":14,"borderBottom":"3px solid #222222"},"headerStyle":{"borderWidth":"3px","paddingTop":"12px","verticalAlign":"bottom","textAlign":"bottom","background":"#ffffff","textTransform":"uppercase","borderColor":"#222222","color":"#000000","&:hover":{"background":"#dddddd"},"&[aria-sort='ascending'], &[aria-sort='descending']":{"background":"#5b5e5f","color":"#ffffff"},"borderColor.1":"#333","fontSize":12,"fontFamily":"Helvetica"},"groupHeaderStyle":{"&:not(:empty)":{"paddingBottom":"3px","verticalAlign":"bottom","textAlign":"bottom","backgroundColor":"#ffffff","textTransform":"uppercase","fontSize":12,"fontFamily":"Helvetica","color":"#222222"}},"rowSelectedStyle":{"backgroundColor":"#dddddd"},"inputStyle":{"backgroundColor":"#ffffff","color":"#222222"},"searchInputStyle":{"textTransform":"uppercase","color":"#222222","fontSize":"14px"},"paginationStyle":{"textTransform":"uppercase","fontSize":"14px"},"pageButtonStyle":{"textTransform":"uppercase","fontSize":"14px"}},"dataKey":"750b65f1cc5425ab4ea2994a8436f2b6","key":"750b65f1cc5425ab4ea2994a8436f2b6"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<p>And there you have it. A pretty table with some fancy mods.</p>
+<p>Again, this tutorial was less about the analysis (we didn’t really do
+any), and more about the aesthetics. Using reactable and reactablefmtr
+can make drab tables come alive.</p>
+<p><br></p>
+<p><br></p>
+<p>The idea for this tutorial came from Thomas Mock’s Blog <a
+href="https://themockup.blog/posts/2020-05-13-reactable-tables-the-rest-of-the-owl/">“The
+Mockup Blog”</a>. I adopted but also adapted some of the code from Mock.
+The <a
+href="https://glin.github.io/reactable/articles/cookbook/cookbook.html#style-nested-rows">Reactable
+Demo Cookbook</a> was also instrumental in providing what I needed. And
+after I found reactablefmtr, a whole new world opened up. Here were some
+of the websites that were indispensable in regards to that package: <a
+href="https://github.com/kcuilla/reactablefmtr">kcuilla’s GitHub</a> and
+<a
+href="https://kcuilla.github.io/reactablefmtr/articles/themes.html">his
+themes page</a>, and <a
+href="chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/viewer.html?pdfurl=https%3A%2F%2Fcran.r-project.org%2Fweb%2Fpackages%2Freactablefmtr%2Freactablefmtr.pdf&amp;clen=166664&amp;chunk=true">the
+package documentation</a>.</p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

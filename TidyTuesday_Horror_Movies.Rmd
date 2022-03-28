@@ -1,0 +1,366 @@
+---
+title: "TidyTuesday with David Robinson: Horror Movies"
+author: "Andrew Borozan"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: FALSE
+    out.width: '100%'
+---
+
+This "Just Following Along" will track me following along to David Robinson's Tidy Tuesday for October 23, 2018. "Just Following Alongs" are simply that: me following someone else's workflow. The purpose is to learn from professionals; how they process and clean data, what visualizations they use, what packages they employ, what statistical methods they frequently apply, so on and so forth. I am not teaching in these "Just Follow Alongs" - I am simply following along and learning tricks of the trade. Think of these as me "showing my notes" after listening to a teacher's lecture. I add some flourishes here and there (I like making the graphs look more appealing), but most of the code comes from the tutorial.
+
+I am the apprentice at the feet of the masters...
+
+Here is video of David Robinson dissecting the Tidy Tuesday data:
+
+
+
+<iframe width="900" height="506" src="https://www.youtube.com/embed/3-DRwg9yeNA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+<br>
+
+
+First, I load in a bunch of packages, just in case...
+
+```{r Loading Packages, message=FALSE, warning=FALSE}
+library(pacman)
+p_load(tidyverse, skimr, scales, rmarkdown, magrittr, lubridate, janitor, htmltab, ggrepel, viridis,
+       ggthemes, knitr, rvest, reactable, RSelenium, stringr.plus, htmltools)
+options(scipen=999)
+```
+
+Then we load in the data...
+
+```{r Load in the Data, message=FALSE, warning=FALSE}
+movie_profit_raw <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2018/2018-10-23/movie_profit.csv")
+```
+
+Let's do a little cleaning...
+
+```{r Cleaning, message=FALSE, warning=FALSE}
+movie_profit <- movie_profit_raw %>% select(-1) %>% 
+  mutate(release_date = parse_date_time(release_date, orders = "%m!/%d/%Y"))
+#select(-1) gets rid of the first column which is just row numbers
+# mutate(...) gets the date into a proper date format. parse_date_time(column, order of date in original dataset)
+```
+
+After taking a look at the data, Dave sees that there are some movies for which the domestic and worldwide gross are 0 (because they haven't been released yet). So, he gets rid of those...
+
+```{r Remove incomplete data, message=FALSE, warning=FALSE}
+movie_profit <- movie_profit %>% filter(release_date < "2018-01-01")
+# This filters out any movies with a release date in the current year so there will be values in gross columns
+```
+
+Dave wants to take a look at the production budget numbers. A histogram gives him a quick glance...
+
+```{r Production budgets, message=FALSE, warning=FALSE, out.width= "100%"}
+theme_set(theme_classic()) # Dave likes the classic theme. I think it's just ok. 
+movie_profit %>% ggplot(aes(production_budget)) +
+  geom_histogram()+ #The original histogram was skewed left, so make it a log scale
+  scale_x_log10(labels = dollar_format()) #makes x axis dollar format
+```
+
+Next, Dave checks to see how many movies per distributor...
+
+```{r Movies per distributor, message=FALSE, warning=FALSE}
+movie_profit %>% count(distributor, sort= TRUE)
+# check to see how many for each distributor
+```
+
+Dave sees that there are a main set of distributors, so he selects those and groups all the rest into others.
+
+```{r Lump distributors, message=FALSE, warning=FALSE}
+movie_profit_distlump <- movie_profit %>% 
+  mutate(distributor = fct_lump_n(distributor, n = 6))
+# If you wanted to group the top six distributors use fct_lump_n(column, number of groups)
+
+# It won't do anything until you put it back in count, then it will group.
+movie_profit_distlump %>% count(distributor, sort = TRUE)
+```
+
+Dave went off on a little bunny trail here, so I decided to go on a little tangent myself. I wondered if there was a way to filter for a pattern of letters. And yes there is...
+
+```{r Filter for a character pattern, message=FALSE, warning=FALSE}
+# If you want to filter out movies that have a certain word in the title
+# use grepl(pattern, column)
+movie_profit %>% filter(grepl("Halloween", x = movie))
+```
+
+Back on task, seeing the distributors' production budgets in a box plot...and then worldwide gross by distributor....
+
+```{r Box plot of production budget by distributor, message=FALSE, warning=FALSE, out.width= "100%"}
+#Put lumped distributors in a log scale box plot
+movie_profit_distlump %>% ggplot(aes(distributor, production_budget)) +
+  geom_boxplot()+ #The original hist was skewed left so make it a log scale
+  scale_y_log10(labels = dollar_format()) +
+  coord_flip()
+
+
+# Similar to above but instead of production budget, worldwide gross
+movie_profit_distlump %>% ggplot(aes(distributor, worldwide_gross)) +
+  geom_boxplot()+ #The original hist was skewed left so make it a log scale
+  scale_y_log10(labels = dollar_format()) +
+  coord_flip()
+
+# Boxplots for major distributors facet wrapped
+movie_profit_distlump %>% mutate(genre = fct_reorder(genre, production_budget)) %>% 
+  #The is Dave's classic reorder one column by another - reorder genre by worldwide gross
+  filter(!is.na(distributor)) %>% 
+  ggplot(aes(genre, production_budget)) +
+  geom_boxplot()+ #The original hist was skewed left so make it a log scale
+  scale_y_log10(labels = dollar_format()) +
+  coord_flip() +
+  facet_wrap(~ distributor)
+
+# And now for worldwide gross
+movie_profit_distlump %>% mutate(genre = fct_reorder(genre, worldwide_gross)) %>% 
+  filter(!is.na(distributor)) %>% 
+  ggplot(aes(genre, worldwide_gross)) +
+  geom_boxplot()+ #The original hist was skewed left so make it a log scale
+  scale_y_log10(labels = dollar_format()) +
+  coord_flip() +
+  facet_wrap(~ distributor)
+```
+
+What genres make the most profit?
+
+```{r Worldwide gross and Production budget by Genre, message=FALSE, warning=FALSE, out.width= "100%"}
+#First, how many genres?
+movie_profit %>% count(genre, sort = TRUE)
+
+# 5. Ok, now boxplot worldwide gross by genre
+movie_profit %>% mutate(genre = fct_reorder(genre, worldwide_gross)) %>% 
+  #The is Dave's classic reorder one column by another - reorder genre by worldwide gross
+  ggplot(aes(genre, worldwide_gross)) +
+  geom_boxplot()+ #The original hist was skewed left so make it a log scale
+  scale_y_log10(labels = dollar_format()) +
+  coord_flip()
+
+# Now, boxplot production budget by genre
+movie_profit %>% mutate(genre = fct_reorder(genre, production_budget)) %>% 
+  ggplot(aes(genre, production_budget)) +
+  geom_boxplot()+ #The original hist was skewed left so make it a log scale
+  scale_y_log10(labels = dollar_format()) +
+  coord_flip()
+```
+
+Let's see some of this by decade...
+
+```{r Group by decade, message=FALSE, warning=FALSE}
+# Looking at budgets over time - group by decade
+movie_profit_decades <- movie_profit %>% 
+  mutate(decade = 10 * floor(year(release_date) / 10))
+
+#Above is the one Dave did. Now I want to try a different function in lubridate
+#movie_profit %>% 
+ # mutate(decade = 10 * floor_date(release_date, unit = )) %>% view()
+
+#Nope, doesn't work because the highest unit is year - no decade.
+
+#Here is what is happening in Dave's method. 1) extract the year from 
+# release date and then divide by 10...
+
+# year(movie_profit$release_date) / 10
+
+# ...so that floor will take it to an integer with the last number being the decade
+
+# floor(year(movie_profit$release_date) / 10)
+
+# And then you times it by 10 again to get the full year/decade
+```
+
+How many movies are there per decade?
+
+```{r Movies per decade, message=FALSE, warning=FALSE}
+movie_profit_decades %>% group_by(decade) %>% 
+  summarize_at(vars(production_budget:worldwide_gross), median, na.rm = TRUE)
+# What summarize_at does is takes a bunch of columns by name (in vars()), then
+# tells what to summarize by - what aggregate statistic to spit out (median), 
+# and then remove all the NAs
+```
+
+The last table looks a little fishy - why is the median worldwide gross so high for the 30s? Suspicion is that Gone With the Wind is in there and that this is adjusted for inflation. Let's check top earning movies - if Gone with the Wind is #1 we know it is adjusted.
+
+```{r What is up with the 30s, message=FALSE, warning=FALSE}
+
+movie_profit %>% arrange(desc(worldwide_gross))
+
+# Nope. Let's see what movies in the 30s were included
+
+movie_profit %>% filter(year(release_date) < 1940)
+
+# Ok, Gone with the Wind is in the data set, but probably not adjusted for inflation
+```
+
+Here is a line graph to track patterns over time...
+
+```{r Patterns over time, message=FALSE, warning=FALSE, out.width= "100%"}
+#Here is a line plot 
+movie_profit_decades %>% 
+  group_by(decade) %>% 
+  summarize_at(vars(production_budget:worldwide_gross), median, na.rm = TRUE) %>% 
+  gather(metric, value, -decade) %>% #Not entirely sure what he did here
+  ggplot(aes(decade, value, color = metric)) +
+  geom_line() +
+  scale_y_continuous(labels = dollar_format())
+
+#That spit out a weird graph because of the 1930s data. Let's start in the 1950s
+movie_profit_decades %>% filter(year(release_date)> 1949) %>% 
+  group_by(decade) %>% 
+  summarize_at(vars(production_budget:worldwide_gross), median, na.rm = TRUE) %>% 
+  gather(metric, value, -decade) %>% #Not entirely sure what he did here
+  ggplot(aes(decade, value, color = metric)) +
+  geom_line() +
+  scale_y_continuous(labels = dollar_format())
+```
+
+Which genres have the biggest payoff?
+
+```{r Ratio of worldwide gross to production budget, message=FALSE, warning=FALSE, out.width= "100%"}
+movie_profit_ratio <- movie_profit %>% mutate(profit_ratio = worldwide_gross/production_budget) %>% 
+  filter(profit_ratio != 0)
+
+# What is the distribution of the profit ratios? (Need on a log scale)
+# Dave said when you have ratios they go on a log scale
+movie_profit_ratio %>% ggplot(aes(profit_ratio)) +
+  geom_histogram() +
+  scale_x_log10()
+```
+
+How about profit ratio by genre?
+
+```{r Profit ratio by Genre, message=FALSE, warning=FALSE, out.width= "100%"}
+movie_profit_ratio %>% ggplot(aes(genre, profit_ratio)) +
+  geom_boxplot() +
+  scale_y_log10()+
+  coord_flip()
+
+# Dave said the boxplot here might not be the best way to display this. We need to see the median profit ratio for each genre
+
+movie_profit_ratio %>% group_by(genre) %>% 
+  summarize(median_profit_ratio = median(profit_ratio)) %>% 
+  arrange(desc(median_profit_ratio)) %>% 
+  mutate(genre = fct_reorder(genre, median_profit_ratio)) %>% 
+# And turn that into a bar plot
+  ggplot(aes(genre, median_profit_ratio)) +
+  geom_col() +
+  coord_flip() +
+  scale_y_continuous(labels = function(x) paste0(x, "X")) 
+# What this last little bit does is create a small funtion to put the label
+# names with an "X" so that the graph is showing how much more money the movie made than its production cost
+```
+
+Is this consistent over time? Does horror typically have the highest profit ratio? Let's just look at the new millennium.
+
+```{r Horror best over past 20 years, message=FALSE, warning=FALSE, out.width= "100%"}
+movie_profit_ratio %>% group_by(genre, year = year(release_date)) %>%
+  summarize(median_profit_ratio = median(profit_ratio),
+            movies = n()) %>%
+  ungroup() %>%
+  filter(year > 1999) %>%
+  arrange(movies) %>%
+  ggplot(aes(year, median_profit_ratio, color = genre)) +
+  geom_line(size = 1.5) +
+  scale_y_continuous(labels = function(x) paste0(x, "X")) +
+  scale_color_viridis(option = "magma", discrete = TRUE, begin = .9, end = .1)
+
+
+```
+
+Horror took off around 2012. Did budgets change? Or did tastes change? Hmmm....
+
+What are the most popular genres over time?
+
+```{r Popular Genres over Time, message=FALSE, warning=FALSE, out.width= "100%"}
+# By year
+movie_profit %>% group_by(genre, year = year(release_date)) %>% 
+  summarize(number = n()) %>% 
+  ggplot(aes(year, number, color = genre)) + 
+  geom_line(size = 1.5)+
+  scale_color_viridis(option = "magma", discrete = TRUE, begin = .9, end = .1) #My little flair
+
+#By decade
+movie_profit_decades %>% count(decade, genre) %>% 
+  ggplot(aes(decade, n, color = genre)) + #You can use count instead of 
+  #summarize, then if you want to pipe it into ggplot, you just use n. 
+  geom_line(size = 2)+
+   scale_color_viridis(option = "magma", discrete = TRUE, begin = .9, end = .1) 
+```
+
+How many movies of each genre has each main distributor made?
+
+```{r Movies by Genre per distributor, message=FALSE, warning=FALSE, out.width= "100%"}
+movie_profit_distlump %>% filter(!is.na(distributor)) %>% 
+  count(distributor, genre) %>% 
+  ggplot(aes(genre, n, fill = genre)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ distributor, scales = "free_x") +
+  coord_flip()+
+  scale_fill_viridis(option = "magma", discrete = TRUE, begin = .9, end = .1) 
+```
+
+Horror movies have been profitable in the last few years. What were some of those movies and who was the distributor?
+
+```{r Popular Horror movies by Distributor, message=FALSE, warning=FALSE, out.width= "100%"}
+movie_profit_ratio %>% filter(genre == "Horror") %>% arrange(desc(profit_ratio)) %>% 
+  mutate(movie = fct_reorder(movie, profit_ratio)) %>% 
+  head(10) %>% 
+  ggplot(aes(movie, profit_ratio, fill = distributor)) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_viridis(option = "magma", discrete = TRUE) #My little flair
+
+# What if we wanted to see the same thing but for all movies and by genre?
+movie_profit_ratio  %>% arrange(desc(profit_ratio)) %>% 
+  mutate(movie = fct_reorder(movie, profit_ratio)) %>% 
+  head(20) %>% 
+  ggplot(aes(movie, profit_ratio, fill = genre)) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_viridis(option = "magma", discrete = TRUE, begin = 1, end = .4)
+
+# Same as above but let's add the release date next to the movie
+movie_profit_ratio  %>% arrange(desc(profit_ratio)) %>% 
+  mutate(movie = paste0(movie, " (", year(release_date), ")"),
+    movie = fct_reorder(movie, profit_ratio)) %>% 
+  head(20) %>% 
+  ggplot(aes(movie, profit_ratio, fill = genre)) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_viridis(option = "magma", discrete = TRUE, begin = 1, end = .4)
+```
+
+Putting this in a scatter plot would look cool...
+
+```{r Scatter plots over time, message=FALSE, warning=FALSE, out.width= "100%"}
+# Scatterplot this. First just horror movies since 1990...
+movie_profit_ratio  %>% filter(genre == "Horror", year(release_date) > 1989) %>% 
+  ggplot(aes(release_date, profit_ratio)) +
+  geom_point() +
+  scale_y_log10()+
+  geom_smooth(method = "lm")
+
+
+# Then all movies, color coded by genre since 1990
+igraph <- movie_profit_ratio  %>% filter(year(release_date) > 1989,
+                               profit_ratio >= .01) %>% 
+  ggplot(aes(release_date, profit_ratio, color = genre, label = movie)) + # The "label = movie"
+  # here will make it so that you can get the name of the movie in the interactive graph later
+  geom_point() +
+  scale_y_log10()+
+  geom_smooth(method = "lm") +
+  scale_color_viridis(option = "magma", discrete = TRUE, begin = 1, end = .4)+
+  facet_wrap(~ genre)
+
+igraph
+```
+
+Then Dave introduce a nifty little package that allows for interactive graphs.
+
+```{r My first exposure to plotly, message=FALSE, warning=FALSE, out.width= "100%"}
+library(plotly)
+
+ggplotly(igraph)
+```
