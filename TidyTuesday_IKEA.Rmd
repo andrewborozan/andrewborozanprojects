@@ -28,6 +28,7 @@ ikea %>% count(category, sort = TRUE) %>%
 
 ```
 
+Just need to fix this website thing
 
 ```{r}
 #How do category and price relate?
