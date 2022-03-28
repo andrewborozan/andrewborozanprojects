@@ -96,6 +96,37 @@ library(pastecs)
 stat.desc(irisdat, norm = TRUE)
 ```
 
+```{r}
+irisdat$size <- ifelse(irisdat$Sepal.Length < median(irisdat$Sepal.Length),
+  "small", "big"
+)
+
+table(irisdat$Species, irisdat$size)
+
+round(prop.table(table(irisdat$Species, irisdat$size)), 2)
+```
+
+Mosaic plot - needs two qualitative variables:
+
+```{r}
+mosaicplot(table(irisdat$Species, irisdat$size), 
+           color = TRUE)
+
+library(vcd)
+mosaic(~Species + size, 
+       data = irisdat)
+```
+
+Scatterplot - two quantitative variables
+
+```{r}
+irisdat %>% 
+  ggplot(aes(Sepal.Length, Petal.Length, color = Species)) +
+  geom_point()
+```
+
+Use freq() and ctable() in summarytools package if you have at least one factor variable.
+
 ```{r out.width="100%"}
 library(vcd)
 Arthritis
@@ -111,4 +142,27 @@ Arthritis %>% group_by(Treatment, Improved) %>%
   ggplot(aes(Treatment, n, fill = Improved)) +
   geom_col()
 
+```
+
+```{r}
+qb <- read_csv(file.choose())
+```
+
+Correlation between two variables.
+
+```{r}
+irisdat %>% 
+  ggplot(aes(Sepal.Length, Sepal.Width)) +
+  geom_jitter(color = "blue") +
+  geom_density2d(color = "white")
+
+
+```
+
+```{r}
+irisdat %>% 
+  ggplot(aes(Species, Sepal.Length, color = Species)) +
+   geom_violin()+
+  geom_jitter (width = .1)
+ 
 ```
