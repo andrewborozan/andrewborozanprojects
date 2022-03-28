@@ -623,7 +623,8 @@ rename().</p>
 ## # ... with 1,119 more rows, and 8 more variables: data_sing_plural &lt;chr&gt;,
 ## #   care_about_data &lt;fct&gt;, proper_grammar_importance &lt;chr&gt;, gender &lt;chr&gt;,
 ## #   age &lt;chr&gt;, household_income &lt;chr&gt;, education &lt;chr&gt;, location &lt;chr&gt;</code></pre>
-<p>Extension exercise:</p>
+<p>Extension exercise: Get percentage of people who use Oxford
+comma.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>comma <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>(oxford_or_not) <span class="sc">%&gt;%</span> </span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(oxford_or_not) <span class="sc">%&gt;%</span> </span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent =</span> <span class="fu">percent</span>(n<span class="sc">/</span><span class="fu">sum</span>(n)))</span></code></pre></div>
