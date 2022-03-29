@@ -14,6 +14,8 @@ left:
     menu:
        - text: "Reactable Tutorial"
          href: ./Reactable_Walkthru.html
+       - text: "ANOVA Tutorial"
+         href: ./ANOVA_tutorial.html
   - text: "Blog"
     menu: 
       - text: "\"I am crazy\" and other thoughts that flitter through my head."

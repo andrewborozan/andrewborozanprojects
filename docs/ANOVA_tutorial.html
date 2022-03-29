@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Andrew Borozan" />
+
+<meta name="date" content="2022-03-29" />
+
+<title>ANOVA Test</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">The Unlikely Analyst</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./Markdown_Cyclistic_Final.html">Google Data Analytics Certification Project</a>
+    </li>
+    <li>
+      <a href="./Reddit_Sentiment_Analysis_2_23.html">Sentiment Analysis with Reddit Comments</a>
+    </li>
+    <li>
+      <a href="./Elo_rating.html">Accuracy of Elo Ratings</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./Reactable_Walkthru.html">Reactable Tutorial</a>
+    </li>
+    <li>
+      <a href="./ANOVA_tutorial.html">ANOVA Tutorial</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Blog
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./I_am_crazy.html">"I am crazy" and other thoughts that flitter through my head.</a>
+    </li>
+    <li>
+      <a href="./Frustrations_Along_the_Way.html">Frustrations Along the Way</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Just Following Along
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./TidyTuesday_Horror_Movies.html">Tidy Tuesday: Horror Movies</a>
+    </li>
+    <li>
+      <a href="./Riffomanas_candycrush.html">Riffomanas: Candy Crush</a>
+    </li>
+    <li>
+      <a href="./Riffomanas_thedataare.html">Riffomanas: The data are?</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/githubusername/mywebsite">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">ANOVA Test</h1>
+<h4 class="author">Andrew Borozan</h4>
+<h4 class="date">2022-03-29</h4>
+
+</div>
+
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pacman)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">p_load</span>(tidyverse, skimr, scales, rmarkdown, magrittr, lubridate, janitor, ggrepel, ggthemes, showtext, knitr, reactable, palmerpenguins, car, broom, ggpubr, readxl, stringr, viridis, gghighlight, outliers, lattice)</span></code></pre></div>
+<div id="the-star-of-the-show-anova" class="section level1">
+<h1>THE STAR OF THE SHOW: ANOVA</h1>
+<p>Statistical tests are useful tools for confirming or disproving
+hunches. You have a hypothesis and you use a statistical test to see if
+that hypothesis is bang on or bunk. One test that is useful for
+comparing between groups is the ANOVA test. ANOVA answers this one
+simple question:</p>
+<div id="are-they-really-different" class="section level2">
+<h2>ARE THEY REALLY DIFFERENT?</h2>
+<p>In this tutorial, we will be looking at WHEN to use the ANOVA test
+and HOW to use the ANOVA test.</p>
+<p>First, the WHEN.</p>
+<p><strong>Criteria:</strong></p>
+<ul>
+<li><p>You have multiple categories of something. As we will see below,
+that could be species, ages, divisions…the point is that you need
+multiple categorical variables that you can compare.</p></li>
+<li><p>You have numbers for each category, and those numbers all
+communicate the same variable. You have measured the same thing across
+the categories. You measured wing size, on-base percentage, or
+quarterback ratings. You measured something and now have a number for
+the thing. And you measured that value for each of the categories. You
+measured all of the penguins, or all of the baseball or football players
+and derived a number for this variable.</p></li>
+<li><p>You have a lot of values per category. You measured 150 31-year
+olds, or 5000 penguins, or looked at 90 quarterbacks for each division.
+It is not impossible to do ANOVA with small “sample sizes” but it is
+easier the more measurements you have for each category.</p></li>
+</ul>
+<p>When trying to understand ANOVA, it is good to think in box plots. If
+there is one or two (or more) box plots that don’t seem to cover the
+same area, I suspect that that group is a little different than the
+rest.</p>
+<p>To a 5th grader I would say: Do those boxes look the same or
+different? Is one box higher than the others?</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pendat <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> <span class="fu">select</span>(species, flipper_length_mm)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>pendat <span class="sc">%&gt;%</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(species, flipper_length_mm, <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>, <span class="at">option =</span> <span class="st">&quot;magma&quot;</span>, <span class="at">begin =</span> .<span class="dv">9</span>, <span class="at">end =</span> .<span class="dv">4</span>)<span class="sc">+</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> <span class="st">&quot;&quot;</span>)<span class="sc">+</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text =</span> <span class="fu">element_blank</span>())</span></code></pre></div>
+<p><img src="ANOVA_tutorial_files/figure-html/unnamed-chunk-3-1.png" width="100%" /></p>
+<p>Even if one box looks “higher” than the others, that doesn’t mean
+that it is significantly so. That could have been chance. It could have
+been complete coincidence that when you were taking the measurements for
+purple (in the box plot above) that they ate their Wheaties that morning
+and they were performing abnormally well…but on average, they are about
+the same as yellow. The yellow, red, and purple boxes might actually be
+roughly the same, or (what ANOVA is really testing) they might have the
+same mean. ANOVA helps us determine if there really is a difference or
+if this was just a fluke, a Wheaties in the morning aberration.</p>
+<p>So that is WHEN to use it: comparing categories on the same variable
+when you have a lot of data points for each. There are some other
+criteria we will get to along the way, but these are the first three
+hurdles to jump - do you have a category, do you have numbers, and do
+you have a lot of numbers?</p>
+<p>And remember, ANOVA is always answering the question: ARE THESE
+REALLY DIFFERENT?</p>
+<p>Now we have to get to HOW to use it. As with everything else, life
+becomes rather easy with R.</p>
+<p>(I am going to try to keep this rather simple. If you want a more
+detailed explanation of everything, <a
+href="https://statsandr.com/blog/anova-in-r/#aim-and-hypotheses-of-anova">I
+suggest checking out this site</a>. This is where I learned most of this
+stuff. We are going to go over the example that the guy gives on this
+site, but then we are going to branch out and do a couple of examples on
+our own.)</p>
+</div>
+</div>
+<div id="how-to-with-example" class="section level1">
+<h1>“HOW TO” WITH EXAMPLE</h1>
+<p>The first example we will look at to help us practice doing an ANOVA
+test will use the Palmer Penguins data set, which comes with R. I
+already loaded it at the beginning, so load it up if you have not done
+so already.</p>
+<p>Let’s get a look at the data and then isolate the variables we are
+going to be looking at in particular.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(penguins)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 8
+##   species island bill_length_mm bill_depth_mm flipper_length_~ body_mass_g sex  
+##   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt; &lt;fct&gt;
+## 1 Adelie  Torge~           39.1          18.7              181        3750 male 
+## 2 Adelie  Torge~           39.5          17.4              186        3800 fema~
+## 3 Adelie  Torge~           40.3          18                195        3250 fema~
+## 4 Adelie  Torge~           NA            NA                 NA          NA &lt;NA&gt; 
+## 5 Adelie  Torge~           36.7          19.3              193        3450 fema~
+## 6 Adelie  Torge~           39.3          20.6              190        3650 male 
+## # ... with 1 more variable: year &lt;int&gt;</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pendat <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> <span class="fu">select</span>(species, flipper_length_mm) <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pendat)</span></code></pre></div>
+<pre><code>##       species    flipper_length_mm
+##  Adelie   :151   Min.   :172.0    
+##  Chinstrap: 68   1st Qu.:190.0    
+##  Gentoo   :123   Median :197.0    
+##                  Mean   :200.9    
+##                  3rd Qu.:213.0    
+##                  Max.   :231.0</code></pre>
+<p>After getting a quick look at the data, we have to ask ourselves if
+we can even run an ANOVA test with what we have.</p>
+<ol style="list-style-type: decimal">
+<li>Do we have categories we can compare?</li>
+</ol>
+<ul>
+<li>Yep. We have different types of species - three to be exact. Perfect
+for ANOVA.</li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li>Do we have numeric (quantitative) variables that measure the same
+thing for each category?</li>
+</ol>
+<ul>
+<li>Yep. Flipper lengths are measured in millimeters for each
+species.</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li>Do we have a lot of values for each category?</li>
+</ol>
+<ul>
+<li>“Well, what is a lot?” You are right, I never gave a number or
+threshold for what constitutes “a lot.” The rule of thumb is more than
+30. So, do we have more than 30 measurements for each category or
+species? Yep. Chinstrap only has 68 but we are still well above 30 so we
+are good.</li>
+</ul>
+<p>We met the criteria, we can run an ANOVA test. Before we run the test
+though, it is a good idea to get a look at the data in a graph to see if
+anything is fishy. We might be able to guess what the test might say
+even before we run it just by looking at the data. Here are two ways to
+get a good look: a dot plot and a box plot. One of these might look a
+little familiar.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pendat <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(species, flipper_length_mm, <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span> <span class="st">&quot;Species&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Flipper Length&quot;</span>)<span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>, <span class="at">option =</span> <span class="st">&quot;magma&quot;</span>, <span class="at">begin =</span> .<span class="dv">9</span>, <span class="at">end =</span> .<span class="dv">4</span>)</span></code></pre></div>
+<p><img src="ANOVA_tutorial_files/figure-html/Visualize%20Palmer%20Penguins-1.png" width="100%" /></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pendat <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(species, flipper_length_mm, <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span> <span class="st">&quot;Species&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Flipper Length&quot;</span>)<span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>, <span class="at">option =</span> <span class="st">&quot;magma&quot;</span>, <span class="at">begin =</span> .<span class="dv">9</span>, <span class="at">end =</span> .<span class="dv">4</span>)</span></code></pre></div>
+<p><img src="ANOVA_tutorial_files/figure-html/Visualize%20Palmer%20Penguins-2.png" width="100%" /></p>
+<p>Just by looking at the data in this way we can guess that Gentoo are
+very different from Adelie. Our guess, before we even get started, would
+be that on average, Gentoo have longer flippers than Adelie.</p>
+<p>But again, it could be that the Gentoo who were measured were
+abnormal, or that they were roiding pretty hard, and that normally,
+Gentoo have the same flipper length as Adelie. ANOVA will help us
+determine if that is the case.</p>
+<p>So, now we run the ANOVA test, right? Not quite yet. We have to test
+a couple of things first.</p>
+<p>First, we have to see if the samples are “normal” - meaning do they
+follow roughly a normal distribution. We can do this by looking at the
+residuals for the entire group and see if they follow a bell curve
+(residuals are the difference from the actual measurement and the mean).
+That is a little “mathy.” Again, <em>trying</em> to keep this
+simple….</p>
+<p><img src="Images/Residual.png" /></p>
+<p>We calculate all the residuals (R does this for us), and then see if
+they follow a bell curve. Here is how you can see if the residuals
+(actual measurement minus the mean of the entire sample) are normal:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pendat_anova <span class="ot">&lt;-</span> <span class="fu">aov</span>(flipper_length_mm <span class="sc">~</span> species, <span class="at">data =</span> pendat) </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We actually skip to the end and perform the ANOVA test, but just to get the residuals!</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>pendat_res <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(pendat_anova<span class="sc">$</span>residuals)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Have to turn it into a dataframe to pipe it into a ggplot. You could also just do histogram(pendat_anova$residuals) but let&#39;s stay consistent and use ggplot. If you take a look at these residuals, some are negative. That is because some measurements are below the mean. You still do the measurement minus the mean, which will return a negative number. </span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pendat_res)</span></code></pre></div>
+<pre><code>##   pendat_anova$residuals
+## 1            -8.95364238
+## 2            -3.95364238
+## 3             5.04635762
+## 4             3.04635762
+## 5             0.04635762
+## 6            -8.95364238</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>pendat_res <span class="sc">%&gt;%</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="st">`</span><span class="at">pendat_anova$residuals</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code></pre></div>
+<p><img src="ANOVA_tutorial_files/figure-html/unnamed-chunk-4-1.png" width="100%" /></p>
+<p>Lucky us, that looks pretty normal (bell curvish). There is a way to
+test for normality in a more “formal” way too, with the Shapiro-Wilk
+test. R, of course, has an inbuilt function for this.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(pendat_anova<span class="sc">$</span>residuals)</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  pendat_anova$residuals
+## W = 0.99452, p-value = 0.2609</code></pre>
+<p>The Shapiro-Wilk test is pretty easy to interpret in this case. If
+the p-value is over .05 it means we passed the normality test. We are at
+.26 so we passed. Moving on!</p>
+<p>…kind of. In all reality, because all three groups have over 30
+measurements, we don’t even have to test for normality! From the website
+I linked earlier…</p>
+<blockquote>
+<p>In case of large samples, <strong>normality is not required</strong>
+(this is a common misconception!). By the <a
+href="https://en.wikipedia.org/wiki/Central_limit_theorem">central limit
+theorem</a>, sample means of large samples are often well-approximated
+by a normal distribution even if the data are not normally distributed
+(<a
+href="https://statsandr.com/blog/anova-in-r/#ref-stevens2013intermediate">Stevens
+2013</a>).<sup><a
+href="https://statsandr.com/blog/anova-in-r/#fn3">3</a></sup> It is
+therefore not required to test the normality assumption when the number
+of observations in each group/sample is large (usually n≥30).</p>
+</blockquote>
+<p>I showed you how to test for normality just in case you might need it
+(you run into some small samples, let’s say), but for each of the
+examples we are going to go through here, all of our sample sizes are
+over 30 so we don’t really need to test for it.</p>
+<p>Now we test to see if the categories have equal variances. The fancy
+word for this is homogeneity. Box plots again help us out. We ask “Are
+the length of the boxes and ‘whiskers’ roughly the same for each of the
+categories?”</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check equality of variances - homogeneity</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>pendat <span class="sc">%&gt;%</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(species, flipper_length_mm, <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span> <span class="st">&quot;Species&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Flipper Length&quot;</span>)<span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>, <span class="at">option =</span> <span class="st">&quot;magma&quot;</span>, <span class="at">begin =</span> .<span class="dv">9</span>, <span class="at">end =</span> .<span class="dv">4</span>)</span></code></pre></div>
+<p><img src="ANOVA_tutorial_files/figure-html/unnamed-chunk-5-1.png" width="100%" /></p>
+<p>Do the boxes and whiskers have comparable sizes for all species?
+Yeah. Just by the eye-test there is an equality of variances. In other
+words, there is a similar dispersion across variables.</p>
+<p>As with testing for normality, there is a more formal test for
+equality of variances: Levene’s test. R to the rescue…</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(flipper_length_mm <span class="sc">~</span> species, </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">data =</span> pendat)</span></code></pre></div>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
+##        Df F value Pr(&gt;F)
+## group   2  0.3306 0.7188
+##       339</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For data that passes the normality test, it might be a little better to use Bartlett&#39;s test. </span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(pendat<span class="sc">$</span>flipper_length_mm, pendat<span class="sc">$</span>species)</span></code></pre></div>
+<pre><code>## 
+##  Bartlett test of homogeneity of variances
+## 
+## data:  pendat$flipper_length_mm and pendat$species
+## Bartlett&#39;s K-squared = 0.91722, df = 2, p-value = 0.6322</code></pre>
+<p>As with the Shapiro-Wilk test, this one is easy to interpret for our
+purposes. If the p-value is above .05 there is an equality of variance.
+In this case, we have a p-value for both tests which is well above .05.
+We passed the equality of variance test. Moving on!</p>
+<p>Are there any outliers in the data? We can do this by sight and just
+determine if any data points seem like they would skew our results. In
+the box plots above, there are some some points outside the “whiskers”
+of the box plot for Adelie, but they are not outrageously so, so we
+could probably move on. There is a formal test for outliers that we will
+get to in a second.</p>
+<p>(Don’t worry, we will see what happens if we fail one, or two, or all
+of these tests below.)</p>
+<p>FINALLY we can perform our ANOVA test. Remember, the ANOVA test
+answers the question: “Are they really different?” Are the differences
+in flipper length between the penguin species real? Are they
+significantly different? Here is how to do an ANOVA test in R:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#To do an ANOVA put aov() in a summary()</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>pendat_aov <span class="ot">&lt;-</span> <span class="fu">aov</span>(flipper_length_mm <span class="sc">~</span> species, <span class="at">data =</span> pendat)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pendat_aov)</span></code></pre></div>
+<pre><code>##              Df Sum Sq Mean Sq F value Pr(&gt;F)    
+## species       2  52473   26237   594.8 &lt;2e-16 ***
+## Residuals   339  14953      44                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># or...</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">oneway.test</span>(flipper_length_mm <span class="sc">~</span> species, </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> pendat,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## 
+##  One-way analysis of means
+## 
+## data:  flipper_length_mm and species
+## F = 594.8, num df = 2, denom df = 339, p-value &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is one way to do the test if you failed the equality of variances test. Just put &quot;var.equal = FALSE&quot; if the variances between the groups are not equal. </span></span></code></pre></div>
+<p>Look at both of these results. They are saying the same thing. The
+p-value again is what we are interested in.</p>
+<p><img src="Images/ANOVA_results.png" /></p>
+<p>The p-value is well below .05, which means there really is a
+difference between the groups. If it was above .05 we could say, “Ehh,
+no difference really.” But this makes it really clear, “Whoa, there is a
+difference in flipper length for at least one of the groups here.”</p>
+<p>But we don’t really know which group(s) is (are) different. To see
+which groups are different, we need the Tukey test.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(pendat_aov)</span></code></pre></div>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = flipper_length_mm ~ species, data = pendat)
+## 
+## $species
+##                       diff       lwr       upr p adj
+## Chinstrap-Adelie  5.869887  3.586583  8.153191     0
+## Gentoo-Adelie    27.233349 25.334376 29.132323     0
+## Gentoo-Chinstrap 21.363462 19.000841 23.726084     0</code></pre>
+<p>Per usual, we take a look at that p-value (this time labeled “p
+adj”). Zeros. For each one. If the p-value is below .05 then we say
+“something is going on here.” In this case, each of these groups is
+significantly different from each other. We can also simplify this by
+visualizing it.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">TukeyHSD</span>(pendat_aov))</span></code></pre></div>
+<p><img src="ANOVA_tutorial_files/figure-html/unnamed-chunk-6-1.png" width="100%" /></p>
+<p>The plot is all over the place; there is no overlap and they aren’t
+even close to each other. That means all are different from each
+other.</p>
+<p>That is ANOVA in action. ANOVA just answered the question for us “Are
+they really different?” Yes. Yes they are.</p>
+</div>
+<div id="on-our-own" class="section level1">
+<h1>On Our Own</h1>
+<div id="baseball-exit-velos-and-barrel-rates" class="section level3">
+<h3>Baseball Exit Velos and Barrel Rates</h3>
+<p>What we have done so far was pretty much following along at the
+website I keep referencing (hey, it’s a good site that explains ANOVA;
+just giving it some props). Now we are going to follow the same
+procedures with some of our own data. I always default to sports so
+let’s look at some baseball stuff and then look at some football
+stuff.</p>
+<p>First, baseball. Let’s try this for baseball age groups (categorical)
+and exit velocity (quantitative), then barrels (quantitative). Exit
+velocity measures how fast the ball is coming off the bat once the ball
+is hit. Barrels is the percentage of time the hitter hits the ball on
+the fat part of the bat. Do older players generate less power? Do
+younger players hit the ball “fatter” than older players? Let’s find
+out.</p>
+<p>I downloaded the data at Baseball Savant. <a
+href="https://baseballsavant.mlb.com/leaderboard/custom?year=2021,2020,2019,2018,2017&amp;type=batter&amp;filter=&amp;sort=1&amp;sortDir=desc&amp;min=50&amp;selections=player_age,exit_velocity_avg,barrel_batted_rate,&amp;chart=false&amp;x=player_age&amp;y=player_age&amp;r=no&amp;chartType=beeswarm">Here
+is the link to the page</a> where I got the data. We are looking at data
+just from the past five years. We are only taking a look at age, EV
+(exit velocity), and Barrel %.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>baseball_anova <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;C:</span><span class="sc">\\</span><span class="st">Users</span><span class="sc">\\</span><span class="st">andre</span><span class="sc">\\</span><span class="st">Downloads</span><span class="sc">\\</span><span class="st">baseballstats.csv&quot;</span>)</span></code></pre></div>
+<p>Let’s clean this up a little. Also, let’s add player age range
+categories:</p>
+<ul>
+<li><p>20-24</p></li>
+<li><p>25-29</p></li>
+<li><p>30-34</p></li>
+<li><p>35+</p></li>
+</ul>
+<p>Each player will fall in one of these categories and those will be
+the categories we compare.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>baseball_anova <span class="ot">&lt;-</span> baseball_anova <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="dv">12</span>) <span class="sc">%&gt;%</span> <span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age_group =</span> <span class="fu">ifelse</span>(player_age <span class="sc">&gt;=</span> <span class="dv">20</span> <span class="sc">&amp;</span> player_age <span class="sc">&lt;</span> <span class="dv">25</span>, </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&quot;20-24&quot;</span>, </span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">ifelse</span>(player_age <span class="sc">&gt;=</span> <span class="dv">25</span> <span class="sc">&amp;</span> player_age <span class="sc">&lt;</span> <span class="dv">30</span>,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;25-29&quot;</span>, </span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">ifelse</span>(player_age <span class="sc">&gt;=</span> <span class="dv">30</span> <span class="sc">&amp;</span> player_age <span class="sc">&lt;</span> <span class="dv">35</span>, <span class="st">&quot;30-34&quot;</span>, <span class="st">&quot;35+&quot;</span>)))) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use this to group player age ranges</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age_group =</span> <span class="fu">as.factor</span>(age_group)) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">player_name =</span> <span class="fu">paste0</span>(last_name, <span class="st">&quot;, &quot;</span>, first_name)) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(player_name, player_id<span class="sc">:</span>age_group)</span></code></pre></div>
+<p>And let’s take a look at the counts for each age, and age group.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>baseball_anova <span class="sc">%&gt;%</span> </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(player_age)</span></code></pre></div>
+<pre><code>## # A tibble: 24 x 2
+##    player_age     n
+##         &lt;dbl&gt; &lt;int&gt;
+##  1         20     6
+##  2         21    16
+##  3         22    49
+##  4         23    93
+##  5         24   168
+##  6         25   231
+##  7         26   279
+##  8         27   306
+##  9         28   266
+## 10         29   230
+## # ... with 14 more rows</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>baseball_anova <span class="sc">%&gt;%</span> <span class="fu">count</span>(age_group)</span></code></pre></div>
+<pre><code>## # A tibble: 4 x 2
+##   age_group     n
+##   &lt;fct&gt;     &lt;int&gt;
+## 1 20-24       332
+## 2 25-29      1312
+## 3 30-34       733
+## 4 35+         193</code></pre>
+<p>We have plenty of observations for each age group so we don’t have to
+worry about the test for normality moving forward.</p>
+<p>We want to see if exit velocity is different by age of the player. We
+will try to answer the question: Are exit velocities really different by
+age? Let’s go through our steps from the penguin data above. The first
+step is to just look at it visually and see if there is anything that is
+screaming for attention.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dot Plot</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>baseball_anova <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(age_group, exit_velocity_avg, <span class="at">color =</span> age_group)) <span class="sc">+</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span> <span class="st">&quot;Age Group&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Average Exit Velo&quot;</span>)<span class="sc">+</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>, <span class="at">option =</span> <span class="st">&quot;magma&quot;</span>, <span class="at">begin =</span> .<span class="dv">9</span>, <span class="at">end =</span> .<span class="dv">4</span>)</span></code></pre></div>
+<p><img src="ANOVA_tutorial_files/figure-html/unnamed-chunk-7-1.png" width="100%" /></p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Box Plot</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>baseball_anova <span class="sc">%&gt;%</span> </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(age_group, exit_velocity_avg, <span class="at">color =</span> age_group)) <span class="sc">+</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span> <span class="st">&quot;Age Group&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Average Exit Velo&quot;</span>) <span class="sc">+</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>, <span class="at">option =</span> <span class="st">&quot;magma&quot;</span>, <span class="at">begin =</span> .<span class="dv">9</span>, <span class="at">end =</span> .<span class="dv">4</span>)</span></code></pre></div>
+<p><img src="ANOVA_tutorial_files/figure-html/unnamed-chunk-7-2.png" width="100%" /></p>
+<p>There don’t seem to be any big differences in the mean. The older
+players might hit the ball a little harder than the 23 year old…but on
+first glance there doesn’t seem to be much difference in exit velocity
+by age. The 35+ data is a little spread out, so we might run into some
+problems with equality of variance in a second.</p>
+<p>There are some potential outliers we need to look at. If there is an
+outlier that is way out of range, we should probably check it out. Here
+is a test to detect outliers.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grubbs.test</span>(baseball_anova<span class="sc">$</span>exit_velocity_avg)</span></code></pre></div>
+<pre><code>## 
+##  Grubbs test for one outlier
+## 
+## data:  baseball_anova$exit_velocity_avg
+## G = 5.50097, U = 0.98822, p-value = 4.438e-05
+## alternative hypothesis: lowest value 72.5 is an outlier</code></pre>
+<p>The p-value is way below .05 meaning we have some outliers that might
+need attention. Let’s take a look at that 72.5 and who produced it.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>baseball_anova<span class="sc">%&gt;%</span> <span class="fu">arrange</span>(exit_velocity_avg)</span></code></pre></div>
+<pre><code>## # A tibble: 2,570 x 11
+##    player_name       player_id  year player_age b_home_run b_walk b_k_percent
+##    &lt;chr&gt;                 &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;
+##  1 Dickey, R.A.         285079  2017         43          0      0        17.6
+##  2 Gonzalez, Gio        461829  2017         32          0      4        38.7
+##  3 Nelson, Jimmy        519076  2017         28          0      1        58.3
+##  4 Kelly, Merrill       518876  2021         33          0      4        46.6
+##  5 Cueto, Johnny        456501  2017         31          0      1        28.8
+##  6 Gray, Jon            592351  2019         28          0      3        37.3
+##  7 Alcantara, Sandy     645261  2021         26          0      3        70.3
+##  8 Godley, Zack         643327  2017         27          0      2        49.1
+##  9 Foltynewicz, Mike    592314  2018         27          0      0        62.1
+## 10 Inciarte, Ender      542255  2020         30          1     12        19.1
+## # ... with 2,560 more rows, and 4 more variables: on_base_plus_slg &lt;dbl&gt;,
+## #   exit_velocity_avg &lt;dbl&gt;, barrel_batted_rate &lt;dbl&gt;, age_group &lt;fct&gt;</code></pre>
+<p>Ahh, that makes sense: R.A. Dickey, a pitcher, has the ignominious
+title of “Player with the lowest exit velo.” That’s not really fair.
+Most of the bottom feeders on this list are pitchers (except for Ender
+Inciarte. Swing a little harder Ender…), so let’s set the lowest exit
+velo we will consider in the set at 80. That should weed out the
+pitchers (after all, it is not their job to hit the ball hard).</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>exit_velo <span class="ot">&lt;-</span> baseball_anova <span class="sc">%&gt;%</span> <span class="fu">filter</span>(exit_velocity_avg <span class="sc">&gt;</span> <span class="dv">80</span>)</span></code></pre></div>
+<p>And we try the outlier test again.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grubbs.test</span>(exit_velo<span class="sc">$</span>exit_velocity_avg, <span class="at">opposite =</span> <span class="cn">TRUE</span>) </span></code></pre></div>
+<pre><code>## 
+##  Grubbs test for one outlier
+## 
+## data:  exit_velo$exit_velocity_avg
+## G = 3.01430, U = 0.99642, p-value = 1
+## alternative hypothesis: lowest value 80.1 is an outlier</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Because we got rid of the low-end outliers, it now tests for high-end outliers. We want to show we cleared the low-end threshold which is what we were worried about, so we put opposite = TRUE here. </span></span></code></pre></div>
+<p>We are good now.</p>
+<p>Next, we don’t need to test for normality because each age group has
+over 30 observations.</p>
+<p>We move on to the test of equal variance. The dot plot above shows
+some spread out data for the 35+ group. Let’s check equality of variance
+formally:</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(exit_velocity_avg <span class="sc">~</span> age_group, <span class="at">data =</span> exit_velo)</span></code></pre></div>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
+##         Df F value   Pr(&gt;F)   
+## group    3  4.1241 0.006291 **
+##       2537                    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bartlett&#39;s test is another test for equality of variance and might work better for normal groups. </span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(exit_velo<span class="sc">$</span>exit_velocity_avg, exit_velo<span class="sc">$</span>age_group)</span></code></pre></div>
+<pre><code>## 
+##  Bartlett test of homogeneity of variances
+## 
+## data:  exit_velo$exit_velocity_avg and exit_velo$age_group
+## Bartlett&#39;s K-squared = 14.301, df = 3, p-value = 0.002522</code></pre>
+<p>Levene’s and Bartlett’s test says the variances are not equal enough.
+That is ok. We can still run the ANOVA test, we just have to use the
+oneway.test() and signify the variance are not equal.</p>
+<p>Remember our question: is there a significant difference in exit
+velocities between different ages of players? (I have a hunch it is
+going to say “Nope.”)</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">oneway.test</span>(exit_velocity_avg <span class="sc">~</span> age_group, </span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> exit_velo,</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">var.equal =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## 
+##  One-way analysis of means (not assuming equal variances)
+## 
+## data:  exit_velocity_avg and age_group
+## F = 0.80716, num df = 3.00, denom df = 634.09, p-value = 0.4902</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Have to use this test because the variances are not equal according to the test. </span></span></code></pre></div>
+<p>The p-value is well above .05. Then we do NOT have a significant
+difference in exit velos between groups.</p>
+<p><br></p>
+<p><br></p>
+<p>How about barrel rates though? Does an older player make
+significantly worse contact than a younger player?</p>
+<p>This time, we are going to try to filter out some of the pitchers
+ahead of time by getting rid of all of the 0% barrel rates.</p>
+<p>We follow our steps. #1: Get a look at the data visually.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>barrel <span class="ot">&lt;-</span> baseball_anova <span class="sc">%&gt;%</span> <span class="fu">filter</span>(barrel_batted_rate <span class="sc">&gt;</span> <span class="dv">0</span>) </span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Dot Plot</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>barrel <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(age_group, barrel_batted_rate, <span class="at">color =</span> age_group)) <span class="sc">+</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span> <span class="st">&quot;Age Group&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Average Barrel Rate&quot;</span>)<span class="sc">+</span></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>, <span class="at">option =</span> <span class="st">&quot;magma&quot;</span>, <span class="at">begin =</span> .<span class="dv">9</span>, <span class="at">end =</span> .<span class="dv">4</span>)</span></code></pre></div>
+<p><img src="ANOVA_tutorial_files/figure-html/unnamed-chunk-12-1.png" width="100%" /></p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Box Plot</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>barrel <span class="sc">%&gt;%</span> </span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(age_group, barrel_batted_rate, <span class="at">color =</span> age_group)) <span class="sc">+</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span> <span class="st">&quot;Age Group&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Average Barrel Rate&quot;</span>) <span class="sc">+</span></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>, <span class="at">option =</span> <span class="st">&quot;magma&quot;</span>, <span class="at">begin =</span> .<span class="dv">9</span>, <span class="at">end =</span> .<span class="dv">4</span>)</span></code></pre></div>
+<p><img src="ANOVA_tutorial_files/figure-html/unnamed-chunk-12-2.png" width="100%" /></p>
+<p>Not too much of a difference in the means it seems. There are a few
+30 some year olds who are squaring the ball up almost 25% of the time,
+which is ridiculously impressive. Just by looking at the dot and box
+plots here, we can tell we have some outliers that are going to impact
+our analysis.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grubbs.test</span>(barrel<span class="sc">$</span>barrel_batted_rate)</span></code></pre></div>
+<pre><code>## 
+##  Grubbs test for one outlier
+## 
+## data:  barrel$barrel_batted_rate
+## G = 4.68899, U = 0.99076, p-value = 0.003106
+## alternative hypothesis: highest value 26.9 is an outlier</code></pre>
+<p>Oh yeah - a p-value well below .05 means we have some outliers in the
+data. What we will do is run the analysis without the outliers first,
+then run the analysis with the outliers and compare them.</p>
+<p>First, let’s get rid of these outliers and run Grubbs test again
+(which should show no problem…seing as we just jettisoned all the
+outliers).</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>otlr <span class="ot">&lt;-</span> barrel<span class="sc">$</span>barrel_batted_rate[barrel<span class="sc">$</span>barrel_batted_rate <span class="sc">%in%</span> <span class="fu">boxplot.stats</span>(barrel<span class="sc">$</span>barrel_batted_rate)<span class="sc">$</span>out]</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Got this from https://stackoverflow.com/questions/4787332/how-to-remove-outliers-from-a-dataset</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>barrel_noout <span class="ot">&lt;-</span> barrel <span class="sc">%&gt;%</span> <span class="fu">filter</span>(barrel_batted_rate <span class="sc">&lt;</span> <span class="fu">min</span>(otlr))</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a><span class="fu">grubbs.test</span>(barrel_noout<span class="sc">$</span>barrel_batted_rate)</span></code></pre></div>
+<pre><code>## 
+##  Grubbs test for one outlier
+## 
+## data:  barrel_noout$barrel_batted_rate
+## G = 2.9483, U = 0.9963, p-value = 1
+## alternative hypothesis: highest value 18.5 is an outlier</code></pre>
+<p>Central limit theorem zooms us past the test for normality straight
+on to the test for equality of variance.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(barrel_batted_rate <span class="sc">~</span> age_group, <span class="at">data =</span> barrel_noout)</span></code></pre></div>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
+##         Df F value Pr(&gt;F)
+## group    3  1.9512 0.1193
+##       2347</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Barlett&#39;s test is another test for equality of variance.</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(barrel_noout<span class="sc">$</span>barrel_batted_rate, barrel_noout<span class="sc">$</span>age_group)</span></code></pre></div>
+<pre><code>## 
+##  Bartlett test of homogeneity of variances
+## 
+## data:  barrel_noout$barrel_batted_rate and barrel_noout$age_group
+## Bartlett&#39;s K-squared = 2.3984, df = 3, p-value = 0.4939</code></pre>
+<p>Bartlett’s might be better for our purposes here (in looking at the
+data visually, there is some variation between the spread for each group
+but it doesn’t seem extreme). According to both though, we have equality
+of variance. We can then proceed to ANOVA.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(barrel_batted_rate <span class="sc">~</span> age_group, <span class="at">data =</span> barrel_noout))</span></code></pre></div>
+<pre><code>##               Df Sum Sq Mean Sq F value Pr(&gt;F)
+## age_group      3     77   25.77   1.688  0.167
+## Residuals   2347  35836   15.27</code></pre>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># or...</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">oneway.test</span>(barrel_batted_rate <span class="sc">~</span> age_group, </span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> barrel_noout,</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## 
+##  One-way analysis of means
+## 
+## data:  barrel_batted_rate and age_group
+## F = 1.688, num df = 3, denom df = 2347, p-value = 0.1675</code></pre>
+<p>Both ANOVA tests say the same thing: No real difference between age
+groups for barrel batted rate.</p>
+<p>Not done. Remember, we canned the outliers. What if we added them
+back in. Does the ANOVA test say the same thing?</p>
+<p>For this question, I think the outliers are important (we need to
+include those crazy ones for the 25-29 group). There is one ANOVA test
+we haven’t looked at yet that can handle outliers…and unequal
+variance…which it seems we also have.</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(barrel_batted_rate <span class="sc">~</span> age_group, <span class="at">data =</span> barrel)</span></code></pre></div>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
+##         Df F value  Pr(&gt;F)  
+## group    3  3.0912 0.02606 *
+##       2377                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(barrel<span class="sc">$</span>barrel_batted_rate, barrel<span class="sc">$</span>age_group)</span></code></pre></div>
+<pre><code>## 
+##  Bartlett test of homogeneity of variances
+## 
+## data:  barrel$barrel_batted_rate and barrel$age_group
+## Bartlett&#39;s K-squared = 9.0222, df = 3, p-value = 0.029</code></pre>
+<p>If we don’t have equality of variance, and we have outliers, we can
+use the Kruskal-Wallis ANOVA test. It calculates ANOVA a little
+differently than the previous tests we have used (super technical stuff
+I won’t get into here), but it handles these issues a little better than
+these other tests.</p>
+<p>Is there a difference in barrel rates by age</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kruskal.test</span>(barrel_batted_rate <span class="sc">~</span> age_group, <span class="at">data =</span> barrel)</span></code></pre></div>
+<pre><code>## 
+##  Kruskal-Wallis rank sum test
+## 
+## data:  barrel_batted_rate by age_group
+## Kruskal-Wallis chi-squared = 6.0524, df = 3, p-value = 0.1091</code></pre>
+<p>The p-value is above .05 so we can say that there isn’t a significant
+difference in barrel rates between the ages.</p>
+<p>Let’s have some fun. Let’s include way more ages. We will go ages 23
+through 37 (the sample size for ages below 23 and above 37 get too low).
+Can ANOVA handle all the categories?</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>baseball_anova_age_all <span class="ot">&lt;-</span> baseball_anova <span class="sc">%&gt;%</span> </span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(player_age <span class="sc">&lt;</span> <span class="dv">38</span> <span class="sc">&amp;</span> player_age <span class="sc">&gt;</span> <span class="dv">23</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(exit_velocity_avg <span class="sc">&gt;</span> <span class="dv">80</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">player_age =</span> <span class="fu">as.factor</span>(player_age)) </span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>baseball_anova_age_all <span class="sc">%&gt;%</span> <span class="fu">count</span>(player_age)</span></code></pre></div>
+<pre><code>## # A tibble: 14 x 2
+##    player_age     n
+##    &lt;fct&gt;      &lt;int&gt;
+##  1 24           164
+##  2 25           231
+##  3 26           275
+##  4 27           300
+##  5 28           262
+##  6 29           228
+##  7 30           202
+##  8 31           170
+##  9 32           143
+## 10 33           104
+## 11 34           108
+## 12 35            74
+## 13 36            47
+## 14 37            33</code></pre>
+<p>Let’s get a visual of the data for exit velocity.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dot Plot</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>baseball_anova_age_all <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(player_age, exit_velocity_avg, <span class="at">color =</span> player_age)) <span class="sc">+</span></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span> <span class="st">&quot;Age&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Average Exit Velocity&quot;</span>)<span class="sc">+</span></span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>, <span class="at">option =</span> <span class="st">&quot;magma&quot;</span>, <span class="at">begin =</span> .<span class="dv">92</span>, <span class="at">end =</span> .<span class="dv">2</span>)</span></code></pre></div>
+<p><img src="ANOVA_tutorial_files/figure-html/unnamed-chunk-19-1.png" width="100%" /></p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Box Plot</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>baseball_anova_age_all <span class="sc">%&gt;%</span> </span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(player_age, exit_velocity_avg, <span class="at">color =</span> player_age)) <span class="sc">+</span></span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span> <span class="st">&quot;Age&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Average Exit Velocity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>, <span class="at">option =</span> <span class="st">&quot;magma&quot;</span>, <span class="at">begin =</span> .<span class="dv">92</span>, <span class="at">end =</span> .<span class="dv">2</span>)</span></code></pre></div>
+<p><img src="ANOVA_tutorial_files/figure-html/unnamed-chunk-19-2.png" width="100%" /></p>
+<p>We have big sample sizes for each so we can bypass the test for
+normality. Let’s check equality of variances.</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(exit_velocity_avg <span class="sc">~</span> player_age, </span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">data =</span> baseball_anova_age_all)</span></code></pre></div>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
+##         Df F value Pr(&gt;F)
+## group   13  1.1643 0.2997
+##       2327</code></pre>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(baseball_anova_age_all<span class="sc">$</span>exit_velocity_avg, baseball_anova_age_all<span class="sc">$</span>age_group)</span></code></pre></div>
+<pre><code>## 
+##  Bartlett test of homogeneity of variances
+## 
+## data:  baseball_anova_age_all$exit_velocity_avg and baseball_anova_age_all$age_group
+## Bartlett&#39;s K-squared = 9.9984, df = 3, p-value = 0.01858</code></pre>
+<p>Uh-oh, two different results from the two tests. Usually Bartlett’s
+is good with lots of samples that end up being normal thanks to the
+central limit theorem. The age 37 group might be throwing things a
+little out of whack with only 33 samples.</p>
+<p>How to rectify this? Eyeball it. Back to the dot and box plots. Do
+the ranges between the ages seem somewhat equal? Age 37 is a little more
+spread out but roughly they cover the same range. There is another test
+you could do - calculate each group’s variance and then see if the
+largest is more than 4 times bigger than the other; if it is not, you
+should be good - but we aren’t going to do that here (I did take a look
+and the variances are all roughly the same - none is 4 times larger than
+any other one). But…just because we can, let’s run the ANOVA with
+equality of variance and without. But first…</p>
+<p>Outliers?</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grubbs.test</span>(baseball_anova_age_all<span class="sc">$</span>exit_velocity_avg)</span></code></pre></div>
+<pre><code>## 
+##  Grubbs test for one outlier
+## 
+## data:  baseball_anova_age_all$exit_velocity_avg
+## G = 3.33101, U = 0.99526, p-value = 0.9998
+## alternative hypothesis: highest value 96.5 is an outlier</code></pre>
+<p>Not after we got rid of the pitchers.</p>
+<p>Can ANOVA handle all of this? And will there be a difference in exit
+velos between the ages?</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="co"># With equality of variance</span></span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>baseball_anova_all <span class="ot">&lt;-</span> <span class="fu">aov</span>(exit_velocity_avg <span class="sc">~</span> player_age, <span class="at">data =</span> baseball_anova_age_all)</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(baseball_anova_all)</span></code></pre></div>
+<pre><code>##               Df Sum Sq Mean Sq F value Pr(&gt;F)
+## player_age    13     52   4.002   0.603  0.854
+## Residuals   2327  15449   6.639</code></pre>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="co">#And without</span></span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a><span class="fu">oneway.test</span>(exit_velocity_avg <span class="sc">~</span> player_age, </span>
+<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> baseball_anova_age_all,</span>
+<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">var.equal =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## 
+##  One-way analysis of means (not assuming equal variances)
+## 
+## data:  exit_velocity_avg and player_age
+## F = 0.56898, num df = 13.0, denom df = 551.3, p-value = 0.8792</code></pre>
+<p>Wow. With a p-value near 1 for both tests we can confidently say
+there isn’t a lot of difference in exit velocity across the ages.</p>
+</div>
+<div id="football-qbrs-by-division" class="section level3">
+<h3>Football QBRs by Division</h3>
+<p>I am thoroughly convinced that QBs on the west coast have it easy. In
+particular, I think that quarterbacks from the NFC West have higher
+quarterback ratings than quarterbacks from other divisions. Let’s see if
+my hypothesis has any weight.</p>
+<p>First, let’s read in some data to work with. I got a lot of
+quarterback data from the last 10 years on <a
+href="https://www.pro-football-reference.com/years/2021/passing.htm">Pro-Football
+Reference</a> and put it all into one spreadsheet. I only included
+quarterbacks that had a minimum of 10 pass attempts for the season.</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>qbr <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;C:</span><span class="sc">\\</span><span class="st">Users</span><span class="sc">\\</span><span class="st">andre</span><span class="sc">\\</span><span class="st">OneDrive</span><span class="sc">\\</span><span class="st">Desktop</span><span class="sc">\\</span><span class="st">Github</span><span class="sc">\\</span><span class="st">andrewborozanprojects</span><span class="sc">\\</span><span class="st">andrewborozanprojects</span><span class="sc">\\</span><span class="st">Data</span><span class="sc">\\</span><span class="st">QB_2011.xlsx&quot;</span>)</span></code></pre></div>
+<p>We will clean up the column names and then select the columns we want
+to look at. We also want to get rid of quarterbacks who were traded mid
+season. There are only a couple but since we are not provided which
+teams they played for (and which stats belong to which team) we just
+jettison them.</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>qbr <span class="ot">&lt;-</span> qbr <span class="sc">%&gt;%</span> <span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(player, tm, qbr)</span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>qbr <span class="ot">&lt;-</span> qbr <span class="sc">%&gt;%</span> <span class="fu">filter</span>(tm <span class="sc">!=</span> <span class="st">&quot;2TM&quot;</span>, </span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>                      tm <span class="sc">!=</span> <span class="st">&quot;3TM&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(qbr)</span></code></pre></div>
+<p>The next step is tedious. The data set doesn’t have the division each
+team is in, so we have to attach that to the table we just created.</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>afce <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;BUF&quot;</span>, <span class="st">&quot;NWE&quot;</span>, <span class="st">&quot;MIA&quot;</span>, <span class="st">&quot;NYJ&quot;</span>)</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>afcn <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;PIT&quot;</span>, <span class="st">&quot;CLE&quot;</span>, <span class="st">&quot;BAL&quot;</span>, <span class="st">&quot;CIN&quot;</span>)</span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>afcs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;TEN&quot;</span>, <span class="st">&quot;HOU&quot;</span>, <span class="st">&quot;IND&quot;</span>, <span class="st">&quot;JAX&quot;</span>)</span>
+<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>afcw <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;DEN&quot;</span>, <span class="st">&quot;KAN&quot;</span>, <span class="st">&quot;LAC&quot;</span>, <span class="st">&quot;OAK&quot;</span>, <span class="st">&quot;LVR&quot;</span>, <span class="st">&quot;SDG&quot;</span>)</span>
+<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a>nfce <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;DAL&quot;</span>, <span class="st">&quot;WAS&quot;</span>, <span class="st">&quot;NYG&quot;</span>, <span class="st">&quot;PHI&quot;</span>)</span>
+<span id="cb86-6"><a href="#cb86-6" aria-hidden="true" tabindex="-1"></a>nfcn <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;CHI&quot;</span>, <span class="st">&quot;GNB&quot;</span>, <span class="st">&quot;MIN&quot;</span>, <span class="st">&quot;DET&quot;</span>)</span>
+<span id="cb86-7"><a href="#cb86-7" aria-hidden="true" tabindex="-1"></a>nfcs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ATL&quot;</span>, <span class="st">&quot;TAM&quot;</span>, <span class="st">&quot;NOR&quot;</span>, <span class="st">&quot;CAR&quot;</span>)</span>
+<span id="cb86-8"><a href="#cb86-8" aria-hidden="true" tabindex="-1"></a>nfcw <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;SEA&quot;</span>, <span class="st">&quot;SFO&quot;</span>, <span class="st">&quot;ARI&quot;</span>, <span class="st">&quot;LAR&quot;</span>, <span class="st">&quot;STL&quot;</span>)</span>
+<span id="cb86-9"><a href="#cb86-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-10"><a href="#cb86-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-11"><a href="#cb86-11" aria-hidden="true" tabindex="-1"></a>qbr<span class="sc">$</span>div <span class="ot">&lt;-</span> <span class="fu">with</span>(qbr,</span>
+<span id="cb86-12"><a href="#cb86-12" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ifelse</span>(tm <span class="sc">%in%</span> afce, <span class="st">&quot;AFCE&quot;</span>,</span>
+<span id="cb86-13"><a href="#cb86-13" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ifelse</span>(tm <span class="sc">%in%</span> afcn, <span class="st">&quot;AFCN&quot;</span>,</span>
+<span id="cb86-14"><a href="#cb86-14" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ifelse</span>(tm <span class="sc">%in%</span> afcs, <span class="st">&quot;AFCS&quot;</span>, </span>
+<span id="cb86-15"><a href="#cb86-15" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ifelse</span>(tm <span class="sc">%in%</span> afcw, <span class="st">&quot;AFCW&quot;</span>,</span>
+<span id="cb86-16"><a href="#cb86-16" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">ifelse</span>(tm <span class="sc">%in%</span> nfce, <span class="st">&quot;NFCE&quot;</span>,</span>
+<span id="cb86-17"><a href="#cb86-17" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">ifelse</span>(tm <span class="sc">%in%</span> nfcn, <span class="st">&quot;NFCN&quot;</span>,</span>
+<span id="cb86-18"><a href="#cb86-18" aria-hidden="true" tabindex="-1"></a>                                     <span class="fu">ifelse</span>(tm <span class="sc">%in%</span> nfcs, <span class="st">&quot;NFCS&quot;</span>, <span class="st">&quot;NFCW&quot;</span></span>
+<span id="cb86-19"><a href="#cb86-19" aria-hidden="true" tabindex="-1"></a>                                            ))))))))</span>
+<span id="cb86-20"><a href="#cb86-20" aria-hidden="true" tabindex="-1"></a>qbr <span class="ot">&lt;-</span> qbr <span class="sc">%&gt;%</span> </span>
+<span id="cb86-21"><a href="#cb86-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">div =</span> <span class="fu">as.factor</span>(div))</span></code></pre></div>
+<p>ANOVA time. Remember, we are trying to see if there is a significant
+difference in quarterback ratings (qbr) between divisions (e.g. AFCE,
+AFCN, NFCS…).</p>
+<p>Follow our steps from above. First, look at the data visually.</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dot Plot</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>qbr <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(div, qbr, <span class="at">color =</span> div)) <span class="sc">+</span></span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span> <span class="st">&quot;Division&quot;</span>, <span class="at">y =</span> <span class="st">&quot;QBR&quot;</span>)<span class="sc">+</span></span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>, <span class="at">option =</span> <span class="st">&quot;magma&quot;</span>, <span class="at">end =</span> .<span class="dv">95</span>, <span class="at">begin =</span> .<span class="dv">3</span>)</span></code></pre></div>
+<p><img src="ANOVA_tutorial_files/figure-html/unnamed-chunk-26-1.png" width="100%" /></p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Box Plot</span></span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>qbr <span class="sc">%&gt;%</span> </span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(div, qbr, <span class="at">color =</span> div)) <span class="sc">+</span></span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span> <span class="st">&quot;Division&quot;</span>, <span class="at">y =</span> <span class="st">&quot;QBR&quot;</span>)<span class="sc">+</span></span>
+<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>, <span class="at">option =</span> <span class="st">&quot;magma&quot;</span>, <span class="at">end =</span> .<span class="dv">95</span>, <span class="at">begin =</span> .<span class="dv">3</span>)</span></code></pre></div>
+<p><img src="ANOVA_tutorial_files/figure-html/unnamed-chunk-26-2.png" width="100%" /></p>
+<p>At a glance there does not seem to be any significant differences
+between divisions. If anything, the NFC South is a bit higher than
+others. Let’s see if it is SIGNIFICANTLY different than the others.</p>
+<p>Do we pass the normality test? Let’s see if we have over 30 for each
+group.</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>qbr <span class="sc">%&gt;%</span> </span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(div)</span></code></pre></div>
+<pre><code>## # A tibble: 8 x 2
+##   div       n
+##   &lt;fct&gt; &lt;int&gt;
+## 1 AFCE     84
+## 2 AFCN     93
+## 3 AFCS     87
+## 4 AFCW     77
+## 5 NFCE     90
+## 6 NFCN     82
+## 7 NFCS     71
+## 8 NFCW     80</code></pre>
+<p>Oh yeah, we are fine. All well over 30 so we move on to a test for
+the equality of variance. Based on the box plots above we seem to be ok.
+Let’s formally test with Levene’s test.</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(qbr <span class="sc">~</span> div, </span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">data =</span> qbr)</span></code></pre></div>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
+##        Df F value Pr(&gt;F)
+## group   7  1.0477 0.3963
+##       656</code></pre>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(qbr<span class="sc">$</span>qbr, qbr<span class="sc">$</span>div)</span></code></pre></div>
+<pre><code>## 
+##  Bartlett test of homogeneity of variances
+## 
+## data:  qbr$qbr and qbr$div
+## Bartlett&#39;s K-squared = 11.279, df = 7, p-value = 0.1269</code></pre>
+<p>Safe there. Variances are good. Outliers?</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grubbs.test</span>(qbr<span class="sc">$</span>qbr)</span></code></pre></div>
+<pre><code>## 
+##  Grubbs test for one outlier
+## 
+## data:  qbr$qbr
+## G = 2.68108, U = 0.98914, p-value = 1
+## alternative hypothesis: highest value 99.5 is an outlier</code></pre>
+<p>Nope.</p>
+<p>ANOVA time.</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>qbr_anova <span class="ot">&lt;-</span> <span class="fu">aov</span>(qbr <span class="sc">~</span> div, <span class="at">data =</span> qbr)</span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(qbr_anova)</span></code></pre></div>
+<pre><code>##              Df Sum Sq Mean Sq F value Pr(&gt;F)
+## div           7   4455   636.5   1.684   0.11
+## Residuals   656 247947   378.0</code></pre>
+<p>Woof. That p-value is getting close to .05 but not there yet. In math
+speak, we fail to reject the null hypothesis - meaning there is not a
+significant difference in the QBRs across divisions.</p>
+<p>Even though the ANOVA test revealed there is no significant
+difference between groups, are there some that are closer to that .05
+threshold than others? Which comparison between divisions shows one is,
+if not statistically at .05 significant, significant at ,10? The Tukey
+test can help us.</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(qbr_anova)</span></code></pre></div>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = qbr ~ div, data = qbr)
+## 
+## $div
+##                 diff         lwr       upr     p adj
+## AFCN-AFCE  1.2514593  -7.6469242 10.149843 0.9998807
+## AFCS-AFCE  1.0451560  -7.9976744 10.087986 0.9999685
+## AFCW-AFCE  4.1064935  -5.2203252 13.433312 0.8837215
+## NFCE-AFCE  2.0050794  -6.9634106 10.973569 0.9974970
+## NFCN-AFCE  3.6294425  -5.5478183 12.806703 0.9311421
+## NFCS-AFCE  9.1470825  -0.3831311 18.677296 0.0705616
+## NFCW-AFCE  4.5191071  -4.7160202 13.754234 0.8138905
+## AFCS-AFCN -0.2063033  -9.0237076  8.611101 1.0000000
+## AFCW-AFCN  2.8550342  -6.2533895 11.963458 0.9805195
+## NFCE-AFCN  0.7536201  -7.9875268  9.494767 0.9999958
+## NFCN-AFCN  2.3779832  -6.5772361 11.333203 0.9927043
+## NFCS-AFCN  7.8956232  -1.4209645 17.212211 0.1662201
+## NFCW-AFCN  3.2676478  -5.7468634 12.282159 0.9563020
+## AFCW-AFCS  3.0613375  -6.1882536 12.310929 0.9734712
+## NFCE-AFCS  0.9599234  -7.9282262  9.848073 0.9999802
+## NFCN-AFCS  2.5842865  -6.5144775 11.683051 0.9890599
+## NFCS-AFCS  8.1019265  -1.3527211 17.556574 0.1556262
+## NFCW-AFCS  3.4739511  -5.6831754 12.631078 0.9444107
+## NFCE-AFCW -2.1014141 -11.2783399  7.075512 0.9970876
+## NFCN-AFCW -0.4770510  -9.8581102  8.904008 0.9999999
+## NFCS-AFCW  5.0405890  -4.6860304 14.767208 0.7647787
+## NFCW-AFCW  0.4126136  -9.0250625  9.850290 1.0000000
+## NFCN-NFCE  1.6243631  -7.4005212 10.649247 0.9993835
+## NFCS-NFCE  7.1420031  -2.2415671 16.525573 0.2872243
+## NFCW-NFCE  2.5140278  -6.5696938 11.597749 0.9906305
+## NFCS-NFCN  5.5176400  -4.0656629 15.100943 0.6537211
+## NFCW-NFCN  0.8896646  -8.4002386 10.179568 0.9999913
+## NFCW-NFCS -4.6279754 -14.2667074  5.010757 0.8283474</code></pre>
+<div class="sourceCode" id="cb101"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">TukeyHSD</span>(qbr_anova))</span></code></pre></div>
+<p><img src="ANOVA_tutorial_files/figure-html/unnamed-chunk-31-1.png" width="100%" /></p>
+<p>There is quite the difference between the AFC East and NFC South
+(p-value of .07). Interesting: Tom Brady’s QBR couldn’t make up for the
+parade of dopes the Jets and Dolphins were traipsing out there.</p>
+<p>So I was wrong: The NFC West does not have significantly better
+quarterbacks than other divisions. If any division was close to being
+significantly different it was the NFC South being miles ahead of the
+AFC East over the past 10 years.</p>
+</div>
+</div>
+<div id="the-end-is-near-the-end-is-here" class="section level1">
+<h1>The End is Near, The End is Here</h1>
+<p>This wraps up our look at the ANOVA test. We looked at one (actually
+two by throwing the Kruskal-Wallis test in the middle there) type of
+ANOVA test, when to use it, and how to use it in R. Doing this in R is
+like having a superpower: it does pretty much everything for you. Just
+plug and play.</p>
+<p>If you need to answer the question - Are they really different? -
+then ANOVA is the test to use!</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
